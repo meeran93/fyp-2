@@ -1,0 +1,128 @@
+{include="header"}
+  <div class="container">
+    <div class="page-header">
+      <!-- <a href="responses.php?id={$form_id}" class="btn btn-success pull-right">Back</a> -->
+      <h2>{$pageTitle}</h2>
+    </div>
+
+    <div class="row rating-example">
+      <div class="col-md-12 ">
+        <h3><u>Personal Information</u></h3>
+
+        <label class="col-sm-2 control-label">Full Name:</label><p>{$name}</p>
+        <label class="col-sm-2 control-label">Nationality:</label><p>{$nationality}</p>
+        <label class="col-sm-2 control-label">Address:</label><p>{$address}</p>
+        <label class="col-sm-2 control-label">Contact:</label><p>{$contact}</p>
+        <label class="col-sm-2 control-label">Email:</label><p>{$email}</p>
+        <label class="col-sm-2 control-label">Application date:</label><p>{$date_applied}</p>
+        <!-- <label class="col-sm-2 control-label">Score:</label><p><strong><u>{$score}</u></strong></p> -->
+
+        <!-- Candidate Education -->
+        <h3><u>Education</u></h3>
+        {if="$candidate_education != ''"}
+        <table class="footable table table-bordered">
+          <thead>
+            <tr>
+              <th>Degree</th>
+              <th>Field</th>
+            </tr>
+          </thead>
+          <tbody>
+          {loop="$candidate_education"}
+            <tr>
+              <td>{$value.degree_name}</td>
+              <td>{$value.field_name}</td>
+            </tr>
+          {/loop}
+          </tbody>
+        </table>
+        {else}
+          <p>Applicant hasn't provided his/her education information.</p>
+        {/if}
+        <!-- END - Candidate Education -->
+        
+        <!-- Candidate Skills -->
+        <h3><u>Skills</u></h3>
+        {if="$candidate_skills != ''"}
+        <table class="footable table table-bordered">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Expertise</th>
+            </tr>
+          </thead>
+          <tbody>
+          {loop="$candidate_skills"}
+            <tr>
+              <td>{$value.skill_name}</td>
+              <td>{$value.skill_expertise}</td>
+            </tr>
+          {/loop}
+          </tbody>
+        </table>
+        {else}
+          <p>Applicant hasn't provided his/her skill set information.</p>
+        {/if}
+        <!-- END - Candidate Skills -->
+
+        <!-- Candidate Experience -->
+        <h3><u>Work Experience</u></h3>
+        {if="$candidate_experience != ''"}
+        <p hidden>{$serial_num_counter=1}</p>
+        <table class="footable table table-bordered">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Work Title</th>
+              <th>Years of Experience</th>
+              <th>Company</th>
+              <th>Responsibilities</th>
+            </tr>
+          </thead>
+          <tbody>
+          {loop="$candidate_experience"}
+            <tr>
+              <td>{$serial_num_counter}</td>
+              <td>{$value.candidate_work_title}</td>
+              <td>{$value.candidate_experience_years}</td>
+              <td>{$value.candidate_company}</td>
+              <td>{$value.candidate_responsibilities}</td>
+            </tr>
+            <p hidden>{$serial_num_counter+=1}</p>
+          {/loop}
+          </tbody>
+        </table> 
+        {else}
+          <p>Applicant hasn't provided any information on his/her work experience.</p>
+        {/if}
+        <!-- END - Candidate Experience -->
+
+        <!-- Candidate Skills -->
+        <h3><u>Certifications</u></h3>
+        {if="$candidate_certifications != ''"}
+        <table class="footable table table-bordered">
+          <thead>
+            <tr>
+              <th>Certification</th>
+              <th>Date Awarded</th>
+            </tr>
+          </thead>
+          <tbody>
+          {loop="$candidate_certifications"}
+            <tr>
+              <td>{$value.certificate_name}</td>
+              <td>{$value.date_awarded}</td>
+            </tr>
+          {/loop}
+          </tbody>
+        </table>
+        {else}
+          <p>Applicant hasn't provided any information on his/her certification.</p>
+        {/if}
+        <!-- END - Candidate Skills -->
+
+      </div>
+    </div>
+
+  </div>
+  {include="footer"}

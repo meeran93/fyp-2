@@ -1,0 +1,44 @@
+{include="header"}
+  <div class="container">
+    <div class="page-header">
+      <a href="add-skill.php" class="btn btn-success pull-right">Add skill</a>
+      <h2>{$pageTitle}</h2>
+    </div>
+
+    <div class="row rating-example">
+      <div class="col-md-12 ">
+      {if="$successMsg != ''"}
+        <div class="alert alert-success alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {$successMsg}
+        </div>
+      {/if}
+      {if="$errorMsg != ''"}
+        <div class="alert alert-danger alert-dismissable">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+          {$errorMsg}
+        </div>
+      {/if}
+      {$pageContent}
+      {if="$skills != ''"}
+        <table class="footable table table-bordered" id="reviews">
+          <thead>
+            <tr>
+              <th>Skill</th>
+              <th>Category</th>
+            </tr>
+          </thead>
+          <tbody>
+          {loop="skills"}
+            <tr>
+                <td>{$value.skill}</td>
+                <td>{$value.category}</td>
+            </tr>
+          {/loop}
+          </tbody>
+        </table>
+      {/if}
+      </div>
+    </div>
+  </div>
+{include="footer"}

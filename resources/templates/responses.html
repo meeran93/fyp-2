@@ -1,0 +1,41 @@
+{include="header"}
+  <div class="container">
+    <div class="page-header">
+      <a href="forms.php" class="btn btn-success pull-right">Back</a>
+      <h2>{$pageTitle}</h2>
+    </div>
+
+    <div class="row rating-example">
+      <div class="col-md-12 ">
+        {$pageContent}
+        {if="$candidates != ''"}
+          <table class="footable table table-bordered" id="reviews">
+            <thead>
+              <tr>
+                <th>Date applied</th>
+                <th>Name</th>
+                <th>Contact Number</th>
+				        <th>Score</th>
+  				      <th data-hide="phone">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+            {loop="candidates"}
+              <tr>
+                <td><a href="#">{$value.candidate_date_applied}</a></td>
+                <td>{$value.candidate_name}</td>
+                <td>{$value.candidate_contact}</td>
+                <td>{$value.candidate_score}</td>
+                <td>
+                  <a href="candidate-data.php?id={$value.candidate_ID}&form={$form_id}" target="_blank" class="btn btn-sm btn-info">View Candidate's Data</a>
+                  <a href="{$value.candidate_resume}" target="_blank" class="btn btn-sm btn-danger">CV</a>
+                </td>
+              </tr>
+            {/loop}
+            </tbody>
+          </table>
+        {/if}
+      </div>
+    </div>
+  </div>
+  {include="footer"}

@@ -1,0 +1,79 @@
+SELECT fc.`form_id`,fc.`certificate_id`,fc.`priority`,c.`certificate_name` FROM `form_certification` fc,`certificate` c WHERE `form_id`=1 GROUP BY c.`id`=fc.`certificate_id`
+
+SELECT fe.`degree_id`,fe.`field_of_study_id`,fe.`priority`,d.`degree_name`,fs.`field_name` FROM `form_education` fe,`degree`d,`field_of_study` fs WHERE `form_id`=1 and  d.`id`=fe.`degree_id`and fs.`id`=fe.`field_of_study_id`
+
+======================
+
+select degree.id as degree_id, field_of_study.id as field_id, form_education.priority, degree.degree_name, field_of_study.field_name from form_education, degree, field_of_study where form_education.degree_id = degree.id and form_education.field_of_study_id = field_of_study.id and form_education.form_id=1;
+
+select skills.id as skill_id, form_skills.priority, skills.skill from form_skills, skills where form_skills.skill_id = skills.id and form_skills.form_id=1
+
+select work_titles.id as title_id, form_experience.years_of_experience, form_experience.priority, work_titles.title from form_experience, work_titles where form_experience.title_id = work_titles.id and form_experience.form_id=1
+
+select certificate.id as certificate_id, form_certification.priority, certificate.certificate_name from form_certification, certificate where form_certification.certificate_id = certificate.id and form_certification.form_id=1
+
+=================== Routines ============
+
+deleteFormRequirements:
+======================
+CREATE PROCEDURE deleteFormRequirements(formID INT)
+BEGIN
+START TRANSACTION;
+	DELETE FROM form_education WHERE form_id = formID;
+	DELETE FROM form_skills WHERE form_id = formID;
+    DELETE FROM form_experience WHERE form_id = formID;
+    DELETE FROM form_certification WHERE form_id = formID;
+COMMIT;
+END
+-----------------------------
+
+insertCertification:
+===================
+CREATE PROCEDURE insertCertification(
+	IN formID INT, IN certID INT, IN prior INT
+)
+    NO SQL
+INSERT INTO form_certification(
+	form_id, certificate_id, priority
+) 
+VALUES 
+	(formID, certID, prior)
+-----------------------------
+
+insertEducation:
+===============
+CREATE PROCEDURE insertEducation(IN formID INT, IN degreeID INT, IN fieldID INT, IN prior INT)
+    NO SQL
+INSERT INTO form_education(
+	form_id, degree_id, field_of_study_id, 
+	priority
+) 
+VALUES 
+	(formID, degreeID, fieldID, prior)
+-----------------------------
+
+insertExperience:
+================
+CREATE PROCEDURE insertExperience(
+	IN formID INT, IN titleID INT, IN yoe INT, 
+	IN prior INT
+)
+    NO SQL
+INSERT INTO form_experience (
+	form_id, title_id, years_of_experience, 
+	priority
+) 
+VALUES 
+	(formID, titleID, yoe, prior)
+-----------------------------
+
+insertSkills:
+============
+CREATE PROCEDURE insertSkills(
+	IN formID INT, IN skillID INT, IN prior INT
+)
+    NO SQL
+INSERT INTO form_skills(form_id, skill_id, priority) 
+VALUES 
+	(formID, skillID, prior)
+-----------------------------
