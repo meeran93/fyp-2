@@ -68,7 +68,7 @@
 					var degree_options = getDegrees();
 					var field_options = getFields();
                     var fieldWrapper = $('<div class="requirement-data education col-md-12">');
-                    var fName = $('<label class="control-label col-md-1">Degree:</label><div class="col-md-3"><select class="form-control autocomplete-field" name="requirement_degree[]" required><option value="" disabled selected>- Select Degree -</option>' + degree_options + '</select></div><label class="control-label col-md-1">Field of Study:</label><div class="col-md-3"><select class="form-control autocomplete-field" name="requirement_field[]" required><option value="" disabled selected>- Select Field -</option>' + field_options + '</select></div><label class="control-label col-md-1">Priority:</label><div class="col-md-2"><input type="range" name="requirement_education_priority[]" min="0" max="10" required></div>');
+                    var fName = $('<label class="control-label col-md-1">Degree:</label><div class="col-md-3"><select class="form-control autocomplete-field" name="requirement_degree[]" required><option value="" disabled selected>- Select Degree -</option>' + degree_options + '</select></div><label class="control-label col-md-1">Field of Study:</label><div class="col-md-3"><select class="form-control autocomplete-field" name="requirement_field[]" required><option value="" disabled selected>- Select Field -</option>' + field_options + '</select></div><label class="control-label col-md-1">Priority:</label><div class="col-md-2"><select class=rating-bar name=requirement_education_priority[]><option value=1>1<option value=2>2<option value=3>3<option value=4>4<option value=5>5<option value=6>6<option value=7>7<option value=8>8<option value=9>9<option value=10>10</select></div>');
                     var removeButton = $('<div class="col-md-1"><a style="cursor:pointer"><span class="remove glyphicon glyphicon-remove"></span></a></div></div><div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>');
                     removeButton.click(function() {
                         $(this).parent().remove();
@@ -77,6 +77,7 @@
                     fieldWrapper.append(removeButton);
                     $("#educationList").append(fieldWrapper);
                     $(".autocomplete-field").select2();
+                    ratingEnable();
                 });
                 // END - Adding education requirement - HR
                 
@@ -111,7 +112,7 @@
                 $("#addSkill").click(function() {
 					var skill_options = getSkills();
                     var fieldWrapper = $('<div class="requirement-data-data skill col-md-10">');
-                    var fName = $('<label class="control-label col-md-1">Skill:</label><div class="col-md-5"><select class="form-control autocomplete-field" name="requirement_skill[]" required><option value="" disabled selected>- Select Skill -</option>' + skill_options + '</select></div><label class="control-label col-md-1">Priority:</label><div class="col-md-3"><select class=rating-bar name=requirement_skill_expertise[]><option value=1>1<option value=2>2<option value=3>3<option value=4>4<option value=5>5<option value=6>6<option value=7>7<option value=8>8<option value=9>9<option value=10>10</select></div>');
+                    var fName = $('<label class="control-label col-md-1">Skill:</label><div class="col-md-5"><select class="form-control autocomplete-field" name="requirement_skill[]" required><option value="" disabled selected>- Select Skill -</option>' + skill_options + '</select></div><label class="control-label col-md-1">Priority:</label><div class="col-md-3"><select class=rating-bar name=requirement_skill_priority[]><option value=1>1<option value=2>2<option value=3>3<option value=4>4<option value=5>5<option value=6>6<option value=7>7<option value=8>8<option value=9>9<option value=10>10</select></div>');
                     var removeButton = $('<div class="col-md-1"><a style="cursor:pointer"><span class="remove glyphicon glyphicon-remove"></span></a></div><div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>');
                     removeButton.click(function() {
                         $(this).parent().remove();
