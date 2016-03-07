@@ -60,7 +60,19 @@
 										</div>
 										<label class="control-label col-md-1">Priority:</label>
 										<div class="col-md-2">
-											<input type="range" name="requirement_education_priority[]" value="<?php echo $value1["priority"];?>" min="0" max="10">	
+											<!-- <input type="range" name="requirement_education_priority[]" value="<?php echo $value1["priority"];?>" min="0" max="10"> -->
+											<select class="example-1to10" name="requirement_education_priority[]" name="rating">
+												<option value="1" <?php if( $value1["priority"] == 1 ){ ?> selected <?php } ?>>1</option>
+												<option value="2" <?php if( $value1["priority"] == 2 ){ ?> selected <?php } ?>>2</option>
+												<option value="3" <?php if( $value1["priority"] == 3 ){ ?> selected <?php } ?>>3</option>
+												<option value="4" <?php if( $value1["priority"] == 4 ){ ?> selected <?php } ?>>4</option>
+												<option value="5" <?php if( $value1["priority"] == 5 ){ ?> selected <?php } ?>>5</option>
+												<option value="6" <?php if( $value1["priority"] == 6 ){ ?> selected <?php } ?>>6</option>
+												<option value="7" <?php if( $value1["priority"] == 7 ){ ?> selected <?php } ?>>7</option>
+												<option value="8" <?php if( $value1["priority"] == 8 ){ ?> selected <?php } ?>>8</option>
+												<option value="9" <?php if( $value1["priority"] == 9 ){ ?> selected <?php } ?>>9</option>
+												<option value="10" <?php if( $value1["priority"] == 10 ){ ?> selected <?php } ?>>10</option>
+											</select>	
 										</div>
 										<div class="col-md-1">
 											<a style="cursor:pointer" class="remove_button"><span class="remove glyphicon glyphicon-remove"></span></a>

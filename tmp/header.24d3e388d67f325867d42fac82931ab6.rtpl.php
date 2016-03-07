@@ -34,7 +34,8 @@
     <link href="resources/templates/./assets/css/typeahead.js-bootstrap.css" rel="stylesheet" media="screen">
     <!-- TE Jquery WYSIWYG editor stylesheet -->
     <link href="resources/templates/./assets/plugins/jQuery-TE_v.1.4.0/jquery-te-1.4.0.css" rel="stylesheet" type="text/css" />
-
+    <!-- Bar rating stylesheet -->
+    <link href="resources/templates/./assets/plugins/barrating/css/bars-1to10.css" rel="stylesheet" type="text/css" />
 
 </head>
 

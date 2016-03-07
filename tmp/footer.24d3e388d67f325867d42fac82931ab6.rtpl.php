@@ -15,12 +15,15 @@
         <script src="resources/templates/./assets/plugins/bootstrap-dialog/js/bootstrap-dialog.js"></script>
         <script src="resources/templates/./assets/plugins/fooTable/js/footable.js"></script>
         <script src="resources/templates/./assets/plugins/jQuery-TE_v.1.4.0/jquery-te-1.4.0.min.js"></script>
-
+        <script src="resources/templates/./assets/plugins/barrating/js/jquery.barrating.js"></script>
     
         <script type="text/javascript">
 
             $(document).ready(function() {
-				
+				$('.example-1to10').barrating('show', {
+                    theme: 'bars-1to10'
+                });
+
 				$(".remove_button").click(function() {
                     var mainDiv = $(this).parent().parent();
                     var nextDiv = mainDiv.next();
