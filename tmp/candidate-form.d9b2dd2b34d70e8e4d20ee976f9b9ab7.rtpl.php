@@ -34,6 +34,8 @@
     <link href="resources/templates/assets/css/typeahead.js-bootstrap.css" rel="stylesheet" media="screen">
     <!-- TE Jquery WYSIWYG editor stylesheet -->
     <link href="resources/templates/assets/plugins/jQuery-TE_v.1.4.0/jquery-te-1.4.0.css" rel="stylesheet" type="text/css" />
+    <!-- Bar rating stylesheet -->
+    <link href="resources/templates/assets/plugins/barrating/css/bars-1to10.css" rel="stylesheet" type="text/css" />
 
     <style type="text/css">
     .candidate-data {
@@ -150,7 +152,19 @@
 											<input name="requirement_skill[]" value="<?php echo $value1["skill_id"];?>" hidden><i><?php echo $value1["skill_name"];?></i>:
 										</label>
 										<div class="col-md-4">
-											<input type="range" name="requirement_skill_expertise[]" min="0" max="10">
+											<!-- <input type="range" name="requirement_skill_expertise[]" min="0" max="10"> -->
+											<select class="rating-bar" name="requirement_skill_expertise[]">
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+												<option value="7">7</option>
+												<option value="8">8</option>
+												<option value="9">9</option>
+												<option value="10">10</option>
+											</select>
 										</div>
 									</div>
 									<div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>
@@ -175,7 +189,7 @@
 									<!-- ============================================================================================== -->
 									<?php $counter1=-1; if( isset($form_experience) && is_array($form_experience) && sizeof($form_experience) ) foreach( $form_experience as $key1 => $value1 ){ $counter1++; ?>
 									<div class="col-md-12"><!-- Loaded/Required Experience -->
-										<label class="control-label col-md-4">Years of Experience as a
+										<label class="control-label col-md-4">Years of Experience -
 											<input name="requirement_experience[]" value="<?php echo $value1["title_id"];?>" hidden><i><?php echo $value1["title_name"];?></i>:
 										</label>
 										<div class="col-md-1">

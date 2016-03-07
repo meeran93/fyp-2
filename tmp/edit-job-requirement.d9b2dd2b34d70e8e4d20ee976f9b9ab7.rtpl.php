@@ -61,7 +61,7 @@
 										<label class="control-label col-md-1">Priority:</label>
 										<div class="col-md-2">
 											<!-- <input type="range" name="requirement_education_priority[]" value="<?php echo $value1["priority"];?>" min="0" max="10"> -->
-											<select class="example-1to10" name="requirement_education_priority[]" name="rating">
+											<select class="rating-bar" name="requirement_education_priority[]">
 												<option value="1" <?php if( $value1["priority"] == 1 ){ ?> selected <?php } ?>>1</option>
 												<option value="2" <?php if( $value1["priority"] == 2 ){ ?> selected <?php } ?>>2</option>
 												<option value="3" <?php if( $value1["priority"] == 3 ){ ?> selected <?php } ?>>3</option>
