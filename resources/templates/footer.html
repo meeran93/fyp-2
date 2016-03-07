@@ -68,7 +68,7 @@
 					var degree_options = getDegrees();
 					var field_options = getFields();
                     var fieldWrapper = $('<div class="requirement-data education col-md-12">');
-                    var fName = $('<label class="control-label col-md-1">Degree:</label><div class="col-md-3"><select class="form-control autocomplete-field" name="requirement_degree[]" required><option value="" disabled selected>- Select Degree -</option>' + degree_options + '</select></div><label class="control-label col-md-1">Field of Study:</label><div class="col-md-3"><select class="form-control autocomplete-field" name="requirement_field[]" required><option value="" disabled selected>- Select Field -</option>' + field_options + '</select></div><label class="control-label col-md-1">Priority:</label><div class="col-md-2"><input type="range" name="requirement_education_priority[]" min="0" max="10" required></div>');
+                    var fName = $('<label class="control-label col-md-1">Degree:</label><div class="col-md-3"><select class="form-control autocomplete-field" name="requirement_degree[]" required><option value="" disabled selected>- Select Degree -</option>' + degree_options + '</select></div><label class="control-label col-md-1">Field of Study:</label><div class="col-md-3"><select class="form-control autocomplete-field" name="requirement_field[]" required><option value="" disabled selected>- Select Field -</option>' + field_options + '</select></div><label class="control-label col-md-1">Priority:</label><div class="col-md-2"><select class=rating-bar name=requirement_education_priority[] required><option value=1>1<option value=2>2<option value=3>3<option value=4>4<option value=5>5<option value=6>6<option value=7>7<option value=8>8<option value=9>9<option value=10>10</select></div>');
                     var removeButton = $('<div class="col-md-1"><a style="cursor:pointer"><span class="remove glyphicon glyphicon-remove"></span></a></div></div><div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>');
                     removeButton.click(function() {
                         $(this).parent().remove();
@@ -77,6 +77,7 @@
                     fieldWrapper.append(removeButton);
                     $("#educationList").append(fieldWrapper);
                     $(".autocomplete-field").select2();
+                    ratingEnable();
                 });
                 // END - Adding education requirement - HR
                 
@@ -110,8 +111,8 @@
 				
                 $("#addSkill").click(function() {
 					var skill_options = getSkills();
-                    var fieldWrapper = $('<div class="candidate-data skill col-md-10">');
-                    var fName = $('<label class="control-label col-md-1">Skill:</label><div class="col-md-4"><select class="form-control autocomplete-field" name="requirement_skill[]" required><option value="" disabled selected>- Select Skill -</option>' + skill_options + '</select></div><label class="control-label col-md-2">Priority:</label><div class="col-md-3"><input type="range" name="requirement_skill_priority[]" min=0 max=10 required></div>');
+                    var fieldWrapper = $('<div class="requirement-data-data skill col-md-10">');
+                    var fName = $('<label class="control-label col-md-1">Skill:</label><div class="col-md-5"><select class="form-control autocomplete-field" name="requirement_skill[]" required><option value="" disabled selected>- Select Skill -</option>' + skill_options + '</select></div><label class="control-label col-md-1">Priority:</label><div class="col-md-3"><select class=rating-bar name=requirement_skill_priority[] required><option value=1>1<option value=2>2<option value=3>3<option value=4>4<option value=5>5<option value=6>6<option value=7>7<option value=8>8<option value=9>9<option value=10>10</select></div>');
                     var removeButton = $('<div class="col-md-1"><a style="cursor:pointer"><span class="remove glyphicon glyphicon-remove"></span></a></div><div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>');
                     removeButton.click(function() {
                         $(this).parent().remove();
@@ -120,6 +121,7 @@
                     fieldWrapper.append(removeButton);
                     $("#skillsList").append(fieldWrapper);
                     $(".autocomplete-field").select2();
+                    ratingEnable();
                 });
                 // END - Adding skill requirement - HR
 				
@@ -127,7 +129,7 @@
 				$("#addCandidateSkill").click(function() {
 					var skill_options = getSkills();
                     var fieldWrapper = $('<div class="candidate-data skill col-md-10">');
-                    var fName = $('<label class="control-label col-md-1">Skill:</label><div class="col-md-4"><select class="form-control autocomplete-field" name="requirement_skill[]" required><option value="" disabled selected>- Select Skill -</option>' + skill_options + '</select></div><label class="control-label col-md-3">Level of Expertise:</label><div class="col-md-3"><select class=rating-bar name=requirement_skill_expertise[]><option value=1>1<option value=2>2<option value=3>3<option value=4>4<option value=5>5<option value=6>6<option value=7>7<option value=8>8<option value=9>9<option value=10>10</select></div>');
+                    var fName = $('<label class="control-label col-md-1">Skill:</label><div class="col-md-4"><select class="form-control autocomplete-field" name="requirement_skill[]" required><option value="" disabled selected>- Select Skill -</option>' + skill_options + '</select></div><label class="control-label col-md-3">Level of Expertise:</label><div class="col-md-3"><select class=rating-bar name=requirement_skill_expertise[] required><option value=1>1<option value=2>2<option value=3>3<option value=4>4<option value=5>5<option value=6>6<option value=7>7<option value=8>8<option value=9>9<option value=10>10</select></div>');
                     var removeButton = $('<div class="col-md-1"><a style="cursor:pointer"><span class="remove glyphicon glyphicon-remove"></span></a></div><div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>');
                     removeButton.click(function() {
                         $(this).parent().remove();
@@ -152,7 +154,7 @@
                 $("#addExperience").click(function() {
 				    var title_options = getWorkTitles();
                     var fieldWrapper = $('<div class="requirement-data experience col-md-12">');
-                    var fName = $('<label class="control-label col-md-1">Field Type:</label><div class="col-md-4"><select class="form-control autocomplete-field" name="requirement_experience[]" required><option value="" disabled selected>- Select Area -</option>' + title_options + '</select></div><label class="control-label col-md-2">Years of Experience:</label><div class="col-md-1"><input type="number" class="form-control" name="requirement_experience_years[]" min=0 required></div><label class="control-label col-md-1">Priority:</label><div class=col-md-2><input type="range" name="requirement_experience_priority[]" min=0 max=10 required></div>');
+                    var fName = $('<label class="control-label col-md-1">Field Type:</label><div class="col-md-4"><select class="form-control autocomplete-field" name="requirement_experience[]" required><option value="" disabled selected>- Select Area -</option>' + title_options + '</select></div><label class="control-label col-md-2">Years of Experience:</label><div class="col-md-1"><input type="number" class="form-control" name="requirement_experience_years[]" min=0 required></div><label class="control-label col-md-1">Priority:</label><div class=col-md-2><select class=rating-bar name=requirement_experience_priority[] required><option value=1>1<option value=2>2<option value=3>3<option value=4>4<option value=5>5<option value=6>6<option value=7>7<option value=8>8<option value=9>9<option value=10>10</select></div>');
                     var removeButton = $('<div class="col-md-1"><a style="cursor:pointer"><span class="remove glyphicon glyphicon-remove"></span></a></div><div class="col-md-12" style="height:1px;background:#aaa;margin:10px 0"></div>');
                     removeButton.click(function() {
                         $(this).parent().remove();
@@ -161,6 +163,7 @@
                     fieldWrapper.append(removeButton);
                     $("#experienceList").append(fieldWrapper);
                     $(".autocomplete-field").select2();
+                    ratingEnable();
                 });
                 // END - Adding experience requirement - HR
 
@@ -192,7 +195,7 @@
                 $("#addCertificate").click(function() {
 				    var certificate_options = getCertificates();
                     var fieldWrapper = $('<div class="candidate-data certification col-md-8">');
-                    var fName = $('<label class="control-label col-md-2">Certification:</label><div class="col-md-4"><select class="form-control autocomplete-field" name="requirement_certification[]" required><option value="" disabled selected>- Select Certification -</option>' + certificate_options + '</select></div><label class="control-label col-md-1">Priority:</label><div class="col-md-4"><input type="range" name="requirement_certification_priority[]" min=0 max=10></div>');
+                    var fName = $('<label class="control-label col-md-2">Certification:</label><div class="col-md-4"><select class="form-control autocomplete-field" name="requirement_certification[]" required><option value="" disabled selected>- Select Certification -</option>' + certificate_options + '</select></div><label class="control-label col-md-2">Priority:</label><div class="col-md-3"><select class=rating-bar name=requirement_certification_priority[] required><option value=1>1<option value=2>2<option value=3>3<option value=4>4<option value=5>5<option value=6>6<option value=7>7<option value=8>8<option value=9>9<option value=10>10</select></div>');
                     var removeButton = $('<div class=col-md-1><a style=cursor:pointer><span class="remove glyphicon glyphicon-remove"></span></a></div><div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>');
                     removeButton.click(function() {
                         $(this).parent().remove();
@@ -201,6 +204,7 @@
                     fieldWrapper.append(removeButton);
                     $("#certificationList").append(fieldWrapper);
                     $(".autocomplete-field").select2();
+                    ratingEnable();
                 });
                 // END - Adding certification requirement - HR
 
