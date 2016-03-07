@@ -100,7 +100,7 @@
 									
 									<!-- ============================================================================================== -->
 									{loop="skills_requirements"}
-									<div class="candidate-data skill col-md-10">
+									<div class="requirement-data skill col-md-10">
 										<label class="control-label col-md-1">Skill:</label>
 										<div class="col-md-5">
 											<select class="form-control autocomplete-field" name="requirement_skill[]" required>
@@ -111,8 +111,20 @@
 											</select>
 										</div>
 										<label class="control-label col-md-1">Priority:</label>
-										<div class="col-md-4">
-											<input type="range" name="requirement_skill_priority[]" value="{$value.priority}" min="0" max="10">	
+										<div class="col-md-3">
+											<!-- <input type="range" name="requirement_skill_priority[]" value="{$value.priority}" min="0" max="10"> -->
+											<select class="rating-bar" name="requirement_education_priority[]">
+												<option value="1" {if="$value.priority == 1"} selected {/if}>1</option>
+												<option value="2" {if="$value.priority == 2"} selected {/if}>2</option>
+												<option value="3" {if="$value.priority == 3"} selected {/if}>3</option>
+												<option value="4" {if="$value.priority == 4"} selected {/if}>4</option>
+												<option value="5" {if="$value.priority == 5"} selected {/if}>5</option>
+												<option value="6" {if="$value.priority == 6"} selected {/if}>6</option>
+												<option value="7" {if="$value.priority == 7"} selected {/if}>7</option>
+												<option value="8" {if="$value.priority == 8"} selected {/if}>8</option>
+												<option value="9" {if="$value.priority == 9"} selected {/if}>9</option>
+												<option value="10" {if="$value.priority == 10"} selected {/if}>10</option>
+											</select>
 										</div>
 										<div class="col-md-1">
 											<a style="cursor:pointer" class="remove_button"><span class="remove glyphicon glyphicon-remove"></span></a>
