@@ -2,7 +2,7 @@
 
 session_start();
 include_once("config.php");
-isLoggedin($db);
+//isLoggedin($db);
 
 if (isset($_POST['submit'])) {
 
