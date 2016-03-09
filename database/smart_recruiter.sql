@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 15, 2016 at 09:41 AM
+-- Generation Time: Mar 09, 2016 at 07:11 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -81,6 +81,10 @@ INSERT INTO forms(
 VALUES 
 	(userID, Ddate, descr)$$
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateResponse`(IN `form_id` INT)
+    NO SQL
+UPDATE forms SET RESPONSES=RESPONSES+1 WHERE id=form_id$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -102,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `candidate` (
   `date_applied` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `candidate`
@@ -117,7 +121,8 @@ INSERT INTO `candidate` (`id`, `form_id`, `name`, `resume`, `nationality`, `addr
 (12, 1, 'maaz', 'CV - Muhammad Meeran Khan.pdf', 'Pakistani', '43 saddlemead green n.e', '03212863308', 'maaz@maaz.com', 0, '2016-02-11'),
 (13, 1, 'maaz', 'CV - Muhammad Meeran Khan.pdf', 'Russian', '43 saddlemead green n.e', '00321286', 'maaz@maaz.com', 0, '2016-02-11'),
 (14, 1, 'Haseeb Hussain', 'HASEEB-HUSSAIN-CV.pdf', 'Pakistani', 'Flat 420, very Nobel Heights, purani subzi mandi k peechay', '03212863307', 'haseeb@gmail.com', 0, '2016-02-14'),
-(16, 10, 'Meeran Khan', 'CV - Muhammad Meeran Khan.pdf', 'Pakistani', '43 saddlemead green n.e', '03212863308', 'maaz@maaz.com', 0, '2016-02-15');
+(16, 10, 'Meeran Khan', 'CV - Muhammad Meeran Khan.pdf', 'Pakistani', '43 saddlemead green n.e', '03212863308', 'maaz@maaz.com', 0, '2016-02-15'),
+(17, 11, 'Shams', 'shamsnaveed_profile.pdf', 'Pakistani', 'aABc', '0321', 'shams@gamil.com', 0, '2016-03-06');
 
 -- --------------------------------------------------------
 
@@ -159,7 +164,7 @@ CREATE TABLE IF NOT EXISTS `candidate_education` (
   KEY `candidate_id` (`candidate_id`),
   KEY `degree_id` (`degree_id`),
   KEY `field_id` (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 --
 -- Dumping data for table `candidate_education`
@@ -169,7 +174,8 @@ INSERT INTO `candidate_education` (`id`, `candidate_id`, `degree_id`, `field_id`
 (4, 7, 4, 2),
 (5, 14, 3, 1),
 (6, 14, 4, 1),
-(8, 16, 4, 2);
+(8, 16, 4, 2),
+(9, 17, 5, 5);
 
 -- --------------------------------------------------------
 
@@ -187,7 +193,7 @@ CREATE TABLE IF NOT EXISTS `candidate_experience` (
   PRIMARY KEY (`id`),
   KEY `candidate_id` (`candidate_id`),
   KEY `title_id` (`title_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=19 ;
 
 --
 -- Dumping data for table `candidate_experience`
@@ -200,7 +206,9 @@ INSERT INTO `candidate_experience` (`id`, `candidate_id`, `title_id`, `experienc
 (10, 10, 1, 450, 'maaz inc.', 'having fun'),
 (14, 7, 2, 2, 'Ibex Global', '- Implemented Agile development process for the development of Tameer International Web Portal<br>- Managed Software Development of MBO Access (An oursourcing web app used by MBO Partners)'),
 (15, 14, 1, 1, 'Oxford University Press', '- Develop the whole web app for managing books'),
-(16, 16, 1, 1, '10 Pearls', 'web development');
+(16, 16, 1, 1, '10 Pearls', 'web development'),
+(17, 17, 16, 10, 'State Bank, Hino Pak, Millenium ', ''),
+(18, 17, 17, 8, 'Hino Pak', '');
 
 -- --------------------------------------------------------
 
@@ -217,7 +225,7 @@ CREATE TABLE IF NOT EXISTS `candidate_skills` (
   KEY `candidate_id` (`candidate_id`),
   KEY `skill_id` (`skill_id`),
   KEY `skill_id_2` (`skill_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=69 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=72 ;
 
 --
 -- Dumping data for table `candidate_skills`
@@ -258,7 +266,10 @@ INSERT INTO `candidate_skills` (`id`, `candidate_id`, `skill_id`, `level_of_expe
 (65, 14, 9, 6),
 (66, 14, 24, 5),
 (67, 14, 17, 5),
-(68, 16, 2, 8);
+(68, 16, 2, 8),
+(69, 17, 28, 8),
+(70, 17, 29, 10),
+(71, 17, 30, 10);
 
 -- --------------------------------------------------------
 
@@ -279,7 +290,8 @@ CREATE TABLE IF NOT EXISTS `category` (
 INSERT INTO `category` (`id`, `category`) VALUES
 (1, 'Computer Science'),
 (2, 'Data Science'),
-(3, 'Marketing');
+(3, 'Marketing'),
+(4, 'IT');
 
 -- --------------------------------------------------------
 
@@ -374,7 +386,7 @@ CREATE TABLE IF NOT EXISTS `forms` (
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `forms`
@@ -388,7 +400,8 @@ INSERT INTO `forms` (`id`, `user_id`, `date_created`, `description`, `responses`
 (7, 2, '2016-01-25', 'Angular JS Developer with 5+ years of experience', 4, 'ENABLED', 0),
 (8, 1, '2016-02-02', 'Final Test for create form', 0, 'ENABLED', 0),
 (9, 1, '2016-02-08', 'testing candidate form', 0, 'ENABLED', 0),
-(10, 1, '2016-02-14', 'testing certifications', 0, 'ENABLED', 0);
+(10, 1, '2016-02-14', 'testing certifications', 0, 'ENABLED', 0),
+(11, 1, '2016-03-06', 'Senior Manager Information Systems/Technology', 0, 'ENABLED', 0);
 
 -- --------------------------------------------------------
 
@@ -404,7 +417,7 @@ CREATE TABLE IF NOT EXISTS `form_certification` (
   PRIMARY KEY (`id`),
   KEY `form_id` (`form_id`),
   KEY `certificate_id` (`certificate_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=50 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=81 ;
 
 --
 -- Dumping data for table `form_certification`
@@ -413,8 +426,10 @@ CREATE TABLE IF NOT EXISTS `form_certification` (
 INSERT INTO `form_certification` (`id`, `form_id`, `certificate_id`, `priority`) VALUES
 (7, 2, 4, 7),
 (41, 10, 7, 0),
-(48, 1, 3, 10),
-(49, 1, 2, 4);
+(52, 11, 2, 7),
+(78, 1, 3, 8),
+(79, 1, 2, 4),
+(80, 1, 5, 3);
 
 -- --------------------------------------------------------
 
@@ -432,7 +447,7 @@ CREATE TABLE IF NOT EXISTS `form_education` (
   KEY `form_id` (`form_id`),
   KEY `degree_id` (`degree_id`),
   KEY `field_of_study_id` (`field_of_study_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=69 ;
 
 --
 -- Dumping data for table `form_education`
@@ -443,8 +458,9 @@ INSERT INTO `form_education` (`id`, `form_id`, `degree_id`, `field_of_study_id`,
 (8, 8, 5, 2, 8),
 (11, 9, 4, 1, 10),
 (12, 9, 5, 2, 6),
-(39, 1, 5, 3, 7),
-(40, 1, 6, 2, 1);
+(43, 11, 5, 1, 9),
+(67, 1, 4, 1, 10),
+(68, 1, 5, 2, 6);
 
 -- --------------------------------------------------------
 
@@ -461,7 +477,7 @@ CREATE TABLE IF NOT EXISTS `form_experience` (
   PRIMARY KEY (`id`),
   KEY `form_id` (`form_id`),
   KEY `title_id` (`title_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=52 ;
 
 --
 -- Dumping data for table `form_experience`
@@ -471,7 +487,10 @@ INSERT INTO `form_experience` (`id`, `form_id`, `title_id`, `years_of_experience
 (2, 2, 11, 8, 7),
 (5, 8, 1, 2, 5),
 (7, 9, 1, 2, 8),
-(21, 1, 1, 10, 8);
+(24, 11, 16, 9, 8),
+(25, 11, 17, 5, 9),
+(50, 1, 1, 2, 5),
+(51, 1, 2, 2, 5);
 
 -- --------------------------------------------------------
 
@@ -487,7 +506,7 @@ CREATE TABLE IF NOT EXISTS `form_skills` (
   PRIMARY KEY (`id`),
   KEY `skill_id` (`skill_id`),
   KEY `form_id` (`form_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=92 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=177 ;
 
 --
 -- Dumping data for table `form_skills`
@@ -502,11 +521,16 @@ INSERT INTO `form_skills` (`id`, `form_id`, `skill_id`, `priority`) VALUES
 (20, 9, 3, 10),
 (21, 9, 4, 9),
 (22, 9, 9, 5),
-(87, 1, 2, 3),
-(88, 1, 8, 5),
-(89, 1, 5, 7),
-(90, 1, 9, 2),
-(91, 1, 24, 4);
+(97, 11, 28, 9),
+(98, 11, 29, 10),
+(99, 11, 30, 7),
+(170, 1, 2, 8),
+(171, 1, 8, 9),
+(172, 1, 5, 3),
+(173, 1, 9, 8),
+(174, 1, 24, 3),
+(175, 1, 3, 9),
+(176, 1, 4, 7);
 
 -- --------------------------------------------------------
 
@@ -522,7 +546,7 @@ CREATE TABLE IF NOT EXISTS `skills` (
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32 ;
 
 --
 -- Dumping data for table `skills`
@@ -554,7 +578,11 @@ INSERT INTO `skills` (`id`, `skill`, `user_id`, `category_id`) VALUES
 (24, 'Map Reduce', 1, 2),
 (25, 'Excel', 1, 2),
 (26, 'Inbound Marketing', 1, 3),
-(27, 'Research Marketing', 1, 3);
+(27, 'Research Marketing', 1, 3),
+(28, 'IT Strategy', 1, 4),
+(29, 'Oracle EBS', 1, 4),
+(30, 'IT Outsource Management', 1, 4),
+(31, 'Python', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -590,7 +618,7 @@ CREATE TABLE IF NOT EXISTS `work_titles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `work_titles`
@@ -611,7 +639,9 @@ INSERT INTO `work_titles` (`id`, `title`) VALUES
 (12, 'Network Engineer'),
 (13, 'Sales Executive'),
 (14, 'Software Engineer'),
-(15, 'Design Engineer');
+(15, 'Design Engineer'),
+(16, 'IT'),
+(17, 'Senior IT Manager');
 
 --
 -- Constraints for dumped tables
