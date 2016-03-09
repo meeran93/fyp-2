@@ -24,7 +24,7 @@
         <table class="footable table table-bordered" id="reviews">
           <thead>
             <tr>
-                <th>Date</th>
+                <th width="12%">Date</th>
                 <th>Description</th>
                 <th>Responses</th>
                 <th data-hide="phone">Status</th>
@@ -42,7 +42,6 @@
                   <a href="responses.php?id=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-primary">View Responses</a>
                   <a href="candidate-form.php?formid=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-info">View Form</a>
                   <a href="edit-job-requirement.php?id=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-warning">Edit</a>
-                  <a href="#" class="btn btn-sm btn-danger">Delete</a>
                 </td>
             </tr>
           <?php } ?>
