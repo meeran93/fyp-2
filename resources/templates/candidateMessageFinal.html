@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>{$pageTitle} - SmartRecruiter</title>
+    <meta name="viewport" content="width=device-width">
+    <!-- Bootstrap stylesheet -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <!-- Bootstrap Flat stylesheet -->
+    <link href="assets/css/bootstrap-flat.css" rel="stylesheet" type="text/css"/>
+    <!-- Admin stylesheet -->
+    <link href="assets/css/invoiceShelfAdmin.css" rel="stylesheet" type="text/css"/>
+    <!-- Typeahead plugin stylesheet -->
+    <link href="assets/css/typeahead.js-bootstrap.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <!-- Main Container -->
+    <div class="container-fluid">
+       <!-- container-fluid -->
+       <div class="row">
+          <!-- row -->
+          <div class="col-md-10 col-md-offset-1">
+             <div class="panel panel-primary main-panel">
+                <!-- panel-primary -->
+                <div class="panel-body">
+                   <!-- panel-body -->
+                   {if="$successMsg != ''"}
+                   <div class="alert alert-success alert-dismissable">
+                      {$successMsg}
+                   </div>
+                   {/if}
+                   {if="$errorMsg != ''"}
+                   <div class="alert alert-danger alert-dismissable">
+                      {$errorMsg}
+                   </div>
+                   {/if}
+                </div>
+                <!-- END panel-body -->
+             </div>
+             <!-- END panel-primary -->
+          </div>
+       </div>
+       <!-- END row -->
+    </div>
+    <!-- END container-fluid -->
+    <!-- END Main Container -->
+  </body>
+</html>

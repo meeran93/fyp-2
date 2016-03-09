@@ -2,7 +2,9 @@
 
 session_start();
 include_once("config.php");
-isLoggedin($db);
+
+// Not required here since this is a public page
+//isLoggedin($db);
 
 if (isset($_POST['submit'])) {
 
@@ -176,11 +178,13 @@ if (isset($_POST['submit'])) {
                     ) or die(mysqli_error($db));
                 }
             }
-
-            header("location: forms.php?action=success");
+            
+            mysqli_query($db, "CALL updateResponse('".mysqli_real_escape_string($db, $_GET['formid'])."')") or die(mysqli_error($db));
+            
+            header("location: candidateMessageFinal.php?action=success");
         }
         else {
-            header("location: forms.php?action=failed");
+            header("location: candidateMessageFinal.php?action=fail");
         }
 
 } else {
