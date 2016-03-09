@@ -1,5 +1,5 @@
 <?php if(!class_exists('raintpl')){exit;}?><?php $tpl = new RainTPL;$tpl_dir_temp = self::$tpl_dir;$tpl->assign( $this->var );$tpl->draw( dirname("header") . ( substr("header",-1,1) != "/" ? "/" : "" ) . basename("header") );?>
-  <div class="container">
+  <div class="container">  
     <div class="page-header">
       <a href="create-job-requirement.php" class="btn btn-success pull-right">Create form</a>
       <h2><?php echo $pageTitle;?></h2>
@@ -39,14 +39,11 @@
                 <td><?php echo $value1["form_responses"];?></td>
                 <td><?php echo $value1["form_status"];?></td>
                 <td>
-                  <a href="responses.php?id=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-primary">View Responses</a>
-                  <a href="candidate-form.php?formid=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-info">View Form</a>
+                  <a href="responses.php?id=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-primary">Responses</a>
+                  <a href="candidate-form.php?formid=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-info" target="_blank">Candidate Form</a>
                   <a href="edit-job-requirement.php?id=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-warning">Edit</a>
-                
-				  <a class="btnn btn btn-sm" data-clipboard-action="copy" data-clipboard-text="candidate-form.php?formid=<?php echo $value1["form_ID"];?>"> 
-				 		<img src="resources/templates/assets/clippy2.svg" 	width="45" height="45" alt="Copy">
-				  </a>
-				  </td>
+                  <a class="clipboard-btn btn btn-sm btn-default" data-clipboard-action="copy" data-clipboard-text="127.0.0.1/fyp-2/candidate-form.php?formid=<?php echo $value1["form_ID"];?>"><img src="resources/templates/assets/img/clippy.svg" alt="Copy"></a>
+				        </td>
             </tr>
           <?php } ?>
           </tbody>

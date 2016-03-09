@@ -22,28 +22,39 @@
 
             $(document).ready(function() {
 
+                // this function will always run automatically whenever the website is loaded
+                $(function() {
+                    // initialize rating bars
+                    ratingEnable();
+                    // initialize copy to clipboard feature in forms table
+                    new Clipboard('.clipboard-btn');
+                    // footable plugin - to make tables responsive
+                    $('.footable').footable();
+                    // initialize autocomplete select box plugin for all select boxes
+                    autocompleteSelectBox();
+                });
+
+                // select2 - a plugin to integrate autocompletion feature in select boxes
+                function autocompleteSelectBox() {
+                    $(".autocomplete-field").select2();
+                }
+
+                // ratingbar plugin
                 function ratingEnable() {
                     $('.rating-bar').barrating('show', {
                         theme: 'bars-1to10'
                     });
                 }
 
-                $(function() {
-                    ratingEnable();
-                });
-
+                // remove section functionlity in every form
 				$(".remove_button").click(function() {
                     var mainDiv = $(this).parent().parent();
                     var nextDiv = mainDiv.next();
                     nextDiv.remove();
                     mainDiv.remove();
                 });
-
-                // footable plugin - to make tables responsive
-                $('.footable').footable();
-                $(".autocomplete-field").select2();
                 
-                // JQuery for requirement-addition-functionality
+                // JQuery for section-addition-functionality - HR and Candidate pages both are covered are in this section
 				
 				// Adding education requirement - HR
                 
@@ -77,7 +88,7 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#educationList").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                     ratingEnable();
                 });
                 // END - Adding education requirement - HR
@@ -96,7 +107,7 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#educationList").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                 });
                 // END - Adding education requirement - Candidate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END
 				
@@ -121,7 +132,7 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#skillsList").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                     ratingEnable();
                 });
                 // END - Adding skill requirement - HR
@@ -138,7 +149,7 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#skillsList").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                     ratingEnable();
                 });
                 // END - Adding skill requirement - Candidate
@@ -163,7 +174,7 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#experienceList").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                     ratingEnable();
                 });
                 // END - Adding experience requirement - HR
@@ -180,7 +191,7 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#experienceList").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                 });
                 // END - Adding experience requirement - Candidate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END
 
@@ -204,7 +215,7 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#certificationList").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                     ratingEnable();
                 });
                 // END - Adding certification requirement - HR
@@ -221,11 +232,14 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#certificationList").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                 });
                 // END - Adding certification requirement - Candidate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END
+
+                // END - JQuery for section-addition-functionality - HR and Candidate pages both are covered are in this section
 				
-                // Add new skill
+                // REQUIREMENTS PAGE - Jquery for viewing and adding Skills, Certificates
+                // Create new skill
 				var getSkillsCategories = function() {
 					var categories = $("#add-skills-list").data('skill-categories');
 					var skill_category = "";
@@ -245,9 +259,9 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#add-skills-list").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                 });
-                // END - Adding skill
+                // END - Create new skill
                 
 				// Create new certificate
                 var getCertificateCategories = function() {
@@ -270,18 +284,11 @@
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
                     $("#certificationList").append(fieldWrapper);
-                    $(".autocomplete-field").select2();
+                    autocompleteSelectBox();
                 });
-                // END - Adding certificate
-                // END - JQuery requirement-addition-functionality
+                // END - Create new certificate
+                // END -REQUIREMENTS PAGE - Jquery for viewing and adding Skills, Certificates
             });
-				var clipboard = new Clipboard('.btnn');
-				clipboard.on('success', function(e) {
-					console.log(e);
-				});
-				clipboard.on('error', function(e) {
-					console.log(e);
-				});
         </script>
                 
     </body>
