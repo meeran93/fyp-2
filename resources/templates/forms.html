@@ -42,7 +42,11 @@
                   <a href="responses.php?id={$value.form_ID}" class="btn btn-sm btn-primary">View Responses</a>
                   <a href="candidate-form.php?formid={$value.form_ID}" class="btn btn-sm btn-info">View Form</a>
                   <a href="edit-job-requirement.php?id={$value.form_ID}" class="btn btn-sm btn-warning">Edit</a>
-                </td>
+                
+				  <a class="btnn btn btn-sm" data-clipboard-action="copy" data-clipboard-text="candidate-form.php?formid={$value.form_ID}"> 
+				 		<img src="assets/clippy2.svg" 	width="45" height="45" alt="Copy">
+				  </a>
+				  </td>
             </tr>
           {/loop}
           </tbody>

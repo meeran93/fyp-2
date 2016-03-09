@@ -16,6 +16,7 @@
         <script src="resources/templates/./assets/plugins/fooTable/js/footable.js"></script>
         <script src="resources/templates/./assets/plugins/jQuery-TE_v.1.4.0/jquery-te-1.4.0.min.js"></script>
         <script src="resources/templates/./assets/plugins/barrating/js/jquery.barrating.js"></script>
+		<script src="resources/templates/./assets/plugins/clipboard.js-master/dist/clipboard.min.js"></script>
     
         <script type="text/javascript">
 
@@ -274,6 +275,13 @@
                 // END - Adding certificate
                 // END - JQuery requirement-addition-functionality
             });
+				var clipboard = new Clipboard('.btnn');
+				clipboard.on('success', function(e) {
+					console.log(e);
+				});
+				clipboard.on('error', function(e) {
+					console.log(e);
+				});
         </script>
                 
     </body>
