@@ -6,7 +6,6 @@ include_once("config.php");
 //isLoggedin($db);
 
 $pageTitle    = '';
-
 $errorMsg     = '';
 $successMsg   = '';
 
@@ -30,5 +29,5 @@ $tpl->assign('errorMsg', $errorMsg);
 $tpl->assign('successMsg', $successMsg);
 $tpl->assign('pageTitle', $pageTitle);
 
-$html = $tpl->draw('candidateMessageFinal');
+$html = $tpl->draw('candidate-message-final');
 ?>
