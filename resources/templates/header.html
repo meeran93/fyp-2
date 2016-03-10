@@ -68,11 +68,13 @@
           <li {if="$page == 'forms'"}class="active"{/if}>
             <a href="forms.php"><span class="glyphicon glyphicon-list-alt"></span> Forms</a>
           </li>
-          <li class="dropdown {if="$page == 'skills'"}active{/if} {if="$page == 'certificates'"}active{/if}" >
+          <li class="dropdown {if="$page == 'skills'"}active{/if} {if="$page == 'certificates'"}active{/if} {if="$page == 'degrees'"}active{/if}{if="$page == 'experiences'"}active{/if}" >
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-tasks"></span> Requirements <b class="caret"></b></a>
             <ul class="dropdown-menu">
               <li><a href="skills.php">Skills</a></li>
               <li><a href="certificates.php">Certificates</a></li>
+                <li><a href="degrees.php">Degrees</a></li>
+                <li><a href="experience.php">Experiences</a></li>
             </ul>
           </li>
         </ul>

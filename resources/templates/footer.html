@@ -270,6 +270,25 @@
                     autocompleteSelectBox();
                 });
                 // END - Create new skill
+
+                // Add New Experience
+
+                $("#addNewExperience").click(function() {
+                   
+                    var fieldWrapper = $('<div class="candidate-data experience col-md-8">');
+                    var fName = $('<label class="control-label col-md-2">Experience:</label><div class="col-md-4"><input type="text" class="form-control" name="new-experience[]" placeholder="Enter experience" required></div>');
+                    var removeButton = $('<div class="col-md-1"><a style="cursor:pointer"><span class="remove glyphicon glyphicon-remove"></span></a></div><div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>');
+                    removeButton.click(function() {
+                        $(this).parent().remove();
+                    });
+                    fieldWrapper.append(fName);
+                    fieldWrapper.append(removeButton);
+                    $("#add-experience-list").append(fieldWrapper);
+                    autocompleteSelectBox();
+                });
+
+
+                //End -New Experience
                 
 				// Create new certificate
                 var getCertificateCategories = function() {
