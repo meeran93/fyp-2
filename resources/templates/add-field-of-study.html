@@ -1,0 +1,56 @@
+{include="header"}
+
+    <div class="container" style="max-width:none">
+        <div class="page-header">
+          <a href="degrees.php" class="btn btn-warning pull-right">Go Back</a>
+          <h3>{$pageTitle}</h3>
+        </div>
+    </div>
+
+    <div class="container-fluid"><!-- container-fluid -->
+        <div class="row"><!-- row -->
+            <div class="col-md-10 col-md-offset-1"><!-- Main form area -->
+                <div class="panel panel-primary main-panel"><!-- panel-primary -->
+                    
+                    <div class="panel-heading"><!-- panel-heading -->
+                        Fill in new field of study details
+                    </div><!-- panel-heading -->
+                    
+                    <!-- Main Form -->
+                    <form method="POST" action="add-field-of-study.php">
+                        <div class="panel-body"><!-- panel-body -->
+                            
+                            <!-- Degree Details -->
+                            <div class="form-group degree-details"><!-- form-group -->
+                                <h4 class="col-md-12"><u>Add Field of Study</u></h4>
+                                <div class="col-md-8">
+                                    <label class="control-label col-md-2">Field name: </label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="field_name" required></div>
+                                    <label class="control-label col-md-2">Category: </label>
+                                    <div class="col-md-4">
+                                        <select class="form-control autocomplete-field" name="field_of_study_category" required>
+                                            <option value="" disabled selected>- Select Category -</option>
+                                            {loop="categories"}
+                                            <option value="{$value.category_id}">{$value.category_name}</option>
+                                            {/loop}
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                            </div><!-- END form-group -->
+                            <!-- END Degree Details -->                            
+                            
+                        </div><!-- END panel-body -->
+
+                        <div class="panel-footer"><!-- panel-footer -->                    
+                            <button type="submit" name="submit" class="btn btn-primary">Submit</button>                                
+                        </div><!-- END panel-footer -->
+
+                    </form>
+                    <!-- END Main Form -->
+                </div><!-- END panel-primary -->
+            </div><!-- END Main form area -->
+        </div><!-- END row -->
+    </div><!-- END container-fluid -->
+{include="footer"}

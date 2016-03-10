@@ -181,10 +181,10 @@ if (isset($_POST['submit'])) {
             
             mysqli_query($db, "CALL updateResponse('".mysqli_real_escape_string($db, $_GET['formid'])."')") or die(mysqli_error($db));
             
-            header("location: candidateMessageFinal.php?action=success");
+            header("location: candidate-message-final.php?action=success");
         }
         else {
-            header("location: candidateMessageFinal.php?action=fail");
+            header("location: candidate-message-final.php?action=fail");
         }
 
 } else {
