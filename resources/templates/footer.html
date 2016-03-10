@@ -28,6 +28,8 @@
                     ratingEnable();
                     // initialize copy to clipboard feature in forms table
                     new Clipboard('.clipboard-btn');
+                    // initialize tooltip for copy to clipboard buttons
+                    $('[data-toggle="tooltip"]').tooltip();
                     // footable plugin - to make tables responsive
                     $('.footable').footable();
                     // initialize autocomplete select box plugin for all select boxes
@@ -288,7 +290,6 @@
                 });
                 // END - Create new certificate
                 // END -REQUIREMENTS PAGE - Jquery for viewing and adding Skills, Certificates\
-                $('[data-toggle="tooltip"]').tooltip();
                 $('.clipboard-btn').click(function() {
                     $('.clipboard-btn').attr('title', 'Copy application form link').tooltip('fixTitle');
                     $(this).attr('title', 'copied').tooltip('fixTitle').tooltip('show');
