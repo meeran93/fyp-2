@@ -8,24 +8,21 @@ $pageContent = '';
 $errorMsg = '';
 $successMsg = '';
 
-if (isset($_GET['action']))
-	{
-	if ($_GET['action'] == "saved")
-		{
-		$successMsg.= 'New Degrees have been saved successfully and are ready for use in job requirement form.';
-		}
-	elseif ($_GET['action'] == "failed")
-		{
-		$errorMsg.= 'Degrees could not be saved successfully';
-		}
-	}
+if (isset($_GET['action'])) {
+    if ($_GET['action'] == "saved") {
+        $successMsg.= 'New Field of Study have been saved successfully and is ready for use in job requirement form. Please feel free to add more';
+    }
+    elseif ($_GET['action'] == "failed") {
+        $errorMsg.= 'New Field of Study could not be saved successfully';
+    }
+}
 
 $query = mysqli_query($db, "SELECT field_name, category from field_of_study, category where field_of_study.category_id = category.id ORDER BY field_name") or die(mysqli_error($db));
 $result = mysqli_num_rows($query);
 
 if ($result == 0)
 	{
-	$pageContent.= '<p>There are currently no degrees to display.</p>';
+	$pageContent.= '<p>There are currently no field of studies to display.</p>';
 	$fields_of_study = '';
 	}
   else
@@ -47,7 +44,7 @@ raintpl::configure("cache_dir", "tmp/");
 $tpl = new RainTPL;
 $tpl->assign('errorMsg', $errorMsg);
 $tpl->assign('successMsg', $successMsg);
-$tpl->assign('page', 'degrees');
+$tpl->assign('page', 'fields-of-study');
 $tpl->assign('fields_of_study', $fields_of_study);
 $tpl->assign('pageTitle', $pageTitle);
 $tpl->assign('pageContent', $pageContent);
