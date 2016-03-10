@@ -287,7 +287,12 @@
                     autocompleteSelectBox();
                 });
                 // END - Create new certificate
-                // END -REQUIREMENTS PAGE - Jquery for viewing and adding Skills, Certificates
+                // END -REQUIREMENTS PAGE - Jquery for viewing and adding Skills, Certificates\
+                $('[data-toggle="tooltip"]').tooltip();
+                $('.clipboard-btn').click(function() {
+                    $('.clipboard-btn').attr('title', 'Copy application form link').tooltip('fixTitle');
+                    $(this).attr('title', 'copied').tooltip('fixTitle').tooltip('show');
+                });
             });
         </script>
                 

@@ -42,7 +42,7 @@
                   <a href="responses.php?id=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-primary">Responses</a>
                   <a href="candidate-form.php?formid=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-info" target="_blank">Candidate Form</a>
                   <a href="edit-job-requirement.php?id=<?php echo $value1["form_ID"];?>" class="btn btn-sm btn-warning">Edit</a>
-                  <a class="clipboard-btn btn btn-sm btn-default" data-clipboard-action="copy" data-clipboard-text="127.0.0.1/fyp-2/candidate-form.php?formid=<?php echo $value1["form_ID"];?>"><img src="resources/templates/assets/img/clippy.svg" alt="Copy"></a>
+                  <a class="clipboard-btn btn btn-sm btn-default"  id="<?php echo $value1["form_ID"];?>" data-toggle="tooltip" data-placement="right" title="Copy application form link" data-clipboard-action="copy" data-clipboard-text="127.0.0.1/fyp-2/candidate-form.php?formid=<?php echo $value1["form_ID"];?>"><img src="resources/templates/assets/img/clippy.svg" alt="Copy"></a>
 				        </td>
             </tr>
           <?php } ?>
