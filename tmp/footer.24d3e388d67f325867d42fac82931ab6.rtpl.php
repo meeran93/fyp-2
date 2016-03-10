@@ -36,6 +36,12 @@
                     autocompleteSelectBox();
                 });
 
+                // to give user the feedback whether the link has been copied or not
+                $('.clipboard-btn').click(function() {
+                    $('.clipboard-btn').attr('title', 'Copy application form link').tooltip('fixTitle');
+                    $(this).attr('title', 'Copied!').tooltip('fixTitle').tooltip('show');
+                });
+                
                 // select2 - a plugin to integrate autocompletion feature in select boxes
                 function autocompleteSelectBox() {
                     $(".autocomplete-field").select2();
@@ -290,10 +296,6 @@
                 });
                 // END - Create new certificate
                 // END -REQUIREMENTS PAGE - Jquery for viewing and adding Skills, Certificates\
-                $('.clipboard-btn').click(function() {
-                    $('.clipboard-btn').attr('title', 'Copy application form link').tooltip('fixTitle');
-                    $(this).attr('title', 'copied').tooltip('fixTitle').tooltip('show');
-                });
             });
         </script>
                 
