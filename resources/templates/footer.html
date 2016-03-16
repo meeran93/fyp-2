@@ -36,23 +36,25 @@
                     autocompleteSelectBox();
                 });
 
+
+                // Change form status button
                 $('.status-btn').click(function() {
                     var form_id = $(this).data('form-id');
-                       BootstrapDialog.show({
-            message: 'Are you sure you want to disable the form?',
-            buttons: [ {
-                label: 'Yes',
-                cssClass: 'btn-primary',
-                action: function(){
-                     window.location.assign("change-form-status.php?id="+form_id);
-                }
-            },  {
-                label: 'No',
-                action: function(dialogItself){
-                    dialogItself.close();
-                }
-            }]
-        });
+                    BootstrapDialog.show({
+                        message: 'Are you sure you want to disable the form?',
+                        buttons: [ {
+                            label: 'Yes',
+                            cssClass: 'btn-primary',
+                            action: function(){
+                                 window.location.assign("change-form-status.php?id="+form_id);
+                            }
+                        },  {
+                            label: 'No',
+                            action: function(dialogItself){
+                                dialogItself.close();
+                            }
+                        }]
+                    });
                     
                 });
 
