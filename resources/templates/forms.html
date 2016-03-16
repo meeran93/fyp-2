@@ -43,6 +43,7 @@
                   <a href="candidate-form.php?formid={$value.form_ID}" class="btn btn-sm btn-info" target="_blank">Candidate Form</a>
                   <a href="edit-job-requirement.php?id={$value.form_ID}" class="btn btn-sm btn-warning">Edit</a>
                   <a class="clipboard-btn btn btn-sm btn-default"  id="{$value.form_ID}" data-toggle="tooltip" data-placement="right" title="Copy application form link" data-clipboard-action="copy" data-clipboard-text="127.0.0.1/fyp-2/candidate-form.php?formid={$value.form_ID}"><img src="assets/img/clippy.svg" alt="Copy"></a>
+                  <a href="#" data-form-id="{$value.form_ID}" data-rehma="helo" class="status-btn btn-sm btn-primary">Status</a>
 				        </td>
             </tr>
           {/loop}
@@ -50,6 +51,7 @@
         </table>
       {/if}
       </div>
+      <!--YOU HAVE BEEN FRAPED xD--> 
     </div>
 
   </div>
