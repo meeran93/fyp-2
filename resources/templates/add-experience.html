@@ -1,0 +1,53 @@
+{include="header"}
+<div class="container" style="max-width:none">
+   <div class="page-header">
+      <a href="experience.php" class="btn btn-warning pull-right">Go Back</a>
+      <h3>{$pageTitle}</h3>
+   </div>
+</div>
+<div class="container-fluid">
+   <!-- container-fluid -->
+   <div class="row">
+      <!-- row -->
+      <div class="col-md-10 col-md-offset-1">
+         <!-- Main form area -->
+         <div class="panel panel-primary main-panel">
+            <!-- panel-primary -->
+            <div class="panel-heading">
+               <!-- panel-heading -->
+               Fill in experience details
+            </div>
+            <!-- panel-heading -->
+            <!-- Main Form -->
+            <form method="POST" action="add-experience.php">
+               <div class="panel-body">
+                  <!-- panel-body -->
+                  <!-- Experiences Details -->
+                  <div class="form-group experience-details">
+                     <!-- form-group -->
+                     <h4 class="col-md-12"><u>Experience</u></h4>
+                     <div id="add-experience-list" ></div>
+                     <div class="add-experience-button col-md-8">
+                        <input type="button" value="Add Experience" class="form-control" id="addNewExperience" />
+                     </div>
+                  </div>
+                  <!-- END form-group -->
+                  <!-- END Experiences Details -->							
+               </div>
+               <!-- END panel-body -->
+               <div class="panel-footer">
+                  <!-- panel-footer -->					
+                  <button type="submit" name="submit" class="btn btn-primary">Submit</button>								
+               </div>
+               <!-- END panel-footer -->
+            </form>
+            <!-- END Main Form -->
+         </div>
+         <!-- END panel-primary -->
+      </div>
+      <!-- END Main form area -->
+   </div>
+   <!-- END row -->
+</div>
+<!-- END container-fluid -->
+{include="footer"}

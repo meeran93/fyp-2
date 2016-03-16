@@ -1,0 +1,45 @@
+{include="header"}
+<div class="container">
+   <div class="page-header">
+      <a href="add-experience.php" class="btn btn-success pull-right">Add Experience</a>
+      <h2>{$pageTitle}</h2>
+   </div>
+   <div class="row rating-example">
+      <div class="col-md-12 ">
+         {if="$successMsg != ''"}
+         <div class="alert alert-success alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {$successMsg}
+         </div>
+         {/if}
+         {if="$errorMsg != ''"}
+         <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            {$errorMsg}
+         </div>
+         {/if}
+         {$pageContent}
+         {if="$experiences != ''"}
+         <table class="footable table table-bordered" id="reviews">
+            <thead>
+               <tr>
+                  <th>S.NO</th>
+                  <th>Title</th>
+               </tr>
+            </thead>
+            <tbody>
+               {$a=1}
+               {loop="experiences"}
+               <tr>
+                  <td>{$a}</td>
+                  <td>{$value.title}</td>
+               </tr>
+               {$a=$a+1}
+               {/loop}
+            </tbody>
+         </table>
+         {/if}
+      </div>
+   </div>
+</div>
+{include="footer"}
