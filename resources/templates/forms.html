@@ -40,7 +40,7 @@
                 <td>{$value.form_status}</td>
                 <td>
                   <a href="responses.php?id={$value.form_ID}" class="btn btn-sm btn-primary">Responses</a>
-                  <a href="candidate-form.php?formid={$value.form_ID}" class="btn btn-sm btn-info" target="_blank">Candidate Form</a>
+                  <a href="{$value.form_public_link}" class="btn btn-sm btn-info" target="_blank">Candidate Form</a>
                   <a href="edit-job-requirement.php?id={$value.form_ID}" class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="top" title="Edit Job Requirement"><span class="glyphicon glyphicon-edit"></span></a>
                   <a class="disable-status-btn btn btn-sm btn-danger" data-form-id="{$value.form_ID}" data-toggle="tooltip" data-placement="top" title="Disable this form"><span class="glyphicon glyphicon-off"></span></a>
                   <a class="clipboard-btn btn btn-sm btn-default"  id="{$value.form_ID}" data-toggle="tooltip" data-placement="right" title="Copy application form link" data-clipboard-action="copy" data-clipboard-text="127.0.0.1/fyp-2/candidate-form.php?formid={$value.form_ID}"><img src="assets/img/clippy.svg" alt="Copy"></a>

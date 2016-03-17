@@ -2,6 +2,7 @@
 
 session_start();
 include_once("config.php");
+include ("shortenUrl.php");
 isLoggedin($db);
 
 $pageTitle    = 'Forms';
@@ -41,7 +42,8 @@ if ($result == 0) {
             'form_date'=>$fetch['date_created'],
             'form_description'=>$fetch['description'],
             'form_responses'=>$fetch['responses'],
-            'form_status'=>$fetch['status']
+            'form_status'=>$fetch['status'],
+            'form_public_link'=>shortenUrl('http://www.smartrecruiter.invoiceshelf.com/candidate-form.php?formid='.$fetch['id'].'')
         );
     } 
 }
