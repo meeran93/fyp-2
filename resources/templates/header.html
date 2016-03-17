@@ -65,10 +65,14 @@
       </div>
       <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
-          <li {if="$page == 'forms'"}class="active"{/if}>
-            <a href="forms.php"><span class="glyphicon glyphicon-list-alt"></span> Forms</a>
-          </li>
-          <li class="dropdown {if="$page == 'skills'"}active{/if} {if="$page == 'certificates'"}active{/if} 
+          <li class="dropdown {if="$page == 'forms'"}active{/if} {if="$page == 'certificates'"}active{/if}" >
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-list-alt"></span> Forms <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="forms.php">Active</a></li>
+              <li><a href="forms_disable.php">Disable</a></li>
+              <li><a href="create-job-requirement.php">Create Form</a></li>
+              </ul>
+          </li><li class="dropdown {if="$page == 'skills'"}active{/if} {if="$page == 'certificates'"}active{/if} 
           {if="$page == 'fields-of-study'"}active{/if}{if="$page == 'experiences'"}active{/if}" >
             <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-tasks"></span> Requirements <b class="caret"></b></a>
             <ul class="dropdown-menu">

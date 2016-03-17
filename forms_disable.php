@@ -4,7 +4,7 @@ session_start();
 include_once("config.php");
 isLoggedin($db);
 
-$pageTitle    = 'Forms';
+$pageTitle    = ' Disable Forms';
 $pageContent  = '';
 $errorMsg     = '';
 $successMsg   = '';
@@ -27,21 +27,21 @@ $successMsg   = '';
 //     }
 // }
 
-$query = mysqli_query($db, "SELECT * FROM forms WHERE status = 'ENABLED' && user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."' AND deleted=0 ORDER BY date_created DESC") or die(mysqli_error($db));
+$query = mysqli_query($db, "SELECT * FROM forms WHERE status='DISABLED' && user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."' AND deleted=0 ORDER BY date_created DESC") or die(mysqli_error($db));
 $result = mysqli_num_rows($query);
 
 if ($result == 0) {
-    $pageContent .= '<p>There are currently no forms.</p>';
-    $forms = '';
+    $pageContent .= '<p>There are currently no Disabled forms.</p>';
+    $forms_disable = '';
 } else {
     $pageContent .= '<p>There are <strong>'.$result.'</strong> forms.</p>';
     while ($fetch = mysqli_fetch_assoc($query)) {
-        $forms[] = array(
-            'form_ID'=>$fetch['id'],
-            'form_date'=>$fetch['date_created'],
-            'form_description'=>$fetch['description'],
-            'form_responses'=>$fetch['responses'],
-            'form_status'=>$fetch['status']
+        $forms_disable[] = array(
+            'form_disable_ID'=>$fetch['id'],
+            'form_disable_date'=>$fetch['date_created'],
+            'form_disable_description'=>$fetch['description'],
+            'form_disable_responses'=>$fetch['responses'],
+            'form_disable_status'=>$fetch['status']
         );
     } 
 }
@@ -55,10 +55,10 @@ $tpl = new RainTPL;
 
 $tpl->assign('errorMsg', $errorMsg);
 $tpl->assign('successMsg', $successMsg);
-$tpl->assign('page', 'forms');
-$tpl->assign('forms', $forms);
+$tpl->assign('page', 'forms_disable');
+$tpl->assign('forms_disable', $forms_disable);
 $tpl->assign('pageTitle', $pageTitle);
 $tpl->assign('pageContent', $pageContent);
 
-$html = $tpl->draw('forms');
+$html = $tpl->draw('forms_disable');
 ?>
