@@ -2,7 +2,7 @@
 
 session_start();
 include_once("config.php");
-include ("shortenUrl.php");
+include("shorten-url.php");
 isLoggedin($db);
 
 $pageTitle    = 'Forms';
