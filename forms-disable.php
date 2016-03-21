@@ -55,10 +55,10 @@ $tpl = new RainTPL;
 
 $tpl->assign('errorMsg', $errorMsg);
 $tpl->assign('successMsg', $successMsg);
-$tpl->assign('page', 'forms_disable');
+$tpl->assign('page', 'forms-disable');
 $tpl->assign('forms_disable', $forms_disable);
 $tpl->assign('pageTitle', $pageTitle);
 $tpl->assign('pageContent', $pageContent);
 
-$html = $tpl->draw('forms_disable');
+$html = $tpl->draw('forms-disable');
 ?>
