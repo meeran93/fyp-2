@@ -44,8 +44,8 @@ function shortenUrl($inputUri)
 
 	if (!$result)
 		{
-		echo "Requested action could not be performed. Please check your connection and try again";
-		echo $result;
+			$result = "link could not be created";
+			return $result;
 		}
 	  else
 		{
