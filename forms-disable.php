@@ -38,7 +38,7 @@ if ($result == 0) {
     while ($fetch = mysqli_fetch_assoc($query)) {
         $forms_disable[] = array(
             'form_disable_ID'=>$fetch['id'],
-            'form_disable_date'=>$fetch['date_created'],
+            'form_disable_date'=>date_format(date_create($fetch['date_created']),"d/M/Y"),
             'form_disable_description'=>$fetch['description'],
             'form_disable_responses'=>$fetch['responses'],
             'form_disable_status'=>$fetch['status']
