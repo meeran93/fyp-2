@@ -213,13 +213,15 @@
                 $("#addExperienceCandidate").click(function() {
                     var title_options = getWorkTitles();
                     var fieldWrapper = $('<div class="requirement-data experience"></div>');
-                    var fName = $('<div class="col-md-12"><label class="control-label col-md-1">Company:</label><div class="col-md-4"><input class="form-control" name="requirement_experience_company[]"></div><label class="control-label col-md-1">Title:</label><div class="col-md-4"><select class="form-control autocomplete-field" name="requirement_experience[]" required><option value="" disabled selected>- Select Title -</option>' + title_options + '</select></div></div><div class="candidate-data col-md-10"><label class="control-label col-md-2">Years of Experience:</label><div class="col-md-2"><input type="number" class="form-control" name="requirement_experience_years[]" min="0" required></div><label class="control-label col-md-2">Description:</label><div class="col-md-6"><textarea class="form-control" name="requirement_experience_responsibilities[]" placeholder="Your responsiblities"></textarea></div></div>');
-                    var removeButton = $('<div class="col-md-1"><a style=cursor:pointer><span class="remove glyphicon glyphicon-remove"></span></a></div><div class="col-md-12" style="height:1px;background:#aaa;margin:10px 0"></div>');
+                    var fName = $('<div class="candidate-data col-md-8"> <label class="control-label col-md-2">Company:</label> <div class="col-md-10"> <input class="form-control" name="requirement_experience_company[]"> </div></div><div class="candidate-data col-md-8"> <label class="control-label col-md-2">Title:</label> <div class="col-md-8"> <select class="form-control autocomplete-field" name="requirement_experience[]" required> <option value="" disabled selected>- Select Title -</option>' + title_options + '</select> </div></div><div class="candidate-data col-md-8"> <label class="control-label col-md-2">Start Date:</label> <div class="col-md-4"> <input type="date" class="form-control" name="requirement_experience_start_date[]" min="0" required> </div><label class="control-label col-md-2">End Date:</label> <div class="col-md-4"> <input type="date" class="form-control" name="requirement_experience_end_date[]" min="0" required> </div></div><div class="candidate-data col-md-8"> <label class="control-label col-md-2">Description:</label> <div class="col-md-10"> <textarea class="form-control" name="requirement_experience_responsibilities[]" style="height:120px"></textarea> </div></div>');
+                    var removeButton = $('<div class="col-md-1"><a style=cursor:pointer><span class="remove glyphicon glyphicon-remove"></span></a></div>');
+                    var seperator = $('<div class="col-md-12" style="height:1px;background:#aaa;margin:10px 0"></div>');
                     removeButton.click(function() {
                         $(this).parent().remove();
                     });
                     fieldWrapper.append(fName);
                     fieldWrapper.append(removeButton);
+                    fieldWrapper.append(seperator);
                     $("#experienceList").append(fieldWrapper);
                     autocompleteSelectBox();
                 });

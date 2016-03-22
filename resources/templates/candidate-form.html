@@ -39,6 +39,10 @@
     .candidate-data {
     	margin-top: 6px;
     }
+    .select2 {
+        max-width: 100% !important;
+    }
+
     </style>
 
 </head>
@@ -184,7 +188,6 @@
 								<h4 class="col-md-12"><u>Experience</u></h4>
 
 								<div id="experienceList" data-titles='{$titles}'><!-- Experience List -->
-								
 									<!-- ============================================================================================== -->
 									{loop="form_experience"}
 									<div class="col-md-12"><!-- Loaded/Required Experience -->
@@ -210,6 +213,41 @@
 									<div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>
 									{/loop}										
 									<!-- ============================================================================================== -->
+									<!-- <div class="requirement-data experience">
+									    <div class="candidate-data col-md-8">
+									        <label class="control-label col-md-2">Company:</label>
+									        <div class="col-md-10">
+									            <input class="form-control" name="requirement_experience_company[]">
+									        </div>
+								        </div>
+								        <div class="candidate-data col-md-8">
+									        <label class="control-label col-md-2">Title:</label>
+									        <div class="col-md-8">
+									            <select class="form-control autocomplete-field" name="requirement_experience[]" required>
+									                <option value="" disabled selected>- Select Title -</option>
+								                </select>
+									        </div>
+								        </div>
+								        <div class="candidate-data col-md-8">
+									        <label class="control-label col-md-2">Start Date:</label>
+									        <div class="col-md-4">
+								        		<input type="date" class="form-control" name="requirement_experience_start_date[]" min="0" required>
+									        </div>
+									        <label class="control-label col-md-2">End Date:</label>
+									        <div class="col-md-4">
+								        		<input type="date" class="form-control" name="requirement_experience_end_date[]" min="0" required>
+									        </div>
+								        </div>
+								        <div class="candidate-data col-md-8">
+								        	<label class="control-label col-md-2">Description:</label>
+								        	<div class="col-md-10">
+									            <textarea class="form-control" name="requirement_experience_responsibilities[]" style="height:120px"></textarea>
+									        </div>
+								        </div>
+								        <div class="col-md-1"><a style=cursor:pointer><span class="remove glyphicon glyphicon-remove"></span></a>
+									    </div>
+									    <div class="col-md-12" style="height:1px;background:#aaa;margin:10px 0"></div>
+									</div> -->
 
 								</div><!-- END Experience List -->
 
