@@ -125,10 +125,17 @@ if (!is_null($candidates)) {
 	    $query = mysqli_query($db, "SELECT title_id, experience_years FROM candidate_experience WHERE candidate_id = '".$value['candidate_id']."'") or die(mysqli_error($db));
 	    $result = mysqli_num_rows($query);
 	    while ($fetch = mysqli_fetch_assoc($query)) {
-	        $candidate_experience[] = array(
-	            'title_id'=>$fetch['title_id'],
-	            'experience_years'=>$fetch['experience_years']
-	        );
+	        // $candidate_experience[] = array(
+	        //     'title_id'=>$fetch['title_id'],
+	        //     'experience_years'=>$fetch['experience_years']
+	        // );
+	        $title_id = $fetch['title_id'];
+	        $experience_years = $fetch['experience_years'];
+	        foreach ($form_experience as $a => $b) {
+	        	if($title_id == $b['title_id']){
+	        		$score_experience += $b['priority'] * ($experience_years / $b['years_of_experience']);
+	        	}
+	        }
 	    }
 	    if($score_experience > $score_experience_max){
 	    	$score_experience_max = $score_experience;
