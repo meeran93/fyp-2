@@ -46,8 +46,8 @@ if (isset($_POST['submit'])) {
     else {
         $form_resume = NULL;
     }
-    if (!empty($_POST['requirement_degree']) && !empty($_POST['requirement_field'])) {
-        $form_education = array("degree"=>$_POST['requirement_degree'], "field"=>$_POST['requirement_field']);
+    if (!empty($_POST['requirement_school']) && !empty($_POST['requirement_degree']) && !empty($_POST['requirement_field']) && !empty($_POST['requirement_school_start'])  && !empty($_POST['requirement_school_end'])) {
+        $form_education = array("school"=>$_POST['requirement_school'], "degree"=>$_POST['requirement_degree'], "field"=>$_POST['requirement_field'], "start_date"=>$_POST['requirement_school_start'], "end_date"=>$_POST['requirement_school_end']);
     }
     else {
         $form_education = NULL;
@@ -57,9 +57,15 @@ if (isset($_POST['submit'])) {
     }
     else {
         $form_skills = NULL;
-    }    
-    if (!empty($_POST['requirement_experience']) && !empty($_POST['requirement_experience_years']) && !empty($_POST['requirement_experience_company']) && !empty($_POST['requirement_experience_responsibilities'])) { 
-        $form_experience = array("experience"=>$_POST['requirement_experience'], "experience_years"=>$_POST['requirement_experience_years'], "experience_company"=>$_POST['requirement_experience_company'], "experience_responsibilities"=>$_POST['requirement_experience_responsibilities']);
+    }
+    if (!empty($_POST['requirement_experience']) && !empty($_POST['requirement_experience_years'])) {
+        $form_experience_required = array("experience"=>$_POST['requirement_experience'], "experience_years"=>$_POST['requirement_experience_years']);
+    }
+    else {
+        $form_experience_required = NULL;
+    }
+    if (!empty($_POST['requirement_experience_company']) && !empty($_POST['requirement_experience_title']) && !empty($_POST['requirement_experience_start_date']) && !empty($_POST['requirement_experience_end_date']) && !empty($_POST['requirement_experience_description'])) {
+        $form_experience = array("company"=>$_POST['requirement_experience_company'], "title"=>$_POST['requirement_experience_title'], "start_date"=>$_POST['requirement_experience_start_date'], "end_date"=>$_POST['requirement_experience_end_date'], "description"=>$_POST['requirement_experience_description']);
     }
     else {
         $form_experience = NULL;
@@ -94,20 +100,29 @@ if (isset($_POST['submit'])) {
             $candidateID = mysqli_insert_id($db);
             
             if (!is_null($form_education)) {
-                
+
+                $school = $form_education['school'];
                 $degree = $form_education['degree'];
                 $field = $form_education['field'];
+                $start_date = $form_education['start_date'];
+                $end_date = $form_education['end_date'];
 
-                foreach($degree as $a => $b) {
+                foreach($school as $a => $b) {
 
                     mysqli_query($db, "INSERT INTO candidate_education (
                         candidate_id,
+                        school,
                         degree_id,
-                        field_id
+                        field_id,
+                        start_date,
+                        end_date
                         ) VALUES (
                         '".$candidateID."',
+                        '".mysqli_real_escape_string($db, $school[$a])."',
                         '".mysqli_real_escape_string($db, $degree[$a])."',
-                        '".mysqli_real_escape_string($db, $field[$a])."'
+                        '".mysqli_real_escape_string($db, $field[$a])."',
+                        '".mysqli_real_escape_string($db, $start_date[$a])."',
+                        '".mysqli_real_escape_string($db, $end_date[$a])."'
                         );"
                     ) or die(mysqli_error($db));
                 }
@@ -133,27 +148,50 @@ if (isset($_POST['submit'])) {
                 }
             }
 
-            if (!is_null($form_experience)) {
-                
-                $experience = $form_experience['experience'];
-                $experience_years = $form_experience['experience_years'];
-                $experience_company = $form_experience['experience_company'];
-                $experience_responsibilities = $form_experience['experience_responsibilities'];
+            if (!is_null($form_experience_required)) {
+
+                $experience = $form_experience_required['experience'];
+                $experience_years = $form_experience_required['experience_years'];
 
                 foreach($experience as $a => $b) {
 
+                    mysqli_query($db, "INSERT INTO candidate_experience_required (
+                            candidate_id,
+                            title_id,
+                            experience_years
+                            ) VALUES (
+                            '".$candidateID."',
+                            '".mysqli_real_escape_string($db, $experience[$a])."',
+                            '".mysqli_real_escape_string($db, $experience_years[$a])."'
+                            );"
+                    ) or die(mysqli_error($db));
+                }
+            }
+
+            if (!is_null($form_experience)) {
+                
+                $company = $form_experience['company'];
+                $title = $form_experience['title'];
+                $start_date = $form_experience['start_date'];
+                $end_date = $form_experience['end_date'];
+                $description = $form_experience['description'];
+
+                foreach($company as $a => $b) {
+
                     mysqli_query($db, "INSERT INTO candidate_experience (
                         candidate_id,
-                        title_id,
-                        experience_years,
                         company,
-                        responsibilities
+                        title_id,
+                        start_date,
+                        end_date,
+                        description
                         ) VALUES (
                         '".$candidateID."',
-                        '".mysqli_real_escape_string($db, $experience[$a])."',
-                        '".mysqli_real_escape_string($db, $experience_years[$a])."',
-                        '".mysqli_real_escape_string($db, $experience_company[$a])."',
-                        '".mysqli_real_escape_string($db, $experience_responsibilities[$a])."'
+                        '".mysqli_real_escape_string($db, $company[$a])."',
+                        '".mysqli_real_escape_string($db, $title[$a])."',
+                        '".mysqli_real_escape_string($db, $start_date[$a])."',
+                        '".mysqli_real_escape_string($db, $end_date[$a])."',
+                        '".mysqli_real_escape_string($db, $description[$a])."'
                         );"
                     ) or die(mysqli_error($db));
                 }
