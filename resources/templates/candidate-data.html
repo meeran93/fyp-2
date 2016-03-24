@@ -23,15 +23,21 @@
         <table class="footable table table-bordered">
           <thead>
             <tr>
-              <th>Degree</th>
-              <th>Field</th>
+                <th>School</th>
+                <th>Degree</th>
+                <th>Field</th>
+                <th>Start Date</th>
+                <th>End Data</th>
             </tr>
           </thead>
           <tbody>
           {loop="$candidate_education"}
             <tr>
-              <td>{$value.degree_name}</td>
-              <td>{$value.field_name}</td>
+                <td>{$value.school}</td>
+                <td>{$value.degree_name}</td>
+                <td>{$value.field_name}</td>
+                <td>{$value.start_date}</td>
+                <td>{$value.end_date}</td>
             </tr>
           {/loop}
           </tbody>
@@ -47,15 +53,15 @@
         <table class="footable table table-bordered">
           <thead>
             <tr>
-              <th>Skill</th>
-              <th>Expertise</th>
+                <th>Skill</th>
+                <th>Expertise</th>
             </tr>
           </thead>
           <tbody>
           {loop="$candidate_skills"}
             <tr>
-              <td>{$value.skill_name}</td>
-              <td>{$value.skill_expertise}</td>
+                <td>{$value.skill_name}</td>
+                <td>{$value.skill_expertise}</td>
             </tr>
           {/loop}
           </tbody>
@@ -68,27 +74,25 @@
         <!-- Candidate Experience -->
         <h3><u>Work Experience</u></h3>
         {if="$candidate_experience != ''"}
-        <p hidden>{$serial_num_counter=1}</p>
         <table class="footable table table-bordered">
           <thead>
             <tr>
-              <th>S.No</th>
-              <th>Work Title</th>
-              <th>Years of Experience</th>
-              <th>Company</th>
-              <th>Responsibilities</th>
+                <th>Company</th>
+                <th>Work Title</th>
+                <th width="10%">Start Date</th>
+                <th width="10%">End Date</th>
+                <th>Responsibilities</th>
             </tr>
           </thead>
           <tbody>
           {loop="$candidate_experience"}
             <tr>
-              <td>{$serial_num_counter}</td>
-              <td>{$value.candidate_work_title}</td>
-              <td>{$value.candidate_experience_years}</td>
-              <td>{$value.candidate_company}</td>
-              <td>{$value.candidate_responsibilities}</td>
+                <td>{$value.company}</td>
+                <td>{$value.work_title}</td>
+                <td>{$value.start_date}</td>
+                <td>{$value.end_date}</td>
+                <td>{$value.description}</td>
             </tr>
-            <p hidden>{$serial_num_counter+=1}</p>
           {/loop}
           </tbody>
         </table> 

@@ -123,12 +123,12 @@
                 });
                 // END - Adding education requirement - HR
                 
-				// Adding education requirement - Candidate [Doesn't have Priority field] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~START
+				// Adding education info - Candidate [Doesn't have Priority field] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~START
                 $("#addEducationCandidate").click(function() {
 				    var degree_options = getDegrees();
                     var field_options = getFields();
                     var fieldWrapper = $('<div class="requirement-data education col-md-12">');
-                    var fName = $('<div class="candidate-data col-md-8"><label class="control-label col-md-2">School/Institute:</label><div class="col-md-10"><input type="text" class="form-control" name="requirement_school[]"></div></div><div class="candidate-data col-md-8"><label class="control-label col-md-3">Dates Attended:</label><span class="col-md-1" style="margin-top:4px">from</span><div class="col-md-3"><select class="form-control" name="requirement_school_start[]" required><option value="">-</option><option>2016</option><option>2015</option><option>2014</option><option>2013</option><option>2012</option><option>2011</option><option>2010</option></select></div><span class="col-md-1" style="margin-top:4px">to</span><div class="col-md-3"><select class="form-control" name="requirement_school_end[]" required><option value="">-</option><option>2016</option><option>2015</option><option>2014</option><option>2013</option><option>2012</option><option>2011</option><option>2010</option></select></div></div><div class="candidate-data col-md-8"><label class="control-label col-md-2">Degree:</label><div class="col-md-10"><select class="form-control autocomplete-field" name="requirement_degree[]" required><option value="" disabled selected>- Select Degree -</option>' + degree_options + '</select></div></div><div class="candidate-data col-md-8"><label class="control-label col-md-3">Field of Study:</label><div class="col-md-9"><select class="form-control autocomplete-field" name="requirement_field[]" required><option value="" disabled selected>- Select Field -</option>' + field_options + '</select></div></div></div>');
+                    var fName = $('<div class="candidate-data col-md-8"><label class="control-label col-md-2">School/Institute:</label><div class="col-md-10"><input type="text" class="form-control" name="requirement_school[]"></div></div><div class="candidate-data col-md-8"><label class="control-label col-md-2">Dates Attended:</label><div class="col-md-4"><input class="form-control" type="date" name="requirement_school_start[]" required></div><span class="col-md-1" style="margin-top:4px">-----</span><div class="col-md-4"><input class="form-control" type="date" name="requirement_school_end[]" required></div></div><div class="candidate-data col-md-8"><label class="control-label col-md-2">Degree:</label><div class="col-md-10"><select class="form-control autocomplete-field" name="requirement_degree[]" required><option value="" disabled selected>- Select Degree -</option>' + degree_options + '</select></div></div><div class="candidate-data col-md-8"><label class="control-label col-md-3">Field of Study:</label><div class="col-md-9"><select class="form-control autocomplete-field" name="requirement_field[]" required><option value="" disabled selected>- Select Field -</option>' + field_options + '</select></div></div></div>');
 
                     var removeButton = $('<div class="col-md-1"><a style="cursor:pointer"><span class="remove glyphicon glyphicon-remove"></span></a></div></div><div class="col-md-12" style="height:1px; background:#aaa; margin:10px 0"></div>');
                     removeButton.click(function() {
@@ -139,7 +139,7 @@
                     $("#educationList").append(fieldWrapper);
                     autocompleteSelectBox();
                 });
-                // END - Adding education requirement - Candidate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END
+                // END - Adding education info - Candidate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END
 				
                 // Adding skill requirement - HR
                 var getSkills = function() {
@@ -167,7 +167,7 @@
                 });
                 // END - Adding skill requirement - HR
 				
-				// Adding skill requirement - Candidate
+				// Adding skill info - Candidate
 				$("#addCandidateSkill").click(function() {
 					var skill_options = getSkills();
                     var fieldWrapper = $('<div class="candidate-data skill col-md-10">');
@@ -182,7 +182,7 @@
                     autocompleteSelectBox();
                     ratingEnable();
                 });
-                // END - Adding skill requirement - Candidate
+                // END - Adding skill info - Candidate
 				
                 // Adding experience requirement - HR
                 var getWorkTitles = function() {
@@ -209,11 +209,11 @@
                 });
                 // END - Adding experience requirement - HR
 
-                // Adding experience requirement - Candidate [Doesn't have Priority field] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~START
+                // Adding experience info - Candidate [Doesn't have Priority field] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~START
                 $("#addExperienceCandidate").click(function() {
                     var title_options = getWorkTitles();
                     var fieldWrapper = $('<div class="requirement-data experience"></div>');
-                    var fName = $('<div class="candidate-data col-md-8"> <label class="control-label col-md-2">Company:</label> <div class="col-md-10"> <input class="form-control" name="requirement_experience_company[]"> </div></div><div class="candidate-data col-md-8"> <label class="control-label col-md-2">Title:</label> <div class="col-md-8"> <select class="form-control autocomplete-field" name="requirement_experience[]" required> <option value="" disabled selected>- Select Title -</option>' + title_options + '</select> </div></div><div class="candidate-data col-md-8"> <label class="control-label col-md-2">Start Date:</label> <div class="col-md-4"> <input type="date" class="form-control" name="requirement_experience_start_date[]" min="0" required> </div><label class="control-label col-md-2">End Date:</label> <div class="col-md-4"> <input type="date" class="form-control" name="requirement_experience_end_date[]" min="0" required> </div></div><div class="candidate-data col-md-8"> <label class="control-label col-md-2">Description:</label> <div class="col-md-10"> <textarea class="form-control" name="requirement_experience_responsibilities[]" style="height:120px"></textarea> </div></div>');
+                    var fName = $('<div class="candidate-data col-md-8"> <label class="control-label col-md-2">Company:</label> <div class="col-md-10"> <input class="form-control" name="requirement_experience_company[]"> </div></div><div class="candidate-data col-md-8"> <label class="control-label col-md-2">Title:</label> <div class="col-md-8"> <select class="form-control autocomplete-field" name="requirement_experience_title[]" required> <option value="" disabled selected>- Select Title -</option>' + title_options + '</select> </div></div><div class="candidate-data col-md-8"> <label class="control-label col-md-2">Start Date:</label> <div class="col-md-4"> <input type="date" class="form-control" name="requirement_experience_start_date[]" min="0" required> </div><label class="control-label col-md-2">End Date:</label> <div class="col-md-4"> <input type="date" class="form-control" name="requirement_experience_end_date[]" min="0" required> </div></div><div class="candidate-data col-md-8"> <label class="control-label col-md-2">Description:</label> <div class="col-md-10"> <textarea class="form-control" name="requirement_experience_description[]" style="height:120px" placeholder="Your responsibilities and achievements at the job"></textarea> </div></div>');
                     var removeButton = $('<div class="col-md-1"><a style=cursor:pointer><span class="remove glyphicon glyphicon-remove"></span></a></div>');
                     var seperator = $('<div class="col-md-12" style="height:1px;background:#aaa;margin:10px 0"></div>');
                     removeButton.click(function() {
@@ -225,7 +225,7 @@
                     $("#experienceList").append(fieldWrapper);
                     autocompleteSelectBox();
                 });
-                // END - Adding experience requirement - Candidate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END
+                // END - Adding experience info - Candidate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END
 
                 // Adding certification requirement -HR
 				var getCertificates = function() {
@@ -252,7 +252,7 @@
                 });
                 // END - Adding certification requirement - HR
 
-                // Adding certification requirement - Candidate [Doesn't have Priority field. Has Date field] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~START
+                // Adding certification info - Candidate [Doesn't have Priority field. Has Date field] ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~START
                 $("#addCertificateCandidate").click(function() {
                     var certificate_options = getCertificates();
                     var fieldWrapper = $('<div class="candidate-data certification col-md-8">');
@@ -266,7 +266,7 @@
                     $("#certificationList").append(fieldWrapper);
                     autocompleteSelectBox();
                 });
-                // END - Adding certification requirement - Candidate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END
+                // END - Adding certification info - Candidate ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~END
 
                 // END - JQuery for section-addition-functionality - HR and Candidate pages both are covered are in this section
 				
@@ -296,7 +296,6 @@
                 // END - Create new skill
 
                 // Add New Experience
-
                 $("#addNewExperience").click(function() {
                    
                     var fieldWrapper = $('<div class="candidate-data experience col-md-8">');
@@ -310,8 +309,6 @@
                     $("#add-experience-list").append(fieldWrapper);
                     autocompleteSelectBox();
                 });
-
-
                 //End -New Experience
                 
 				// Create new certificate

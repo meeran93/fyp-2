@@ -18,20 +18,23 @@ $nationality = $fetch['nationality'];
 $address = $fetch['address'];
 $contact = $fetch['contact'];
 $email = $fetch['email'];
-$date_applied = $fetch['date_applied'];
-$score = $fetch['score'];
+$date_applied = date_format(date_create($fetch['date_applied']),"d-M-Y");
+$score = $fetch['score_overall'];
 $pageTitle = $name . '(score = ' . $score . ')';
 // END - fetching personal info
 
-$query = mysqli_query($db, "SELECT degree_id,degree_name,field_id,field_name FROM candidate c, candidate_education ced, degree d,field_of_study fos WHERE c.id='".mysqli_real_escape_string($db, $candidate_id)."' AND c.id=ced.candidate_id AND d.id=ced.degree_id AND fos.id=ced.field_id GROUP BY degree_id,field_id") or die(mysqli_error($db));
+$query = mysqli_query($db, "SELECT school,degree_id,degree_name,field_id,field_name,start_date,end_date FROM candidate c, candidate_education ced, degree d,field_of_study fos WHERE c.id='".mysqli_real_escape_string($db, $candidate_id)."' AND c.id=ced.candidate_id AND d.id=ced.degree_id AND fos.id=ced.field_id GROUP BY degree_id,field_id") or die(mysqli_error($db));
 $result = mysqli_num_rows($query);
 if($result != null) {
     while ($fetch = mysqli_fetch_assoc($query)) {
         $candidate_education[] = array(
+            'school'=>$fetch['school'],
             'degree_id'=>$fetch['degree_id'],
             'degree_name'=>$fetch['degree_name'],
             'field_id'=>$fetch['field_id'],
-            'field_name'=>$fetch['field_name']
+            'field_name'=>$fetch['field_name'],
+            'start_date'=>date_format(date_create($fetch['start_date']),"d-M-Y"),
+            'end_date'=>date_format(date_create($fetch['end_date']),"d-M-Y"),
         );
     }
 }
@@ -53,15 +56,16 @@ else {
    $candidate_skills = '';
 }
 
-$query = mysqli_query($db, "SELECT title, experience_years, company, responsibilities FROM work_titles, candidate_experience WHERE candidate_experience.title_id=work_titles.id AND candidate_experience.candidate_id='".mysqli_real_escape_string($db, $candidate_id)."'") or die(mysqli_error($db));
+$query = mysqli_query($db, "SELECT company, title, start_date, end_date, description FROM work_titles, candidate_experience WHERE candidate_experience.title_id=work_titles.id AND candidate_experience.candidate_id='".mysqli_real_escape_string($db, $candidate_id)."'") or die(mysqli_error($db));
 $result = mysqli_num_rows($query);
 if($result != null) {
     while ($fetch = mysqli_fetch_assoc($query)) {
         $candidate_experience[] = array(
-            'candidate_work_title'=>$fetch['title'],
-            'candidate_experience_years'=>$fetch['experience_years'],     
-            'candidate_company'=>$fetch['company'],
-            'candidate_responsibilities'=>$fetch['responsibilities']
+            'company'=>$fetch['company'],
+            'work_title'=>$fetch['title'],
+            'start_date'=>date_format(date_create($fetch['start_date']),"d-M-Y"),
+            'end_date'=>date_format(date_create($fetch['end_date']),"d-M-Y"),
+            'description'=>$fetch['description']
         );
     }
 }
@@ -75,7 +79,7 @@ if($result != null) {
     while ($fetch = mysqli_fetch_assoc($query)) {
         $candidate_certifications[] = array(
             'certificate_name'=>$fetch['certificate_name'],
-            'date_awarded'=>$fetch['date_awarded']
+            'date_awarded'=>date_format(date_create($fetch['date_awarded']),"d-M-Y"),
         );
     }
 }
