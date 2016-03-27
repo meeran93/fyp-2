@@ -35,6 +35,17 @@
                     // initialize autocomplete select box plugin for all select boxes
                     autocompleteSelectBox();
                 });
+                //Change status to Shortlist
+                $('#demo li a').click(function() {
+                    var candidate_id = $('#menu1').val($(this).data('id')).val();
+                    var form_id = $('#menu1').val($(this).data('form-id')).val();
+ 
+                    var data = $('#menu1').val($(this).data('value')).val();
+
+                   window.location.assign("shortlist.php?id="+candidate_id+"&form_id="+form_id+"&status_data="+data);
+                           
+                });
+
 
 
                 // Change form status button
