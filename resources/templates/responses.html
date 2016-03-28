@@ -29,19 +29,18 @@
                 <td>{$value.candidate_score}</td>
                 <td>{$value.candidate_status}</td>
                 <td>
-                  <div class="btn-group" role="group">
-                  <a href="candidate-data.php?id={$value.candidate_ID}&form={$form_id}" target="_blank" class="btn btn-primary btn-info">View Candidate's Data</a>
-                  <a href="{$value.candidate_resume}" target="_blank" class="btn btn-primary btn-danger">CV</a>
-                  <div class="btn-group" role="group">
-                      <button class="shortlist-btn btn-primary dropdown-toggle" aria-expanded="false" aria-haspopup="true" id="menu1" type="button" data-toggle="dropdown">Status<span class="caret"></span>
+                  
+                  <a href="candidate-data.php?id={$value.candidate_ID}&form={$form_id}" target="_blank" class="btn btn-sm btn-info">View Candidate's Data</a>
+                  <a href="{$value.candidate_resume}" target="_blank" class="btn btn-sm btn-danger">CV</a>
+                  <div class="dropdown">
+                      <button class="shortlist-btn btn-sm dropdown-toggle" aria-expanded="false" aria-haspopup="true" id="menu1" type="button" data-toggle="dropdown">Status<span class="caret"></span>
                       </button>
                       <ul class="dropdown-menu" id="demo" aria-labelledby="menu1">
                         <li><a data-id="{$value.candidate_ID}" data-form-id="{$form_id}" data-value="Shortlist">Shortlist</a></li>
                         <li><a data-value="Reject" data-id="{$value.candidate_ID}" data-form-id="{$form_id}" >Reject</a></li>
                       </ul>
                     </div>
-                  </div>
-                </td>
+                   </td>
               </tr>
             {/loop}
             </tbody>
