@@ -24,7 +24,7 @@ if ($result == 0) {
             'candidate_date_applied'=>$fetch['date_applied'],
 			'candidate_name'=>$fetch['name'],
             'candidate_contact'=>$fetch['contact'],
-            'candidate_score'=>$fetch['score_overall'],
+            // 'candidate_score'=>$fetch['score_overall'],
             'candidate_resume'=>'resources/candidate-files/'.$fetch['resume'],
             'candidate_status'=>$fetch['status']
         );
