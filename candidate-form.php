@@ -3,6 +3,32 @@
 session_start();
 include_once("config.php");
 
+$query = "SELECT expiry_date,status FROM forms WHERE id='" . mysqli_real_escape_string($db, $_GET['formid']) . "'";
+$result = mysqli_query($db, $query) or die(mysqli_error($db));
+$row = mysqli_fetch_row($result);
+//echo $row[0];
+//echo $_GET['formid'];
+//echo "<script>alert (\"$row[0]\")</script>";
+$today = date("Y-m-d");
+$expiryDate = $row[0];
+$status = $row[1];
+//echo $row[1];
+
+if ($today > $expiryDate || !$status === "ENABLED")
+    {
+    if ($status === "ENABLED")
+        {
+        $sql = "UPDATE forms SET status='DISABLED' WHERE id='" . mysqli_real_escape_string($db, $_GET['formid']) . "'";
+        mysqli_query($db, $sql);
+        mysqli_close($db);
+        header("Location: candidate-message-expiry.php");
+        }
+      else
+        {
+        header("Location: candidate-message-expiry.php");
+        }
+    }
+
 // Not required here since this is a public page
 //isLoggedin($db);
 
