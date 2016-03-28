@@ -5,6 +5,7 @@ include_once("config.php");
 isLoggedin($db);
 
 $candidate_id = $_GET['id'];
+$score = $_GET['score'];
 $form_id = $_GET['form'];
 
 // fetching personal info
@@ -20,8 +21,7 @@ $contact = $fetch['contact'];
 $email = $fetch['email'];
 $date_applied = date_format(date_create($fetch['date_applied']),"d-M-Y");
 // $score = $fetch['score_overall'];
-// $pageTitle = $name . '(score = ' . $score . ')';
-$pageTitle = $name;
+$pageTitle = $name . '(score = ' . $score . ')';
 // END - fetching personal info
 
 $query = mysqli_query($db, "SELECT school,degree_id,degree_name,field_id,field_name,start_date,end_date FROM candidate c, candidate_education ced, degree d,field_of_study fos WHERE c.id='".mysqli_real_escape_string($db, $candidate_id)."' AND c.id=ced.candidate_id AND d.id=ced.degree_id AND fos.id=ced.field_id GROUP BY degree_id,field_id") or die(mysqli_error($db));

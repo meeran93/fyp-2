@@ -2,6 +2,7 @@
 
 session_start();
 include_once("config.php");
+include_once("algorithm-scoring.php");
 isLoggedin($db);
 
 $pageTitle    = 'Responses';
@@ -18,16 +19,7 @@ if ($result == 0) {
     $candidates = '';
 } else {
     $pageContent .= '<p>There are <strong>'.$result.'</strong> applicants.</p>';
-    while ($fetch = mysqli_fetch_assoc($query)) {
-		$candidates[] = array(
-            'candidate_ID'=>$fetch['id'],
-            'candidate_date_applied'=>$fetch['date_applied'],
-			'candidate_name'=>$fetch['name'],
-            'candidate_contact'=>$fetch['contact'],
-            // 'candidate_score'=>$fetch['score_overall'],
-            'candidate_resume'=>'resources/candidate-files/'.$fetch['resume']
-        );
-    } 
+    $candidates = score_normalized($query);
 }
     
 include "resources/libraries/raintpl/rain.tpl.class.php";

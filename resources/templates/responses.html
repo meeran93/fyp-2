@@ -14,7 +14,11 @@
               <tr>
                 <th>Date applied</th>
                 <th>Name</th>
-                <th data-hide="phone">Contact Number</th>
+                <!--th data-hide="phone">Contact Number</th-->
+                <th>Score Education</th>
+                <th>Score Skills</th>
+                <th>Score Experience</th>
+                <th>Score Certification</th>
                 <th>Score</th>
                 <th data-hide="phone">Actions</th>
               </tr>
@@ -24,10 +28,14 @@
               <tr>
                 <td><a href="#">{$value.candidate_date_applied}</a></td>
                 <td>{$value.candidate_name}</td>
-                <td>{$value.candidate_contact}</td>
-                <td><!-- {$value.candidate_score} --></td>
+                <!--td>{$value.candidate_contact}</td-->
+                <td>{$value.candidate_score_education}</td>
+                <td>{$value.candidate_score_skills}</td>
+                <td>{$value.candidate_score_experience}</td>
+                <td>{$value.candidate_score_certification}</td>
+                <td>{$value.candidate_score}</td>
                 <td>
-                  <a href="candidate-data.php?id={$value.candidate_ID}&form={$form_id}" target="_blank" class="btn btn-sm btn-info">View Candidate's Data</a>
+                  <a href="candidate-data.php?id={$value.candidate_ID}&form={$form_id}&score={$value.candidate_score}" target="_blank" class="btn btn-sm btn-info">View Candidate's Data</a>
                   <a href="{$value.candidate_resume}" target="_blank" class="btn btn-sm btn-danger">CV</a>
                 </td>
               </tr>

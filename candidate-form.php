@@ -2,6 +2,7 @@
 
 session_start();
 include_once("config.php");
+include_once("algorithm-scoring.php");
 
 $query = "SELECT expiry_date,status FROM forms WHERE id='" . mysqli_real_escape_string($db, $_GET['formid']) . "'";
 $result = mysqli_query($db, $query) or die(mysqli_error($db));
@@ -124,6 +125,53 @@ if (isset($_POST['submit'])) {
         )")) {
 
             $candidateID = mysqli_insert_id($db);
+
+            $req_education = null;
+            $req_skill = null;
+            $req_experience = null;
+            $req_certification = null;
+
+            $score_education = 0;
+            $score_skills = 0;
+            $score_experience = 0;
+            $score_certification = 0;
+            $score_overall = 0;
+
+            // load form data
+            $query = mysqli_query($db, "SELECT degree_id, field_of_study_id, priority FROM form_education WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
+            $result = mysqli_num_rows($query);
+            while ($fetch = mysqli_fetch_assoc($query)) {
+                $req_education[] = array(
+                    'degree_id'=>$fetch['degree_id'],
+                    'field_id'=>$fetch['field_of_study_id'],
+                    'priority'=>$fetch['priority']
+                );
+            }
+            $query = mysqli_query($db, "SELECT skill_id, priority FROM form_skills WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
+            $result = mysqli_num_rows($query);
+            while ($fetch = mysqli_fetch_assoc($query)) {
+                $req_skill[] = array(
+                    'skill_id'=>$fetch['skill_id'],
+                    'priority'=>$fetch['priority']
+                );
+            }
+            $query = mysqli_query($db, "SELECT title_id, years_of_experience, priority FROM form_experience WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
+            $result = mysqli_num_rows($query);
+            while ($fetch = mysqli_fetch_assoc($query)) {
+                $req_experience[] = array(
+                    'title_id'=>$fetch['title_id'],
+                    'years_of_experience'=>$fetch['years_of_experience'],
+                    'priority'=>$fetch['priority']
+                );
+            }
+            $query = mysqli_query($db, "SELECT certificate_id, priority FROM form_certification WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
+            $result = mysqli_num_rows($query);
+            while ($fetch = mysqli_fetch_assoc($query)) {
+                $req_certification[] = array(
+                    'certificate_id'=>$fetch['certificate_id'],
+                    'priority'=>$fetch['priority']
+                );
+            }
             
             if (!is_null($form_education)) {
 
@@ -152,6 +200,8 @@ if (isset($_POST['submit'])) {
                         );"
                     ) or die(mysqli_error($db));
                 }
+                // score education
+                $score_education = score_education($degree, $field, $req_education, $db);
             }
 
             if (!is_null($form_skills)) {
@@ -172,6 +222,8 @@ if (isset($_POST['submit'])) {
                         );"
                     ) or die(mysqli_error($db));
                 }
+                // score skills
+                $score_skills = score_skills($skills, $level_of_expertise, $req_skill);
             }
 
             if (!is_null($form_experience_required)) {
@@ -192,6 +244,8 @@ if (isset($_POST['submit'])) {
                             );"
                     ) or die(mysqli_error($db));
                 }
+                // score experience
+                $score_experience = score_experience($experience, $experience_years, $req_experience);
             }
 
             if (!is_null($form_experience)) {
@@ -241,7 +295,17 @@ if (isset($_POST['submit'])) {
                         );"
                     ) or die(mysqli_error($db));
                 }
+                // score certification
+                $score_certification = score_certification($certification, $req_certification);
             }
+            // update score fields in table
+            mysqli_query($db, "UPDATE candidate SET 
+                score_education = '".$score_education."',
+                score_skills = '".$score_skills."',
+                score_experience = '".$score_experience."',
+                score_certification = '".$score_certification."'
+                WHERE id = '".$candidateID."';"
+            ) or die(mysqli_error($db));
             
             mysqli_query($db, "CALL updateResponse('".mysqli_real_escape_string($db, $_GET['formid'])."')") or die(mysqli_error($db));
             

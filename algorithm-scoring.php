@@ -1,210 +1,297 @@
 <?php
 
-session_start();
-include_once("config.php");
-isLoggedin($db);
+function score_education($degree, $field, $req_education, $db){
+	
+	$score_education = 0;
 
-$formid = $_GET['formid'];
+	$count_1 = 0;	// For checking if basic requirements matched
+	$score_extra = 0;	// Score for all half matching fields
+	$scored = false;	//For checking of field is Extra or not
+	
+	foreach($degree as $key => $value) {
+        // $degree[$a]
+        // $field[$a]
+        $count_2 = 0;	// For calculating average score
+		$score_1 = 0;	// Score for full matching field
+        $score_2 = 0;	// Score for half matching field
 
-$candidates = null;
+        $degree_id = $degree[$key];
+        $field_id = $field[$key];
+        // get order of candidate degree
+        $query = mysqli_query($db, "SELECT * FROM degree WHERE id='".mysqli_real_escape_string($db, $degree_id)."'") or die(mysqli_error($db));
+        $result = mysqli_num_rows($query);
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            $order_cand = $fetch['order'];
+        }
+        
+        foreach ($req_education as $a => $b) {
+            // get order of required degree
+            $query = mysqli_query($db, "SELECT * FROM degree WHERE id='".mysqli_real_escape_string($db, $b['degree_id'])."'") or die(mysqli_error($db));
+            $result = mysqli_num_rows($query);
+            while ($fetch = mysqli_fetch_assoc($query)) {
+                $order_req = $fetch['order'];
+            }
 
-$query = mysqli_query($db, "SELECT id FROM candidate WHERE form_id = '".$formid."'") or die(mysqli_error($db));
-$result = mysqli_num_rows($query);
-while ($fetch = mysqli_fetch_assoc($query)) {
-    $candidates[] = array(
-        'candidate_id'=>$fetch['id']
-    );
+        	if($order_cand >= $order_req && $field_id == $b['field_id']){
+        		if($degree_id == $b['degree_id']){
+        			$score_1 = $b['priority'];	// found perfect match
+        			$count_1++;
+    				$scored = true;
+        			break;
+        		}
+        		else{
+        			$score_2 += $b['priority'] / 2;	// found partial match
+        			$count_2++;
+    				$scored = true;
+        		}
+        	}
+        }
+        if(!$scored){	// mis match
+        	// RELEVANCE
+        }
+        else{
+	        if($score_1 == 0 && $score_2 != 0){	// partial match
+	        	$score_extra += $score_2 / $count_2;
+	        }
+	        else{	// full match
+	        	$score_education += $score_1;
+	        }
+        }
+    }
+    if($count_1 == count($req_education)){
+    	$score_education += $score_extra;
+    }
+	return $score_education;
 }
 
-if (!is_null($candidates)) {
+function score_skills($skills, $expertise, $req_skill){
+	
+	$score_skills = 0;
+	$scored = false;
+	foreach($skills as $key => $value) {
+		$skill_id = $skills[$key];
+        $level_of_expertise = $expertise[$key];
+        foreach ($req_skill as $a => $b) {
+        	if($skill_id == $b['skill_id']){
+        		$score_skills += $b['priority'] * $level_of_expertise;
+    			$scored = true;
+        	}
+        }
+        if(!$scored){
+        	/*// RELEVANCE
+        	// 1. Get all unique form_ids from form_skills table where skill_id matches current skill_id [which Past JDs]
+            $query = mysqli_query($db, "SELECT DISTINCT form_id FROM form_skills WHERE skill_id='".mysqli_real_escape_string($db, $skill_id)."'") or die(mysqli_error($db));
+            $result = mysqli_num_rows($query);
+            while ($fetch = mysqli_fetch_assoc($query)) {
+                $forms_req[] = array(
+                    'form_id' => $fetch['form_id']
+                );
+            }
+        	// 2. Retrieve all required forms [Past JDs]
+            foreach($forms_req as $a => $b){
+                //...Get Education
+                $education = null;
+                $query = mysqli_query($db, "SELECT degree_id, field_of_study_id, priority FROM form_education WHERE form_id='".mysqli_real_escape_string($db, $b['form_id'])."'") or die(mysqli_error($db));
+                $result = mysqli_num_rows($query);
+                while ($fetch = mysqli_fetch_assoc($query)) {
+                    $education[] = array(
+                        'degree_id' => $fetch['degree_id'],
+                        'field_id' => $fetch['field_id'],
+                        'priority' => $fetch['priority']
+                    );
+                }
+                //...Get Skill
+                $skills = null;
+                $query = mysqli_query($db, "SELECT skill_id, priority FROM form_skills WHERE form_id='".mysqli_real_escape_string($db, $b['form_id'])."'") or die(mysqli_error($db));
+                $result = mysqli_num_rows($query);
+                while ($fetch = mysqli_fetch_assoc($query)) {
+                    $skills[] = array(
+                        'skill_id' => $fetch['skill_id'],
+                        'priority' => $fetch['priority']
+                    );
+                }
+                //...Get Experience
+                $experience = null;
+                $query = mysqli_query($db, "SELECT title_id, years_of_experience, priority FROM form_experience WHERE form_id='".mysqli_real_escape_string($db, $b['form_id'])."'") or die(mysqli_error($db));
+                $result = mysqli_num_rows($query);
+                while ($fetch = mysqli_fetch_assoc($query)) {
+                    $experience[] = array(
+                        'title_id' => $fetch['title_id'],
+                        'years_of_experience' => $fetch['years_of_experience'],
+                        'priority' => $fetch['priority']
+                    );
+                }
+                //...Get Certification
+                $certification = null;
+                $query = mysqli_query($db, "SELECT certificate_id, priority FROM form_certification WHERE form_id='".mysqli_real_escape_string($db, $b['form_id'])."'") or die(mysqli_error($db));
+                $result = mysqli_num_rows($query);
+                while ($fetch = mysqli_fetch_assoc($query)) {
+                    $certification[] = array(
+                        'certificate_id' => $fetch['certificate_id'],
+                        'priority' => $fetch['priority']
+                    );
+                }  //(?) Can these four be put in a single array
+                if($form_id != $b['form_id']){
+                    $jd_past[] = array(
+                        'education' => $education,
+                        'skills' => $skills,
+                        'experience' => $experience,
+                        'certification' => $certification
+                    );
+                }
+                else{
+                    $jd_current[] = array(
+                        'education' => $education,
+                        'skills' => $skills,
+                        'experience' => $experience,
+                        'certification' => $certification
+                    );
+                }
+            }
+        	// 3. Create and populate SoR Table
+            // 4. Calculate Similarities
+        	// 5. Calculate Target Field's SoR
+        	// 6. Calculate Target Field's Relevance
+            */
+        }
+	}
+	return $score_skills;
+}
 
-	$query = mysqli_query($db, "SELECT degree_id, field_of_study_id, priority FROM form_education WHERE form_id = '".$formid."'") or die(mysqli_error($db));
-    $result = mysqli_num_rows($query);
-    while ($fetch = mysqli_fetch_assoc($query)) {
-        $form_education[] = array(
-            'degree_id'=>$fetch['degree_id'],
-            'field_id'=>$fetch['field_of_study_id'],
-            'priority'=>$fetch['priority']
-        );
-    }
-    $query = mysqli_query($db, "SELECT skill_id, priority FROM form_skills WHERE form_id = '".$formid."'") or die(mysqli_error($db));
-    $result = mysqli_num_rows($query);
-    while ($fetch = mysqli_fetch_assoc($query)) {
-        $form_skill[] = array(
-            'skill_id'=>$fetch['skill_id'],
-            'priority'=>$fetch['priority']
-        );
-    }
-    $query = mysqli_query($db, "SELECT title_id, years_of_experience, priority FROM form_experience WHERE form_id = '".$formid."'") or die(mysqli_error($db));
-    $result = mysqli_num_rows($query);
-    while ($fetch = mysqli_fetch_assoc($query)) {
-        $form_experience[] = array(
-            'title_id'=>$fetch['title_id'],
-            'years_of_experience'=>$fetch['years_of_experience'],
-            'priority'=>$fetch['priority']
-        );
-    }
-    $query = mysqli_query($db, "SELECT certificate_id, priority FROM form_certification WHERE form_id = '".$formid."'") or die(mysqli_error($db));
-    $result = mysqli_num_rows($query);
-    while ($fetch = mysqli_fetch_assoc($query)) {
-        $form_certification[] = array(
-            'certificate_id'=>$fetch['certificate_id'],
-            'priority'=>$fetch['priority']
-        );
-    }
+function score_experience($title, $experience, $req_experience){
+	
+	$score_experience = 0;
 
+	$scored = false;
+	foreach($title as $key => $value) {
+		$title_id = $title[$key];
+        $experience_years = $experience[$key];
+        foreach ($req_experience as $a => $b) {
+        	if($title_id == $b['title_id']){
+        		$score_experience += $b['priority'] * ($experience_years / $b['years_of_experience']);
+    			$scored = true;
+        	}
+        }
+        if(!$scored){
+        	// RELEVANCE
+        }
+	}
+	return $score_experience;
+}
+
+function score_certification($certification, $req_certification){
+	
+	$score_certification = 0;
+
+	$scored = false;
+	foreach($certification as $key => $value) {
+		$certificate_id = $certification[$key];
+        foreach ($req_certification as $a => $b) {
+        	if($certificate_id == $b['certificate_id']){
+        		$score_certification += $b['priority'];
+    			$scored = true;
+        	}
+        }
+        if(!$scored){
+        	// RELEVANCE
+        }
+	}
+	return $score_certification;
+}
+
+function score_normalized($query){
+
+    $candidate_temp = null;
     $candidate_scores = null;
     $candidate_scores_temp = null;
     $score_education_max = 0;
-    $score_skill_max = 0;
+    $score_skills_max = 0;
     $score_experience_max = 0;
     $score_certification_max = 0;
     $score_max = 0;
-                
-    foreach($candidates as $key => $value) {
-
-        $count_1 = 0;	// For checking if basic requirements matched
-		$score_extra = 0;	// Score for all half matching fields
-    	
-    	$score_education = 0;
-        $query = mysqli_query($db, "SELECT degree_id, field_id FROM candidate_education WHERE candidate_id = '".$value['candidate_id']."'") or die(mysqli_error($db));
-	    $result = mysqli_num_rows($query);
-	    while ($fetch = mysqli_fetch_assoc($query)) {
-			$count_2 = 0;	// For calculating average score
-			$score_1 = 0;	// Score for full matching field
-	        $score_2 = 0;	// Score for half matching field
-
-	        $degree_id = $fetch['degree_id'];
-	        $field_id = $fetch['field_id'];
-	        foreach ($form_education as $a => $b) {
-	        	if($field_id == $b['field_id'] && $score_1 == 0){
-	        		if($degree_id == $b['degree_id']){
-	        			$score_1 = $b['priority'];
-	        			$count_1++;
-	        			break;
-	        		}
-	        		else{
-	        			$score_2 += $b['priority'] / 2;
-	        			$count_2++;
-	        		}
-	        	}	// Not considering candidates that have achivements in fields other than required...
-	        }
-	        if($score_1 == 0 && $score_2 != 0){
-	        	$score_extra += $score_2 / $count_2;
-	        }
-	        else{
-	        	$score_education += $score_1;
-	        }
-	    }
-	    if($count_1 == count($form_education)){
-	    	$score_education += $score_extra;
-	    	$count_1 = 0;
-	    	$score_extra = 0;
-	    }
-	    if($score_education > $score_education_max){
-	    	$score_education_max = $score_education;
-	    }
-
-	    $score_skill = 0;
-	    $query = mysqli_query($db, "SELECT skill_id, level_of_expertise FROM candidate_skills WHERE candidate_id = '".$value['candidate_id']."'") or die(mysqli_error($db));
-	    $result = mysqli_num_rows($query);
-	    while ($fetch = mysqli_fetch_assoc($query)) {
-	        $skill_id = $fetch['skill_id'];
-	        $level_of_expertise = $fetch['level_of_expertise'];
-	        foreach ($form_skill as $a => $b) {
-	        	if($skill_id == $b['skill_id']){
-	        		$score_skill += $b['priority'] * $level_of_expertise;
-	        	}
-	        }
-	    }
-	    if($score_skill > $score_skill_max){
-	    	$score_skill_max = $score_skill;
-	    }
-
-	    $score_experience = 0;
-	    $query = mysqli_query($db, "SELECT title_id, experience_years FROM candidate_experience WHERE candidate_id = '".$value['candidate_id']."'") or die(mysqli_error($db));
-	    $result = mysqli_num_rows($query);
-	    while ($fetch = mysqli_fetch_assoc($query)) {
-	        // $candidate_experience[] = array(
-	        //     'title_id'=>$fetch['title_id'],
-	        //     'experience_years'=>$fetch['experience_years']
-	        // );
-	        $title_id = $fetch['title_id'];
-	        $experience_years = $fetch['experience_years'];
-	        foreach ($form_experience as $a => $b) {
-	        	if($title_id == $b['title_id']){
-	        		$score_experience += $b['priority'] * ($experience_years / $b['years_of_experience']);
-	        	}
-	        }
-	    }
-	    if($score_experience > $score_experience_max){
-	    	$score_experience_max = $score_experience;
-	    }
-
-	    $score_certification = 0;
-	    $query = mysqli_query($db, "SELECT certificate_id FROM candidate_certification WHERE candidate_id = '".$value['candidate_id']."'") or die(mysqli_error($db));
-	    $result = mysqli_num_rows($query);
-	    while ($fetch = mysqli_fetch_assoc($query)) {
-	        $certificate_id = $fetch['certificate_id'];
-	        foreach ($form_certification as $a => $b) {
-	        	if($certificate_id == $b['certificate_id']){
-	        		$score_certification += $b['priority'];
-	        	}
-	        }
-	    }
-	    if($score_certification > $score_certification_max){
-	    	$score_certification_max = $score_certification;
-	    }
-
-	    $candidate_scores[] = array(
-	    	'candidate_id' => $value['candidate_id'],
-	    	'score_education' => $score_education,
-	    	'score_skill' => $score_skill,
-	    	'score_experience' => $score_experience,
-	    	'score_certification' => $score_certification,
-	    	'score_overall' => 0
-    	);
-
+    while ($fetch = mysqli_fetch_assoc($query)) {
+        // $candidates[] = array(
+  //           'candidate_ID'=>$fetch['id'],
+  //           'candidate_date_applied'=>$fetch['date_applied'],
+        //  'candidate_name'=>$fetch['name'],
+  //           'candidate_contact'=>$fetch['contact'],
+  //           'candidate_score'=>$fetch['score_overall'],
+  //           'candidate_resume'=>'resources/candidate-files/'.$fetch['resume']
+  //       );
+        if($fetch['score_education'] > $score_education_max){
+            $score_education_max = $fetch['score_education'];
+        }
+        if($fetch['score_skills'] > $score_skills_max){
+            $score_skills_max = $fetch['score_skills'];
+        }
+        if($fetch['score_experience'] > $score_experience_max){
+            $score_experience_max = $fetch['score_experience'];
+        }
+        if($fetch['score_certification'] > $score_certification_max){
+            $score_certification_max = $fetch['score_certification'];
+        }
+        $candidate_temp[] = array(
+            'candidate_ID'=>$fetch['id'],
+            'candidate_date_applied'=>$fetch['date_applied'],
+            'candidate_name'=>$fetch['name'],
+            'candidate_contact'=>$fetch['contact'],
+            'candidate_resume'=>'resources/candidate-files/'.$fetch['resume']
+        );
+        $candidate_scores[] = array(
+            'score_education' => $fetch['score_education'],
+            'score_skills' => $fetch['score_skills'],
+            'score_experience' => $fetch['score_experience'],
+            'score_certification' => $fetch['score_certification']
+        );
     }
-	foreach($candidate_scores as $key => $value) {
-		if($score_education_max != 0){
-			$score_education = $value['score_education'] / $score_education_max;
-		}
-		if($score_skill_max != 0){
-			$score_skill = $value['score_skill'] / $score_skill_max;
-		}
-		if($score_experience_max != 0){
-			$score_experience = $value['score_experience'] / $score_experience_max;
-		}
-		if($score_certification_max != 0){
-			$score_certification = $value['score_certification'] / $score_certification_max;
-		}
-		$score_overall = ($score_education + $score_skill + $score_experience + $score_certification) / 4;
-		if($score_overall > $score_max){
-	    	$score_max = $score_overall;
-	    }
-		$candidate_scores_temp[] = array(
-	    	'candidate_id' => $value['candidate_id'],
-	    	'score_education' => $score_education * 100,
-	    	'score_skill' => $score_skill * 100,
-	    	'score_experience' => $score_experience * 100,
-	    	'score_certification' => $score_certification * 100,
-	    	'score_overall' => $score_overall
-    	);
-	}
-	$candidate_scores = null;
-	foreach ($candidate_scores_temp as $key => $value) {
-		$candidate_scores[] = array(
-	    	'candidate_id' => $value['candidate_id'],
-	    	'score_education' => $value['score_education'],
-	    	'score_skill' => $value['score_skill'],
-	    	'score_experience' => $value['score_experience'],
-	    	'score_certification' => $value['score_certification'],
-	    	'score_overall' => $value['score_overall'] * 100 / $score_max,
-    	);
-	}
-	$candidate_scores_temp = null;
-    var_dump($candidate_scores);
+    foreach($candidate_scores as $key => $value) {
+        $score_education = 0;
+        if($score_education_max != 0){
+            $score_education = $value['score_education'] / $score_education_max;
+        }
+        $score_skills = 0;
+        if($score_skills_max != 0){
+            $score_skills = $value['score_skills'] / $score_skills_max;
+        }
+        $score_experience = 0;
+        if($score_experience_max != 0){
+            $score_experience = $value['score_experience'] / $score_experience_max;
+        }
+        $score_certification = 0;
+        if($score_certification_max != 0){
+            $score_certification = $value['score_certification'] / $score_certification_max;
+        }
+        $score_overall = ($score_education + $score_skills + $score_experience + $score_certification) / 4;
+        if($score_overall > $score_max){
+            $score_max = $score_overall;
+        }
+        $candidate_scores_temp[] = array(
+            'score_education' => $score_education * 100,
+            'score_skills' => $score_skills * 100,
+            'score_experience' => $score_experience * 100,
+            'score_certification' => $score_certification * 100,
+            'score_overall' => $score_overall
+        );
+    }
+    $candidates = null;
+    foreach ($candidate_scores_temp as $key => $value) {
+        $candidates[] = array(
+            'candidate_ID' => $candidate_temp[$key]['candidate_ID'],
+            
+            'candidate_date_applied' => $candidate_temp[$key]['candidate_date_applied'],
+            'candidate_name' => $candidate_temp[$key]['candidate_name'],
+            'candidate_contact' => $candidate_temp[$key]['candidate_contact'],
+            'candidate_resume' => $candidate_temp[$key]['candidate_resume'],
+
+            'candidate_score_education' => number_format(($value['score_education']), 2),
+            'candidate_score_skills' => number_format(($value['score_skills']), 2),
+            'candidate_score_experience' => number_format(($value['score_experience']), 2),
+            'candidate_score_certification' => number_format(($value['score_certification']), 2),
+            'candidate_score' => number_format(($value['score_overall'] * 100), 2) // $score_max,
+        );
+    }
+    $candidate_temp = null;
+    return $candidates;
 }
 
 ?>
