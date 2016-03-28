@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2016 at 10:12 AM
+-- Generation Time: Mar 28, 2016 at 11:31 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -315,6 +315,7 @@ INSERT INTO `certificate` (`id`, `certificate_name`, `user_id`, `category_id`) V
 CREATE TABLE IF NOT EXISTS `degree` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `degree_name` varchar(255) NOT NULL,
+  `order` int(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
@@ -322,13 +323,13 @@ CREATE TABLE IF NOT EXISTS `degree` (
 -- Dumping data for table `degree`
 --
 
-INSERT INTO `degree` (`id`, `degree_name`) VALUES
-(2, 'O Levels / Matriculatin'),
-(3, 'A Levels / Intermediate'),
-(4, 'Bachelors'),
-(5, 'Masters'),
-(6, 'Ph.D'),
-(7, 'Diploma');
+INSERT INTO `degree` (`id`, `degree_name`, `order`) VALUES
+(2, 'O Levels / Matriculatin', 0),
+(3, 'A Levels / Intermediate', 0),
+(4, 'Bachelors', 1),
+(5, 'Masters', 2),
+(6, 'Ph.D', 3),
+(7, 'Diploma', 0);
 
 -- --------------------------------------------------------
 
@@ -376,6 +377,7 @@ CREATE TABLE IF NOT EXISTS `forms` (
   `description` varchar(255) NOT NULL,
   `responses` int(11) NOT NULL DEFAULT '0',
   `status` varchar(255) NOT NULL DEFAULT 'ENABLED',
+  `expiry_date` date DEFAULT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
@@ -385,9 +387,9 @@ CREATE TABLE IF NOT EXISTS `forms` (
 -- Dumping data for table `forms`
 --
 
-INSERT INTO `forms` (`id`, `user_id`, `date_created`, `description`, `responses`, `status`, `deleted`) VALUES
-(1, 1, '2016-01-06', 'Php & MySql Developer', 0, 'ENABLED', 0),
-(11, 1, '2016-03-06', 'Senior Manager Information Systems/Technology', 1, 'ENABLED', 0);
+INSERT INTO `forms` (`id`, `user_id`, `date_created`, `description`, `responses`, `status`, `expiry_date`, `deleted`) VALUES
+(1, 1, '2016-01-06', 'Php & MySql Developer', 0, 'ENABLED', '2016-03-31', 0),
+(11, 1, '2016-03-06', 'Senior Manager Information Systems/Technology', 1, 'ENABLED', '2016-03-30', 0);
 
 -- --------------------------------------------------------
 
