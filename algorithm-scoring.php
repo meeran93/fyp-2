@@ -283,7 +283,7 @@ function score_normalized($query){
             'candidate_name' => $candidate_temp[$key]['candidate_name'],
             'candidate_contact' => $candidate_temp[$key]['candidate_contact'],
             'candidate_resume' => $candidate_temp[$key]['candidate_resume'],
-            'candidate_status'=> $candidate_temp[$key]['status'],
+            'candidate_status'=> $candidate_temp[$key]['candidate_status'],
 
             'candidate_score_education' => number_format(($value['score_education']), 2),
             'candidate_score_skills' => number_format(($value['score_skills']), 2),
