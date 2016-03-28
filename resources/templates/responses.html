@@ -20,6 +20,7 @@
                 <th>Score Experience</th>
                 <th>Score Certification</th>
                 <th>Score</th>
+                <th>Status</th>
                 <th data-hide="phone">Actions</th>
               </tr>
             </thead>
@@ -28,7 +29,7 @@
               <tr>
                 <td><a href="#">{$value.candidate_date_applied}</a></td>
                 <td>{$value.candidate_name}</td>
-                <!--td>{$value.candidate_contact}</td-->
+                <td>{$value.candidate_status}</td>
                 <td>{$value.candidate_score_education}</td>
                 <td>{$value.candidate_score_skills}</td>
                 <td>{$value.candidate_score_experience}</td>
@@ -37,7 +38,20 @@
                 <td>
                   <a href="candidate-data.php?id={$value.candidate_ID}&form={$form_id}&score={$value.candidate_score}" target="_blank" class="btn btn-sm btn-info">View Candidate's Data</a>
                   <a href="{$value.candidate_resume}" target="_blank" class="btn btn-sm btn-danger">CV</a>
-                </td>
+                  <div class="dropdown">
+                      <button class="shortlist-btn btn-sm dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">
+                        Status<span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" id="demo">
+                        <li>
+                          <a data-id="{$value.candidate_ID}" data-form-id="{$form_id}" data-value="SHORTLIST">Shortlist</a>
+                        </li>
+                        <li>
+                          <a data-id="{$value.candidate_ID}" data-form-id="{$form_id}" data-value="REJECT">Reject</a>
+                        </li>
+                      </ul>
+                    </div>
+                   </td>
               </tr>
             {/loop}
             </tbody>
@@ -46,4 +60,4 @@
       </div>
     </div>
   </div>
-  {include="footer"}
+{include="footer"}

@@ -235,7 +235,8 @@ function score_normalized($query){
             'candidate_date_applied'=>$fetch['date_applied'],
             'candidate_name'=>$fetch['name'],
             'candidate_contact'=>$fetch['contact'],
-            'candidate_resume'=>'resources/candidate-files/'.$fetch['resume']
+            'candidate_resume'=>'resources/candidate-files/'.$fetch['resume'],
+            'candidate_status'=>$fetch['status']
         );
         $candidate_scores[] = array(
             'score_education' => $fetch['score_education'],
@@ -282,6 +283,7 @@ function score_normalized($query){
             'candidate_name' => $candidate_temp[$key]['candidate_name'],
             'candidate_contact' => $candidate_temp[$key]['candidate_contact'],
             'candidate_resume' => $candidate_temp[$key]['candidate_resume'],
+            'candidate_status'=> $candidate_temp[$key]['status'],
 
             'candidate_score_education' => number_format(($value['score_education']), 2),
             'candidate_score_skills' => number_format(($value['score_skills']), 2),
