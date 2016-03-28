@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2016 at 12:29 PM
+-- Generation Time: Mar 28, 2016 at 10:12 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -102,31 +102,22 @@ CREATE TABLE IF NOT EXISTS `candidate` (
   `address` varchar(255) NOT NULL,
   `contact` varchar(13) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `score_education` int(11) NOT NULL DEFAULT '0',
-  `score_skills` int(11) NOT NULL DEFAULT '0',
-  `score_experience` int(11) NOT NULL DEFAULT '0',
-  `score_certification` int(11) NOT NULL DEFAULT '0',
-  `score_overall` int(11) NOT NULL DEFAULT '0',
+  `score_education` float NOT NULL DEFAULT '0',
+  `score_skills` float NOT NULL DEFAULT '0',
+  `score_experience` float NOT NULL DEFAULT '0',
+  `score_certification` float NOT NULL DEFAULT '0',
+  `status` varchar(255) NOT NULL DEFAULT 'PENDING',
   `date_applied` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
 
 --
 -- Dumping data for table `candidate`
 --
 
-INSERT INTO `candidate` (`id`, `form_id`, `name`, `resume`, `nationality`, `address`, `contact`, `email`, `score_education`, `score_skills`, `score_experience`, `score_certification`, `score_overall`, `date_applied`) VALUES
-(7, 1, 'Muhammad Meeran ', 'CV - Muhammad Meeran Khan.pdf', 'Pakistani', 'Gulshan', '03212863308', 'meeran93@hotmail.com', 55, 0, 0, 0, 0, '2016-02-11'),
-(11, 1, 'maaz', 'CV - Muhammad Meeran Khan.pdf', 'Russian', '43 saddlemead green n.e', '0321', 'maaz@maaz.com', 0, 0, 0, 0, 0, '2016-02-11'),
-(12, 1, 'maaz', 'CV - Muhammad Meeran Khan.pdf', 'Pakistani', '43 saddlemead green n.e', '03212863308', 'maaz@maaz.com', 0, 0, 0, 0, 0, '2016-02-11'),
-(13, 1, 'maaz', 'CV - Muhammad Meeran Khan.pdf', 'Russian', '43 saddlemead green n.e', '00321286', 'maaz@maaz.com', 0, 0, 0, 0, 0, '2016-02-11'),
-(14, 1, 'Haseeb Hussain', 'HASEEB-HUSSAIN-CV.pdf', 'Pakistani', 'Flat 420, very Nobel Heights, purani subzi mandi k peechay', '03212863307', 'haseeb@gmail.com', 0, 0, 0, 0, 0, '2016-02-14'),
-(17, 11, 'Shams', 'shamsnaveed_profile.pdf', 'Pakistani', 'aABc', '0321', 'shams@gamil.com', 0, 0, 0, 0, 0, '2016-03-06'),
-(18, 1, 'Meeran Khan', 'CV - Muhammad Meeran Khan.pdf', 'Pakistani', 'B-307, Block ', '03212863308', 'meeran@gmail.com', 0, 0, 0, 0, 0, '2016-03-09'),
-(19, 1, 'Meeran Khan', 'CV - Muhammad Meeran Khan.pdf', 'Pakistani', '43 saddlemead green n.e', '03212863308', 'meeran@gmail.com', 0, 0, 0, 0, 0, '2016-03-09'),
-(20, 1, 'Terminator', 'CV - Muhammad Meeran Khan.pdf', 'Russian', 'Mahattan, New York, USA', '0', 'terminator@terminate.com', 0, 0, 0, 0, 0, '2016-03-09'),
-(21, 11, 'Meeran Khan', 'CV - Muhammad Meeran Khan.pdf', 'Pakistani', 'Gulshan', '03212863308', 'meeran@gmail.com', 0, 0, 0, 0, 0, '2016-03-24');
+INSERT INTO `candidate` (`id`, `form_id`, `name`, `resume`, `nationality`, `address`, `contact`, `email`, `score_education`, `score_skills`, `score_experience`, `score_certification`, `status`, `date_applied`) VALUES
+(22, 11, 'Meeran Khan', 'CV - Muhammad Meeran Khan.pdf', 'Pakistani', 'Gulshan-e-Iqbal Block-16', '03212863308', 'meeran@gmail.com', 0, 0, 0, 0, 'SHORTLIST', '2016-03-28');
 
 -- --------------------------------------------------------
 
@@ -143,21 +134,14 @@ CREATE TABLE IF NOT EXISTS `candidate_certification` (
   KEY `certificate_id` (`certificate_id`),
   KEY `certificate_id_2` (`certificate_id`),
   KEY `candidate_id` (`candidate_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `candidate_certification`
 --
 
 INSERT INTO `candidate_certification` (`id`, `candidate_id`, `certificate_id`, `date_awarded`) VALUES
-(1, 7, 2, '2015-01-05'),
-(3, 18, 3, '2013-02-02'),
-(4, 18, 2, '2014-02-02'),
-(5, 18, 5, '2015-02-02'),
-(6, 20, 3, '2050-03-28'),
-(7, 20, 2, '2076-04-06'),
-(8, 20, 5, '2122-12-01'),
-(9, 21, 2, '2014-01-30');
+(10, 22, 2, '2014-09-30');
 
 -- --------------------------------------------------------
 
@@ -177,18 +161,14 @@ CREATE TABLE IF NOT EXISTS `candidate_education` (
   KEY `candidate_id` (`candidate_id`),
   KEY `degree_id` (`degree_id`),
   KEY `field_id` (`field_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
 
 --
 -- Dumping data for table `candidate_education`
 --
 
 INSERT INTO `candidate_education` (`id`, `candidate_id`, `school`, `degree_id`, `field_id`, `start_date`, `end_date`) VALUES
-(4, 7, NULL, 4, 2, NULL, NULL),
-(5, 14, NULL, 3, 1, NULL, NULL),
-(6, 14, NULL, 4, 1, NULL, NULL),
-(9, 17, NULL, 5, 5, NULL, NULL),
-(10, 21, 'IBA', 4, 1, '2012-06-01', '2016-06-01');
+(11, 22, 'IBA', 4, 1, '2012-08-15', '2016-06-20');
 
 -- --------------------------------------------------------
 
@@ -207,25 +187,14 @@ CREATE TABLE IF NOT EXISTS `candidate_experience` (
   PRIMARY KEY (`id`),
   KEY `candidate_id` (`candidate_id`),
   KEY `title_id` (`title_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=26 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `candidate_experience`
 --
 
 INSERT INTO `candidate_experience` (`id`, `candidate_id`, `title_id`, `company`, `description`, `start_date`, `end_date`) VALUES
-(7, 7, 1, '10 Pearls', '- Worked on python backend<br>- Worked on Angular JS<br>- Helped write functional tests<br>- Wrote JavaScript Migrations for MBO database', NULL, NULL),
-(14, 7, 2, 'Ibex Global', '- Implemented Agile development process for the development of Tameer International Web Portal<br>- Managed Software Development of MBO Access (An oursourcing web app used by MBO Partners)', NULL, NULL),
-(15, 14, 1, 'Oxford University Press', '- Develop the whole web app for managing books', NULL, NULL),
-(17, 17, 16, 'State Bank, Hino Pak, Millenium ', '', NULL, NULL),
-(18, 17, 17, 'Hino Pak', '', NULL, NULL),
-(19, 18, 1, '10 Pearls', '', NULL, NULL),
-(20, 18, 2, 'Studio Binary', '', NULL, NULL),
-(21, 19, 1, '', '', NULL, NULL),
-(22, 19, 2, '', '', NULL, NULL),
-(23, 20, 1, 'Future Inc.', 'Take care of John Conor', NULL, NULL),
-(24, 20, 2, 'Present Inc.', 'Kill everyone else except for John Conor', NULL, NULL),
-(25, 21, 1, '10Pearls', '- Back-end Python Django Team member', '2015-06-08', '2015-08-09');
+(26, 22, 1, 'Studio Binary', 'Used Laravel to develop a web app for managing shipments', '2015-10-01', '2015-11-01');
 
 -- --------------------------------------------------------
 
@@ -241,15 +210,15 @@ CREATE TABLE IF NOT EXISTS `candidate_experience_required` (
   PRIMARY KEY (`id`),
   KEY `candidate_id` (`candidate_id`),
   KEY `title_id` (`title_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `candidate_experience_required`
 --
 
 INSERT INTO `candidate_experience_required` (`id`, `candidate_id`, `title_id`, `experience_years`) VALUES
-(1, 21, 16, 4),
-(2, 21, 17, 2);
+(3, 22, 16, 4),
+(4, 22, 17, 2);
 
 -- --------------------------------------------------------
 
@@ -266,64 +235,16 @@ CREATE TABLE IF NOT EXISTS `candidate_skills` (
   KEY `candidate_id` (`candidate_id`),
   KEY `skill_id` (`skill_id`),
   KEY `skill_id_2` (`skill_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=98 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=101 ;
 
 --
 -- Dumping data for table `candidate_skills`
 --
 
 INSERT INTO `candidate_skills` (`id`, `candidate_id`, `skill_id`, `level_of_expertise`) VALUES
-(34, 7, 7, 10),
-(35, 7, 8, 10),
-(36, 7, 5, 10),
-(37, 7, 9, 10),
-(50, 11, 7, 5),
-(51, 11, 8, 5),
-(52, 11, 5, 5),
-(53, 11, 9, 5),
-(54, 12, 7, 5),
-(55, 12, 8, 5),
-(56, 12, 5, 5),
-(57, 12, 9, 5),
-(58, 13, 7, 5),
-(59, 13, 8, 5),
-(60, 13, 5, 5),
-(61, 13, 9, 5),
-(62, 14, 2, 3),
-(63, 14, 8, 7),
-(64, 14, 5, 5),
-(65, 14, 9, 6),
-(66, 14, 24, 5),
-(67, 14, 17, 5),
-(69, 17, 28, 8),
-(70, 17, 29, 10),
-(71, 17, 30, 10),
-(72, 18, 2, 9),
-(73, 18, 8, 4),
-(74, 18, 5, 3),
-(75, 18, 9, 7),
-(76, 18, 24, 6),
-(77, 18, 3, 9),
-(78, 18, 4, 9),
-(79, 19, 2, 9),
-(80, 19, 8, 10),
-(81, 19, 5, 3),
-(82, 19, 9, 7),
-(83, 19, 24, 6),
-(84, 19, 3, 9),
-(85, 19, 4, 6),
-(86, 20, 2, 10),
-(87, 20, 8, 10),
-(88, 20, 5, 10),
-(89, 20, 9, 10),
-(90, 20, 24, 10),
-(91, 20, 3, 10),
-(92, 20, 4, 10),
-(93, 21, 28, 4),
-(94, 21, 29, 8),
-(95, 21, 30, 6),
-(96, 21, 2, 9),
-(97, 21, 4, 8);
+(98, 22, 28, 8),
+(99, 22, 29, 9),
+(100, 22, 30, 4);
 
 -- --------------------------------------------------------
 
@@ -465,8 +386,8 @@ CREATE TABLE IF NOT EXISTS `forms` (
 --
 
 INSERT INTO `forms` (`id`, `user_id`, `date_created`, `description`, `responses`, `status`, `deleted`) VALUES
-(1, 1, '2016-01-06', 'Php & MySql Developer', 8, 'ENABLED', 0),
-(11, 1, '2016-03-06', 'Senior Manager Information Systems/Technology', 2, 'ENABLED', 0);
+(1, 1, '2016-01-06', 'Php & MySql Developer', 0, 'ENABLED', 0),
+(11, 1, '2016-03-06', 'Senior Manager Information Systems/Technology', 1, 'ENABLED', 0);
 
 -- --------------------------------------------------------
 
@@ -724,8 +645,8 @@ ALTER TABLE `candidate_experience`
 -- Constraints for table `candidate_experience_required`
 --
 ALTER TABLE `candidate_experience_required`
-  ADD CONSTRAINT `candidate_experience_required_ibfk_2` FOREIGN KEY (`title_id`) REFERENCES `work_titles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `candidate_experience_required_ibfk_1` FOREIGN KEY (`candidate_id`) REFERENCES `candidate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `candidate_experience_required_ibfk_1` FOREIGN KEY (`candidate_id`) REFERENCES `candidate` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `candidate_experience_required_ibfk_2` FOREIGN KEY (`title_id`) REFERENCES `work_titles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `candidate_skills`
