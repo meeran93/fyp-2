@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 session_start();
 include_once("config.php");
@@ -22,7 +22,7 @@ if (isset($_POST['submit'])) {
     }
     else {
         $form_skills = null;
-    }    
+    }
     if (!empty($_POST['requirement_experience'])) { 
         $form_experience = array("experience"=>$_POST['requirement_experience'], "experience_years"=>$_POST['requirement_experience_years'], "priority"=>$_POST['requirement_experience_priority']);
     }
@@ -53,6 +53,7 @@ if (isset($_POST['submit'])) {
                 $degree = $form_education['degree'];
                 $field = $form_education['field'];
                 $priority = $form_education['priority'];
+                $score_education_max = 0;
 
                 foreach($degree as $a => $b) {
 
@@ -63,13 +64,20 @@ if (isset($_POST['submit'])) {
                         '".mysqli_real_escape_string($db, $priority[$a])."'
                         );"
                     ) or die(mysqli_error($db));
+                    $score_education_max += $priority[$a];
                 }
+                //...//
+                mysqli_query($db, "UPDATE forms SET 
+                    score_education_max = '".$score_education_max."'
+                    WHERE id = '".$formID."';"
+                ) or die(mysqli_error($db));
             }
 
             if (!is_null($form_skills)) {
                 
                 $skills = $form_skills['skills'];
                 $priority = $form_skills['priority'];
+                $score_skills_max = 0;
 
                 foreach($skills as $a => $b) {
 
@@ -79,7 +87,12 @@ if (isset($_POST['submit'])) {
                         '".mysqli_real_escape_string($db, $priority[$a])."'
                         );"
                     ) or die(mysqli_error($db));
+                    $score_skills_max += 10 * $priority[$a];
                 }
+                mysqli_query($db, "UPDATE forms SET 
+                    score_skills_max = '".$score_skills_max."'
+                    WHERE id = '".$formID."';"
+                ) or die(mysqli_error($db));
             }
 
             if (!is_null($form_experience)) {
@@ -87,6 +100,7 @@ if (isset($_POST['submit'])) {
                 $experience = $form_experience['experience'];
                 $experience_years = $form_experience['experience_years'];
                 $priority = $form_experience['priority'];
+                $score_experience_max = 0;
 
                 foreach($experience as $a => $b) {
 
@@ -97,13 +111,19 @@ if (isset($_POST['submit'])) {
                         '".mysqli_real_escape_string($db, $priority[$a])."'
                         );"
                     ) or die(mysqli_error($db));
+                    $score_experience_max += $priority[$a];
                 }
+                mysqli_query($db, "UPDATE forms SET 
+                    score_experience_max = '".$score_experience_max."'
+                    WHERE id = '".$formID."';"
+                ) or die(mysqli_error($db));
             }
 
             if (!is_null($form_certification)) {
                 
                 $certification = $form_certification['certification'];
                 $priority = $form_certification['priority'];
+                $score_certification_max = 0;
 
                 foreach($certification as $a => $b) {
 
@@ -113,7 +133,12 @@ if (isset($_POST['submit'])) {
                         '".mysqli_real_escape_string($db, $priority[$a])."'
                         );"
                     ) or die(mysqli_error($db));
+                    $score_certification_max += $priority[$a];
                 }
+                mysqli_query($db, "UPDATE forms SET 
+                    score_certification_max = '".$score_certification_max."'
+                    WHERE id = '".$formID."';"
+                ) or die(mysqli_error($db));
             }
 
             header("location: forms.php?action=success");

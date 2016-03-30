@@ -2,7 +2,7 @@
 
 function score_education($degree, $field, $req_education, $db){
 	
-	$score_education = 0;
+    $score_education = 0;
 
 	$count_1 = 0;	// For checking if basic requirements matched
 	$score_extra = 0;	// Score for all half matching fields
@@ -199,16 +199,25 @@ function score_certification($certification, $req_certification){
 	return $score_certification;
 }
 
-function score_normalized($query){
+function score_normalized($query, $db, $form_id){
 
     $candidate_temp = null;
     $candidate_scores = null;
     $candidate_scores_temp = null;
-    $score_education_max = 0;
-    $score_skills_max = 0;
-    $score_experience_max = 0;
-    $score_certification_max = 0;
-    $score_max = 0;
+    // $score_education_max = 0;
+    // $score_skills_max = 0;
+    // $score_experience_max = 0;
+    // $score_certification_max = 0;
+    // $score_max = 0;
+
+    $query1 = mysqli_query($db, "SELECT score_education_max, score_skills_max, score_experience_max, score_certification_max FROM forms WHERE id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
+    while ($fetch = mysqli_fetch_assoc($query1)) {
+        $score_education_max = $fetch['score_education_max'];
+        $score_skills_max = $fetch['score_skills_max'];
+        $score_experience_max = $fetch['score_experience_max'];
+        $score_certification_max = $fetch['score_certification_max'];
+    }
+
     while ($fetch = mysqli_fetch_assoc($query)) {
         // $candidates[] = array(
   //           'candidate_ID'=>$fetch['id'],
@@ -220,15 +229,31 @@ function score_normalized($query){
   //       );
         if($fetch['score_education'] > $score_education_max){
             $score_education_max = $fetch['score_education'];
+            mysqli_query($db, "UPDATE forms SET 
+                score_education_max = '".$score_education_max."'
+                WHERE id = '".$form_id."';"
+            ) or die(mysqli_error($db));
         }
         if($fetch['score_skills'] > $score_skills_max){
             $score_skills_max = $fetch['score_skills'];
+            mysqli_query($db, "UPDATE forms SET 
+                score_skills_max = '".$score_skills_max."'
+                WHERE id = '".$form_id."';"
+            ) or die(mysqli_error($db));
         }
         if($fetch['score_experience'] > $score_experience_max){
             $score_experience_max = $fetch['score_experience'];
+            mysqli_query($db, "UPDATE forms SET 
+                score_experience_max = '".$score_experience_max."'
+                WHERE id = '".$form_id."';"
+            ) or die(mysqli_error($db));
         }
         if($fetch['score_certification'] > $score_certification_max){
             $score_certification_max = $fetch['score_certification'];
+            mysqli_query($db, "UPDATE forms SET 
+                score_certification_max = '".$score_certification_max."'
+                WHERE id = '".$form_id."';"
+            ) or die(mysqli_error($db));
         }
         $candidate_temp[] = array(
             'candidate_ID'=>$fetch['id'],
@@ -263,9 +288,9 @@ function score_normalized($query){
             $score_certification = $value['score_certification'] / $score_certification_max;
         }
         $score_overall = ($score_education + $score_skills + $score_experience + $score_certification) / 4;
-        if($score_overall > $score_max){
-            $score_max = $score_overall;
-        }
+        // if($score_overall > $score_max){
+        //     $score_max = $score_overall;
+        // }
         $candidate_scores_temp[] = array(
             'score_education' => $score_education * 100,
             'score_skills' => $score_skills * 100,

@@ -19,7 +19,7 @@ if ($result == 0) {
     $candidates = '';
 } else {
     $pageContent .= '<p>There are <strong>'.$result.'</strong> applicants.</p>';
-    $candidates = score_normalized($query);
+    $candidates = score_normalized($query, $db, $form_id);
 }
     
 include "resources/libraries/raintpl/rain.tpl.class.php";

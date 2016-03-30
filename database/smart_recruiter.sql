@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2016 at 11:47 AM
+-- Generation Time: Mar 30, 2016 at 10:01 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -27,59 +27,59 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteFormRequirements`(formID INT)
 BEGIN
 START TRANSACTION;
-	DELETE FROM form_education WHERE form_id = formID;
-	DELETE FROM form_skills WHERE form_id = formID;
+  DELETE FROM form_education WHERE form_id = formID;
+  DELETE FROM form_skills WHERE form_id = formID;
     DELETE FROM form_experience WHERE form_id = formID;
     DELETE FROM form_certification WHERE form_id = formID;
 COMMIT;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertCertification`(
-	IN formID INT, IN certID INT, IN prior INT
+  IN formID INT, IN certID INT, IN prior INT
 )
     NO SQL
 INSERT INTO form_certification(
-	form_id, certificate_id, priority
+  form_id, certificate_id, priority
 ) 
 VALUES 
-	(formID, certID, prior)$$
+  (formID, certID, prior)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertEducation`(IN `formID` INT, IN `degreeID` INT, IN `fieldID` INT, IN `prior` INT)
     NO SQL
 INSERT INTO form_education(
-	form_id, degree_id, field_of_study_id, 
-	priority
+  form_id, degree_id, field_of_study_id, 
+  priority
 ) 
 VALUES 
-	(formID, degreeID, fieldID, prior)$$
+  (formID, degreeID, fieldID, prior)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertExperience`(
-	IN formID INT, IN titleID INT, IN yoe INT, 
-	IN prior INT
+  IN formID INT, IN titleID INT, IN yoe INT, 
+  IN prior INT
 )
     NO SQL
 INSERT INTO form_experience (
-	form_id, title_id, years_of_experience, 
-	priority
+  form_id, title_id, years_of_experience, 
+  priority
 ) 
 VALUES 
-	(formID, titleID, yoe, prior)$$
+  (formID, titleID, yoe, prior)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertSkills`(
-	IN formID INT, IN skillID INT, IN prior INT
+  IN formID INT, IN skillID INT, IN prior INT
 )
     NO SQL
 INSERT INTO form_skills(form_id, skill_id, priority) 
 VALUES 
-	(formID, skillID, prior)$$
+  (formID, skillID, prior)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertToForm`(IN `userID` INT, IN `Ddate` DATE, IN `descr` VARCHAR(255))
     NO SQL
 INSERT INTO forms(
-	user_id, date_created, description
+  user_id, date_created, description
 ) 
 VALUES 
-	(userID, Ddate, descr)$$
+  (userID, Ddate, descr)$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateResponse`(IN `form_id` INT)
     NO SQL
@@ -379,6 +379,10 @@ CREATE TABLE IF NOT EXISTS `forms` (
   `status` varchar(255) NOT NULL DEFAULT 'ENABLED',
   `expiry_date` date DEFAULT NULL,
   `deleted` tinyint(1) NOT NULL DEFAULT '0',
+  `score_education_max` float NOT NULL DEFAULT '0',
+  `score_skills_max` float NOT NULL DEFAULT '0',
+  `score_experience_max` float NOT NULL DEFAULT '0',
+  `score_certification_max` float NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
@@ -387,9 +391,9 @@ CREATE TABLE IF NOT EXISTS `forms` (
 -- Dumping data for table `forms`
 --
 
-INSERT INTO `forms` (`id`, `user_id`, `date_created`, `description`, `responses`, `status`, `expiry_date`, `deleted`) VALUES
-(1, 1, '2016-01-06', 'Php & MySql Developer', 0, 'ENABLED', '2016-03-31', 0),
-(11, 1, '2016-03-06', 'Senior Manager Information Systems/Technology', 1, 'ENABLED', '2016-03-30', 0);
+INSERT INTO `forms` (`id`, `user_id`, `date_created`, `description`, `responses`, `status`, `expiry_date`, `deleted`, `score_education_max`, `score_skills_max`, `score_experience_max`, `score_certification_max`) VALUES
+(1, 1, '2016-01-06', 'Php & MySql Developer', 0, 'ENABLED', '2016-03-31', 0, 0, 0, 0, 0),
+(11, 1, '2016-03-06', 'Senior Manager Information Systems/Technology', 1, 'ENABLED', '2016-03-30', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
