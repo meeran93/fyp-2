@@ -17,7 +17,7 @@ if (isset($_GET['action'])) {
     }
 }
 
-$query = mysqli_query($db, "SELECT field_name, category from field_of_study, category where field_of_study.category_id = category.id ORDER BY field_name") or die(mysqli_error($db));
+$query = mysqli_query($db, "SELECT field_name, category from field_of_study, category where field_of_study.category_id = category.id && user_id = '".$_SESSION['login_userId']."' ORDER BY field_name") or die(mysqli_error($db));
 $result = mysqli_num_rows($query);
 
 if ($result == 0)
