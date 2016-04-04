@@ -18,7 +18,7 @@
 					
 					<!-- Main Form -->
 					<form method="POST" action="create-job-requirement.php">
-						<div class="panel-body"><!-- panel-body -->
+						<div class="panel-body" data-categories='{$categories}'><!-- panel-body -->
 							
 							<!-- Description -->
 							<div class="form-group description"><!-- form-group -->
@@ -31,7 +31,7 @@
 
 							<!-- Education Details -->
 							<div class="form-group education-requirements"><!-- form-group -->
-								<h4 class="col-md-12"><u>Education</u></h4>
+								<h4 class="col-md-12"><u>Education</u><span style="margin-left:5px" class="custom-field-of-study btn btn-xs btn-info pull-right">Add custom 'Field of Study'</span></h4>
 								
 								<div id="educationList" data-degrees='{$degrees}' data-fields='{$fields}'><!-- EducationList -->
 
@@ -70,7 +70,7 @@
 								</div><!-- END EducationList -->
 
 								<div class="add-education-button col-md-8">
-									<input type="button" value="Add Education" class="form-control" id="addEducation" />
+									<input type="button" value="Add Education Requirement" class="form-control" id="addEducation" />
 								</div>
 
 							</div><!-- END form-group -->
@@ -78,7 +78,7 @@
 
 							<!-- Skills Details -->
 							<div class="form-group skills-details"><!-- form-group -->
-								<h4 class="col-md-12"><u>Skills</u></h4>
+								<h4 class="col-md-12"><u>Skills</u><span style="margin-left:5px" class="custom-skill btn btn-xs btn-info pull-right">Add custom 'Skill'</span></h4>
 
 								<div id="skillsList" data-skills='{$skills}'><!-- Skills List -->
 									
@@ -105,7 +105,7 @@
 								</div><!-- END skillsList -->
 
 								<div class="add-skill-button col-md-8">
-									<input type="button" value="Add Skill" class="form-control" id="addSkill" />
+									<input type="button" value="Add Skill Requirement" class="form-control" id="addSkill" />
 								</div>
 								
 							</div><!-- END form-group -->
@@ -113,7 +113,7 @@
 
 							<!-- Experience Details -->
 							<div class="form-group skills-details"><!-- form-group -->
-								<h4 class="col-md-12"><u>Experience</u></h4>
+								<h4 class="col-md-12"><u>Experience</u><span style="margin-left:5px" class="custom-experience btn btn-xs btn-info pull-right">Add custom 'Experience'</span></h4>
 
 								<div id="experienceList" data-titles='{$titles}'><!-- Experience List -->
 
@@ -158,9 +158,9 @@
 
 							<!-- Certification Details -->
 							<div class="form-group skills-details"><!-- form-group -->
-								<h4 class="col-md-12"><u>Certification</u></h4>
+								<h4 class="col-md-12"><u>Certification</u><span style="margin-left:5px" class="custom-certification btn btn-xs btn-info pull-right">Add custom 'Certification'</span></h4>
 								
-								<div id="certificationList" data-certificates='{$certificates}'><!-- Certification List -->
+								<div id="certificationList" data-certifications='{$certifications}'><!-- Certification List -->
 
 									<!-- ============================================================================================== -->	
 									<!-- <div class="candidate-data certification col-md-8">
@@ -186,7 +186,7 @@
 								</div><!-- END Certification List -->
 
 								<div class="add-certificate-button col-md-8">
-									<input type="button" value="Add Certificate" class="form-control" id="addCertificate" />
+									<input type="button" value="Add Certification Requirement" class="form-control" id="addCertificate" />
 								</div>
 								
 							</div><!-- END form-group -->

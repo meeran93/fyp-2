@@ -1,3 +1,4 @@
+
 <?php
 
 session_start();
@@ -148,6 +149,16 @@ if (isset($_POST['submit'])) {
         }
 }
 else {
+    $query = mysqli_query($db, "SELECT * FROM category") or die(mysqli_error($db));
+    $result = mysqli_num_rows($query);
+    while ($fetch = mysqli_fetch_assoc($query)) {
+        $categories[] = array(
+            'category_id'=>$fetch['id'],
+            'category_name'=>$fetch['category']
+        );
+    }
+    $categories = json_encode($categories);
+
     $query = mysqli_query($db, "SELECT * FROM degree") or die(mysqli_error($db));
     $result = mysqli_num_rows($query);
     while ($fetch = mysqli_fetch_assoc($query)) {
@@ -191,12 +202,12 @@ else {
     $query = mysqli_query($db, "SELECT * FROM certificate") or die(mysqli_error($db));
     $result = mysqli_num_rows($query);
     while ($fetch = mysqli_fetch_assoc($query)) {
-        $certificates[] = array(
-            'certificate_id'=>$fetch['id'],
-            'certificate_name'=>$fetch['certificate_name']
+        $certifications[] = array(
+            'certification_id'=>$fetch['id'],
+            'certification_name'=>$fetch['certificate_name']
         );
     }
-    $certificates = json_encode($certificates);
+    $certifications = json_encode($certifications);
 
     include "resources/libraries/raintpl/rain.tpl.class.php";
 
@@ -207,11 +218,12 @@ else {
 
     $tpl->assign('page', 'forms');
     $tpl->assign('pageTitle', $pageTitle);
+    $tpl->assign('categories',$categories);
     $tpl->assign('degrees',$degrees);
     $tpl->assign('fields',$fields);
     $tpl->assign('skills',$skills);
     $tpl->assign('titles',$titles);
-    $tpl->assign('certificates',$certificates);
+    $tpl->assign('certifications',$certifications);
 
     $html = $tpl->draw('create-job-requirement');
 }
