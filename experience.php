@@ -21,7 +21,7 @@ if (isset($_GET['action']))
         }
     }
 
-$query = mysqli_query($db, "SELECT title FROM work_titles") or die(mysqli_error($db));
+$query = mysqli_query($db, "SELECT title FROM work_titles where user_id = '".$_SESSION['login_userId']."'") or die(mysqli_error($db));
 $result = mysqli_num_rows($query);
 
 if ($result == 0)

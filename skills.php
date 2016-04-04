@@ -17,7 +17,7 @@ if (isset($_GET['action'])) {
     }
 }
 
-$query = mysqli_query($db, "SELECT skill, category from skills,category where skills.category_id = category.id ORDER BY skill") or die(mysqli_error($db));
+$query = mysqli_query($db, "SELECT skill, category from skills,category where skills.category_id = category.id && user_id = '".$_SESSION['login_userId']."' ORDER BY skill") or die(mysqli_error($db));
 $result = mysqli_num_rows($query);
 
 if ($result == 0) {
