@@ -18,7 +18,7 @@
 					
 					<!-- Main Form -->
 					<form method="POST" action="edit-job-requirement.php">
-						<div class="panel-body"><!-- panel-body -->
+						<div class="panel-body" data-categories='{$categories}'><!-- panel-body -->
 							
 							<input type="hidden" value="{$form_id}" name="form_ID">
 
@@ -33,7 +33,7 @@
 
 							<!-- Education Details -->
 							<div class="form-group education-requirements"><!-- form-group -->
-								<h4 class="col-md-12"><u>Education</u></h4>
+								<h4 class="col-md-12"><u>Education</u><span style="margin-left:5px" class="custom-field-of-study btn btn-xs btn-info pull-right">Add custom 'Field of Study'</span></h4>
 								
 								<div id="educationList" data-degrees='{$degrees_json}' data-fields='{$fields_json}'><!-- EducationList -->
 
@@ -51,7 +51,7 @@
 										</div>
 										<label class="control-label col-md-1">Field of Study:</label>
 										<div class="col-md-3">
-											<select class="form-control autocomplete-field" name="requirement_field[]" required>
+											<select class="form-control autocomplete-field field-of-study-options" name="requirement_field[]" required>
 												<option value="" disabled>- Select Field -</option>
 												{loop="fields"}
 												<option value="{$value.field_id}" {if="$value1.field_id == $value.field_id"} selected {continue}{/if}>{$value.field_name}</option>
@@ -94,7 +94,7 @@
 
 							<!-- Skills Details -->
 							<div class="form-group skills-details"><!-- form-group -->
-								<h4 class="col-md-12"><u>Skills</u></h4>
+								<h4 class="col-md-12"><u>Skills</u><span style="margin-left:5px" class="custom-skill btn btn-xs btn-info pull-right">Add custom 'Skill'</span></h4>
 
 								<div id="skillsList" data-skills='{$skills_json}'><!-- Skills List -->
 									
@@ -103,7 +103,7 @@
 									<div class="requirement-data skill col-md-10">
 										<label class="control-label col-md-1">Skill:</label>
 										<div class="col-md-5">
-											<select class="form-control autocomplete-field" name="requirement_skill[]" required>
+											<select class="form-control autocomplete-field skill-options" name="requirement_skill[]" required>
 												<option value="" disabled>- Select Skill -</option>
 												{loop="skills"}
 												<option value="{$value.skill_id}" {if="$value1.skill_id == $value.skill_id"} selected {continue}{/if}>{$value.skill_name}</option>
@@ -146,7 +146,7 @@
 
 							<!-- Experience Details -->
 							<div class="form-group skills-details"><!-- form-group -->
-								<h4 class="col-md-12"><u>Experience</u></h4>
+								<h4 class="col-md-12"><u>Experience</u><span style="margin-left:5px" class="custom-experience btn btn-xs btn-info pull-right">Add custom 'Experience'</span></h4>
 
 								<div id="experienceList" data-titles='{$titles_json}'><!-- Experience List -->
 
@@ -155,7 +155,7 @@
 									<div class="requirement-data experience col-md-12">
 										<label class="control-label col-md-1">Field Type:</label>
 										<div class="col-md-4">
-											<select class="form-control autocomplete-field" name="requirement_experience[]" required>
+											<select class="form-control autocomplete-field experience-options" name="requirement_experience[]" required>
 												<option value="" disabled>- Select Title -</option>
 												{loop="titles"}
 												<option value="{$value.title_id}" {if="$value1.title_id == $value.title_id"} selected {continue}{/if}>{$value.title_name}</option>
@@ -202,7 +202,7 @@
 
 							<!-- Certification Details -->
 							<div class="form-group skills-details"><!-- form-group -->
-								<h4 class="col-md-12"><u>Certification</u></h4>
+								<h4 class="col-md-12"><u>Certification</u><span style="margin-left:5px" class="custom-certification btn btn-xs btn-info pull-right">Add custom 'Certification'</span></h4>
 								
 								<div id="certificationList" data-certificates='{$certificates_json}'><!-- Certification List -->
 
@@ -211,7 +211,7 @@
 									<div class="candidate-data certification col-md-8">
 										<label class="control-label col-md-2">Certification:</label>
 										<div class="col-md-4">
-											<select class="form-control autocomplete-field" name="requirement_certification[]" required>
+											<select class="form-control autocomplete-field certification-options" name="requirement_certification[]" required>
 												<option value="" disabled>- Select Certification -</option>
 												{loop="certificates"}
 												<option value="{$value.certificate_id}" {if="$value1.certificate_id == $value.certificate_id"} selected {continue}{/if}>{$value.certificate_name}</option>

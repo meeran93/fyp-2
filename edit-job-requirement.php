@@ -150,6 +150,16 @@ else {
     $result = mysqli_fetch_row($query);
     $description = $result[0];
 
+    $query = mysqli_query($db, "SELECT * FROM category") or die(mysqli_error($db));
+    $result = mysqli_num_rows($query);
+    while ($fetch = mysqli_fetch_assoc($query)) {
+        $categories[] = array(
+            'category_id'=>$fetch['id'],
+            'category_name'=>$fetch['category']
+        );
+    }
+    $categories = json_encode($categories);
+
     $query = mysqli_query($db, "SELECT degree.id as degree_id, field_of_study.id as field_id, form_education.priority, degree.degree_name, field_of_study.field_name FROM form_education, degree, field_of_study WHERE form_education.degree_id = degree.id AND form_education.field_of_study_id = field_of_study.id AND form_education.form_id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
     $result = mysqli_num_rows($query);
     if($result != null) {
@@ -272,6 +282,8 @@ else {
     $tpl->assign('experience_requirements',$experience_requirements);
     $tpl->assign('certification_requirements',$certification_requirements);
 
+    $tpl->assign('categories',$categories);
+    
     $tpl->assign('degrees',$degrees);
     $tpl->assign('degrees_json',$degrees_json);
     
