@@ -260,6 +260,8 @@ function score_normalized($query, $db, $form_id){
             'candidate_date_applied'=>$fetch['date_applied'],
             'candidate_name'=>$fetch['name'],
             'candidate_contact'=>$fetch['contact'],
+            'candidate_expected_salary'=>number_format($fetch['expected_salary']),
+            'candidate_expected_salary_within_range'=>$fetch['expected_salary_within_range'],
             'candidate_resume'=>'resources/candidate-files/'.$fetch['resume'],
             'candidate_status'=>$fetch['status']
         );
@@ -303,10 +305,11 @@ function score_normalized($query, $db, $form_id){
     foreach ($candidate_scores_temp as $key => $value) {
         $candidates[] = array(
             'candidate_ID' => $candidate_temp[$key]['candidate_ID'],
-            
-            'candidate_date_applied' => $candidate_temp[$key]['candidate_date_applied'],
+            'candidate_date_applied' => date_format(date_create($candidate_temp[$key]['candidate_date_applied']),"d-M-Y"),
             'candidate_name' => $candidate_temp[$key]['candidate_name'],
             'candidate_contact' => $candidate_temp[$key]['candidate_contact'],
+            'candidate_expected_salary' => $candidate_temp[$key]['candidate_expected_salary'],
+            'candidate_expected_salary_within_range' => $candidate_temp[$key]['candidate_expected_salary_within_range'],
             'candidate_resume' => $candidate_temp[$key]['candidate_resume'],
             'candidate_status'=> $candidate_temp[$key]['candidate_status'],
 

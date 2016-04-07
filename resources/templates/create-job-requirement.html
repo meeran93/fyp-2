@@ -23,7 +23,7 @@
 							<!-- Description -->
 							<div class="form-group description"><!-- form-group -->
 								<h4 class="col-md-12"><u>Short Description</u></h4>
-								<div class="col-md-10">
+								<div class="col-md-8">
 									<input type="text" class="form-control" name="description" required>
 								</div>
 							</div><!-- END form-group -->
@@ -112,7 +112,7 @@
 							<!-- END Skills Details -->
 
 							<!-- Experience Details -->
-							<div class="form-group skills-details"><!-- form-group -->
+							<div class="form-group experience-details"><!-- form-group -->
 								<h4 class="col-md-12"><u>Experience</u><span style="margin-left:5px" class="custom-experience btn btn-xs btn-info pull-right">Add custom 'Experience'</span></h4>
 
 								<div id="experienceList" data-titles='{$titles}'><!-- Experience List -->
@@ -157,7 +157,7 @@
 							<!-- END Experience Details -->
 
 							<!-- Certification Details -->
-							<div class="form-group skills-details"><!-- form-group -->
+							<div class="form-group certification-details"><!-- form-group -->
 								<h4 class="col-md-12"><u>Certification</u><span style="margin-left:5px" class="custom-certification btn btn-xs btn-info pull-right">Add custom 'Certification'</span></h4>
 								
 								<div id="certificationList" data-certifications='{$certifications}'><!-- Certification List -->
@@ -191,6 +191,36 @@
 								
 							</div><!-- END form-group -->
 							<!-- END Certification Details -->
+
+							<!-- Preferred Maximum Salary -->
+							<div class="form-group salary-range"><!-- form-group -->
+								<h4 class="col-md-12"><u>Salary</u></h4>
+								
+								<div class="col-md-12">
+									<label class="control-label col-md-2">Preferred expected salary (maximum):</label>
+									<div class="col-md-3">
+										<input type="number" class="form-control" name="requirement_salary" min="0" required>
+									</div>
+									<label class="control-label col-md-7">Maximum salary you can afford to pay for the job. You can see in the responses section which of your applicants' expected salary is below or equal to this amount.</label>
+								</div>
+								
+							</div><!-- END form-group -->
+							<!-- END Preferred Maximum Salary -->
+
+							<!-- Form Expiry Date -->
+							<div class="form-group salary-range"><!-- form-group -->
+								<h4 class="col-md-12"><u>Form Expiry</u></h4>
+								
+								<div class="col-md-12">
+									<label class="control-label col-md-2">Form Expiry Date:</label>
+									<div class="col-md-3">
+										<input type="date" class="form-control" name="requirement_expiry_date" min="0" required>
+									</div>
+									<label class="control-label col-md-7">The job application form will be available till this date, after this date it will automatically be disabled and no one will be able to apply for the job using this form.</label>
+								</div><!-- END Certification List -->
+								
+							</div><!-- END form-group -->
+							<!-- END Preferred Maximum Salary -->
 
 						</div><!-- END panel-body -->
 

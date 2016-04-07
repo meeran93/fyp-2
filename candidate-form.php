@@ -4,7 +4,7 @@ session_start();
 include_once("config.php");
 include_once("algorithm-scoring.php");
 
-$query = "SELECT expiry_date,status FROM forms WHERE id='" . mysqli_real_escape_string($db, $_GET['formid']) . "'";
+$query = "SELECT expiry_date,status, preferred_max_salary FROM forms WHERE id='" . mysqli_real_escape_string($db, $_GET['formid']) . "'";
 $result = mysqli_query($db, $query) or die(mysqli_error($db));
 $row = mysqli_fetch_row($result);
 //echo $row[0];
@@ -13,6 +13,7 @@ $row = mysqli_fetch_row($result);
 $today = date("Y-m-d");
 $expiryDate = $row[0];
 $status = $row[1];
+$preferred_max_salary = $row[2];
 //echo $row[1];
 
 if ($today > $expiryDate || !$status === "ENABLED")
@@ -41,6 +42,13 @@ if (isset($_POST['submit'])) {
     $form_address =  $_POST['requirement_address'];
     $form_contact =  $_POST['requirement_contact'];
     $form_email =  $_POST['requirement_email'];
+    $form_expected_salary =  $_POST['requirement_expected_salary'];
+    if($form_expected_salary >= $preferred_max_salary) {
+        $form_expected_salary_within_range = 'YES';
+    }
+    else {
+        $form_expected_salary_within_range = 'NO';
+    }
     
     if (!empty($_FILES['candidate_resume'])) {
         
@@ -112,6 +120,8 @@ if (isset($_POST['submit'])) {
         address,
         contact,
         email,
+        expected_salary,
+        expected_salary_within_range,
         date_applied
         ) VALUES (
         '".mysqli_real_escape_string($db, $_GET['formid'])."',
@@ -121,6 +131,8 @@ if (isset($_POST['submit'])) {
         '".mysqli_real_escape_string($db, $form_address)."',
         '".mysqli_real_escape_string($db, $form_contact)."',
         '".mysqli_real_escape_string($db, $form_email)."',
+        '".mysqli_real_escape_string($db, $form_expected_salary)."',
+        '".mysqli_real_escape_string($db, $form_expected_salary_within_range)."',
         '".mysqli_real_escape_string($db, date("Y-m-d"))."'
         )")) {
 

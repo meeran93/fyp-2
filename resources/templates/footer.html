@@ -21,7 +21,7 @@
         <script type="text/javascript">
 
             $(document).ready(function() {
-
+                
                 // this function will always run automatically whenever the website is loaded
                 $(function() {
                     // initialize rating bars
@@ -34,6 +34,41 @@
                     $('.footable').footable();
                     // initialize autocomplete select box plugin for all select boxes
                     autocompleteSelectBox();
+                });
+
+                // Change status ajax
+                $('.reject-btn, .shortlist-btn').click(function() {
+                    var candidate_id = $(this).data("candidate-id");
+                    var action = $(this).data("action");
+                    var self = $(this);
+                    $.post("change-candidate-status-ajax.php", 
+                        {
+                            candidate_id: candidate_id,
+                            action: action
+                        },
+                        function(data, status) {
+                            if(status==='success') {
+                                console.log(data);
+                                if(action === 'shortlist') {
+                                    self.parent().parent().siblings('.status').html("<u>SHORTLISTED</u>");
+                                    self.attr('disabled','disabled')
+                                    self.parent().attr('title', 'Shortlisted !').tooltip('fixTitle').tooltip('show');
+                                    self.parent().siblings('.reject-btn-div').children().removeAttr("disabled");
+                                    self.parent().siblings('.reject-btn-div').attr('title', 'Reject').tooltip('fixTitle');
+                                }
+                                else if(action === 'reject') {
+                                    self.parent().parent().siblings('.status').html("<u>REJECTED</u>");
+                                    self.attr('disabled','disabled')
+                                    self.parent().attr('title', 'Rejected !').tooltip('fixTitle').tooltip('show');
+                                    self.parent().siblings('.shortlist-btn-div').children().removeAttr("disabled");
+                                    self.parent().siblings('.shortlist-btn-div').attr('title', 'Shortlist').tooltip('fixTitle');
+                                }
+                            }
+                            else {
+                                alert('Sorry, operation failed');
+                            }
+                        }    
+                    );
                 });
                 
                 // Change status to Shortlist

@@ -12,6 +12,8 @@ if (isset($_POST['submit'])) {
 
     // save all data input as variable for later use
     $form_description =  $_POST['description'];
+    $form_preferred_max_salary =  $_POST['requirement_salary'];
+    $form_expiry_date =  $_POST['requirement_expiry_date'];
     
     if (!empty($_POST['requirement_degree'])) {
         $form_education = array("degree"=>$_POST['requirement_degree'], "field"=>$_POST['requirement_field'], "priority"=>$_POST['requirement_education_priority']);
@@ -40,8 +42,7 @@ if (isset($_POST['submit'])) {
 	
     if(mysqli_query($db, "CALL deleteFormRequirements('".$formID."');")) {
             
-        $query = mysqli_query($db, "UPDATE forms SET description='".$form_description."' WHERE id='".mysqli_real_escape_string($db, $formID)."'") or die(mysqli_error($db));
-        // $result = mysqli_execute($query);
+        $query = mysqli_query($db, "UPDATE forms SET description='".$form_description."', preferred_max_salary='".$form_preferred_max_salary."', expiry_date='".$form_expiry_date."' WHERE id='".mysqli_real_escape_string($db, $formID)."'") or die(mysqli_error($db));
 
         if (!is_null($form_education)) {
             
@@ -84,6 +85,7 @@ if (isset($_POST['submit'])) {
                 ) or die(mysqli_error($db));
                 $score_skills_max += 10 * $priority[$a];
             }
+            //...//
             mysqli_query($db, "UPDATE forms SET 
                 score_skills_max = '".$score_skills_max."'
                 WHERE id = '".$formID."';"
@@ -108,6 +110,7 @@ if (isset($_POST['submit'])) {
                 ) or die(mysqli_error($db));
                 $score_experience_max += $priority[$a];
             }
+            //...//
             mysqli_query($db, "UPDATE forms SET 
                 score_experience_max = '".$score_experience_max."'
                 WHERE id = '".$formID."';"
@@ -130,6 +133,7 @@ if (isset($_POST['submit'])) {
                 ) or die(mysqli_error($db));
                 $score_certification_max += $priority[$a];
             }
+            //...//
             mysqli_query($db, "UPDATE forms SET 
                 score_certification_max = '".$score_certification_max."'
                 WHERE id = '".$formID."';"
@@ -146,9 +150,11 @@ else {
 
     $form_id = $_GET['id'];
 
-    $query = mysqli_query($db, "SELECT description FROM forms WHERE id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
+    $query = mysqli_query($db, "SELECT description, expiry_date, preferred_max_salary FROM forms WHERE id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
     $result = mysqli_fetch_row($query);
     $description = $result[0];
+    $expiry_date = $result[1];
+    $preferred_max_salary = $result[2];
 
     $query = mysqli_query($db, "SELECT * FROM category") or die(mysqli_error($db));
     $result = mysqli_num_rows($query);
@@ -276,6 +282,8 @@ else {
     $tpl->assign('pageTitle', $pageTitle);
     $tpl->assign('form_id',$form_id);
     $tpl->assign('description',$description);
+    $tpl->assign('expiry_date',$expiry_date);
+    $tpl->assign('preferred_max_salary',$preferred_max_salary);
 
     $tpl->assign('education_requirements',$education_requirements);
     $tpl->assign('skills_requirements',$skills_requirements);

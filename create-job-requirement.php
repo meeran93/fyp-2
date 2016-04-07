@@ -40,11 +40,15 @@ if (isset($_POST['submit'])) {
     if(mysqli_query($db, "INSERT INTO forms (
         user_id,
         date_created,
-        description
+        description,
+        expiry_date,
+        preferred_max_salary
         ) VALUES (
         '".mysqli_real_escape_string($db, $_SESSION['login_userId'])."',
         '".mysqli_real_escape_string($db, date("Y-m-d"))."',
-        '".mysqli_real_escape_string($db, $_POST['description'])."'
+        '".mysqli_real_escape_string($db, $_POST['description'])."',
+        '".mysqli_real_escape_string($db, $_POST['requirement_expiry_date'])."',
+        '".mysqli_real_escape_string($db, $_POST['requirement_salary'])."'
         )")) {
 
             $formID = mysqli_insert_id($db);
