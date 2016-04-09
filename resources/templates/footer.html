@@ -95,7 +95,7 @@
                     BootstrapDialog.show(
                         {
                             title: 'Add new \'Field of Study\' for adding as a \'Education Requirement\'',
-                            message:'<div><label class="control-label">Field of study: </label><input type="text" class="form-control field_name"></div><label class="control-label">Category: </label></div><select class="form-control field_of_study_category"><option value="" disabled selected>- Select Category -</option>' + getCategories() + '</select>',
+                            message:'<label class="control-label">Field of study: </label><input type="text" class="form-control field_name"><label class="control-label">Category: </label><select class="form-control field_of_study_category"><option value="" disabled selected>- Select Category -</option>' + getCategories() + '</select>',
                             buttons: [ 
                                 {
                                     label: 'Save',
@@ -148,7 +148,7 @@
                     BootstrapDialog.show(
                         {
                             title: 'Add new \'Skill\' for adding as a \'Skill Requirement\'',
-                            message:'<div><label class="control-label">Skill name: </label><input type="text" class="form-control skill_name"></div><label class="control-label">Category: </label></div><select class="form-control skill_category"><option value="" disabled selected>- Select Category -</option>' + getCategories() + '</select>',
+                            message:'<label class="control-label">Skill name: </label><input type="text" class="form-control skill_name"><label class="control-label">Category: </label><select class="form-control skill_category"><option value="" disabled selected>- Select Category -</option>' + getCategories() + '</select>',
                             buttons: [ 
                                 {
                                     label: 'Save',
@@ -200,7 +200,7 @@
                     BootstrapDialog.show(
                         {
                             title: 'Add new \'Experience\' for adding as a \'Experience Requirement\'',
-                            message:'<div><label class="control-label">Experience: </label><input type="text" class="form-control experience_name"></div>',
+                            message:'<label class="control-label">Experience: </label><input type="text" class="form-control experience_name">',
                             buttons: [
                                 {
                                     label: 'Save',
@@ -249,7 +249,7 @@
                     BootstrapDialog.show(
                         {
                             title: 'Add new \'Certification\' for adding as a \'Certification Requirement\'',
-                            message:'<div><label class="control-label">Certification name: </label><input type="text" class="form-control certification_name"></div><label class="control-label">Category: </label></div><select class="form-control certification_category"><option value="" disabled selected>- Select Category -</option>' + getCategories() + '</select>',
+                            message:'<label class="control-label">Certification name: </label><input type="text" class="form-control certification_name"><label class="control-label">Category: </label><select class="form-control certification_category"><option value="" disabled selected>- Select Category -</option>' + getCategories() + '</select>',
                             buttons: [ 
                                 {
                                     label: 'Save',
@@ -300,23 +300,93 @@
                 // END - Custom Requirement addition functionality in Create Form Page
 
                 // START - Change form status button
-                $('.disable-status-btn').click(function() {
-                    var form_id = $(this).data('form-id');
-                    BootstrapDialog.show({
-                        message: 'Are you sure you want to disable the form?',
-                        buttons: [ {
-                            label: 'Yes',
-                            cssClass: 'btn-primary',
-                            action: function(){
-                                window.location.assign("change-form-status.php?id="+form_id);
-                            }
-                        },  {
-                            label: 'No',
-                            action: function(dialogItself){
-                                dialogItself.close();
-                            }
-                        }]
-                    });
+                $('.change-status-btn').click(function() {
+                    var self = $(this);
+                    var form_id = self.data('form-id');
+                    var form_status = self.data('status');
+                    if(form_status==='EXPIRED') {
+                        BootstrapDialog.show({
+                            title: 'Please set the new expiry date',
+                            message:'<div class="row"><div class="col-md-9"><label class="control-label col-md-4">New Expiry date: </label><div class="col-md-6"><input type="date" class="form-control new_expiry_date"></div></div></div>',
+                            buttons: [ {
+                                label: 'Yes',
+                                cssClass: 'btn-primary',
+                                action: function(dialogItself){
+                                    var new_expiry_date = $('.new_expiry_date')[0].value;
+                                    if(!new_expiry_date) {
+                                        BootstrapDialog.alert('Please enter expiry date.');
+                                    }
+                                    else {
+                                        $.post("change-form-status-ajax.php",
+                                            {
+                                                form_id: form_id,
+                                                action: 'ENABLED',
+                                                expiry_date: new_expiry_date
+                                            },
+                                            function(data, status) {
+                                                if(status==='success') {
+                                                    self.removeClass("btn-danger").addClass("btn-success");
+                                                    self.data('status', "ENABLED");
+                                                    self.parent().siblings('.status').html("ENABLED");
+                                                    self.attr('title', 'Disable this form').tooltip('fixTitle');
+                                                    dialogItself.close();
+                                                }
+                                                else {
+                                                    alert('Sorry, new data could not be saved. Please try again');
+                                                    dialogItself.close();
+                                                }
+                                            }    
+                                        );
+                                    }                                        
+                                }
+                            },  {
+                                label: 'No',
+                                action: function(dialogItself){
+                                    dialogItself.close();
+                                }
+                            }]
+                        });
+                    }
+                    else if(form_status==='DISABLED') {
+                        $.post("change-form-status-ajax.php",
+                            {
+                                form_id: form_id,
+                                action: 'ENABLED'
+                            },
+                            function(data, status) {
+                                if(status==='success') {
+                                    console.log(form_id + ' ' + data);
+                                    self.removeClass("btn-default").addClass("btn-success");
+                                    self.data('status', "ENABLED");
+                                    self.parent().siblings('.status').html("ENABLED");
+                                    self.attr('title', 'Disable this form').tooltip('fixTitle');
+                                }
+                                else {
+                                    alert('Sorry, new data could not be saved. Please try again');
+                                }
+                            }    
+                        );
+                    }
+                    else {
+                        $.post("change-form-status-ajax.php",
+                            {
+                                form_id: form_id,
+                                action: 'DISABLED'
+                            },
+                            function(data, status) {
+                                if(status==='success') {
+                                    console.log(form_id + ' ' + data);
+                                    self.removeClass("btn-success").addClass("btn-default");
+                                    self.data('status', "DISABLED");
+                                    self.parent().siblings('.status').html("DISABLED");
+                                    self.attr('title', 'Enable this form').tooltip('fixTitle');
+                                }
+                                else {
+                                    alert('Sorry, new data could not be saved. Please try again');
+                                }
+                            }    
+                        );    
+                    }
                 });
                 // END - Change form status button
 

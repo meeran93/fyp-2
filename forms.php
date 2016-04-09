@@ -28,7 +28,10 @@ $successMsg   = '';
 //     }
 // }
 
-$query = mysqli_query($db, "SELECT * FROM forms WHERE status = 'ENABLED' && user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."' AND deleted=0 ORDER BY date_created DESC") or die(mysqli_error($db));
+$query = mysqli_query($db, "UPDATE forms SET status='EXPIRED' WHERE status='ENABLED' AND expiry_date<=CURDATE() AND user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."'") or die(mysqli_error($db));
+$query = mysqli_query($db, "UPDATE forms SET status='ENABLED' WHERE status='EXPIRED' AND expiry_date>CURDATE() AND user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."'") or die(mysqli_error($db));
+
+$query = mysqli_query($db, "SELECT * FROM forms WHERE user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."' AND deleted=0 ORDER BY date_created DESC") or die(mysqli_error($db));
 $result = mysqli_num_rows($query);
 
 if ($result == 0) {
@@ -42,6 +45,7 @@ if ($result == 0) {
             'form_date'=>date_format(date_create($fetch['date_created']),"d-M-Y"),
             'form_description'=>$fetch['description'],
             'form_responses'=>$fetch['responses'],
+            'form_expiry_date'=>date_format(date_create($fetch['expiry_date']),"d-M-Y"),
             // 'form_public_link'=>shortenUrl('http://www.smartrecruiter.invoiceshelf.com/candidate-form.php?formid='.$fetch['id'].'')
             'form_status'=>$fetch['status']
         );

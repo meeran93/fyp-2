@@ -39,7 +39,6 @@ elseif(isset($_POST['category']) && isset($_POST['skill_name'])) {
 	}
 	else {
 		$result = "New Skill could not be added please try again";
-		var_dump($result);
 	}
 }
 
@@ -56,7 +55,6 @@ elseif(isset($_POST['experience_name'])) {
 	}
 	else {
 		$result = "New Experience could not be added please try again";
-		var_dump($result);
 	}
 }
 
@@ -75,7 +73,6 @@ elseif(isset($_POST['category']) && isset($_POST['certification_name'])) {
 	}
 	else {
 		$result = "New Certification could not be added please try again";
-		var_dump($result);
 	}
 }
 
