@@ -3,36 +3,28 @@
 session_start();
 include_once("config.php");
 include_once("algorithm-scoring.php");
+//isLoggedin($db); ==> Not required here since this is a public page
 
-$query = "SELECT expiry_date,status, preferred_max_salary FROM forms WHERE id='" . mysqli_real_escape_string($db, $_GET['formid']) . "'";
-$result = mysqli_query($db, $query) or die(mysqli_error($db));
-$row = mysqli_fetch_row($result);
-//echo $row[0];
-//echo $_GET['formid'];
-//echo "<script>alert (\"$row[0]\")</script>";
+$query = mysqli_query($db, "SELECT expiry_date, status, preferred_max_salary FROM forms WHERE id='" . mysqli_real_escape_string($db, $_GET['formid']) . "'") or die(mysqli_error($db));
+$result = mysqli_fetch_row($query);
 $today = date("Y-m-d");
-$expiryDate = $row[0];
-$status = $row[1];
-$preferred_max_salary = $row[2];
-//echo $row[1];
-
-if ($today > $expiryDate || !$status === "ENABLED")
-    {
-    if ($status === "ENABLED")
-        {
-        $sql = "UPDATE forms SET status='DISABLED' WHERE id='" . mysqli_real_escape_string($db, $_GET['formid']) . "'";
-        mysqli_query($db, $sql);
+$expiryDate = $result[0];
+$status = $result[1];
+$preferred_max_salary = $result[2];
+if ($today >= $expiryDate || $status !== "ENABLED") {
+    if ($status === "ENABLED") {
+        $sql_query = "UPDATE forms SET status='EXPIRED' WHERE id='" . mysqli_real_escape_string($db, $_GET['formid']) . "'";
+        mysqli_query($db, $sql_query);
         mysqli_close($db);
-        header("Location: candidate-message-expiry.php");
-        }
-      else
-        {
-        header("Location: candidate-message-expiry.php");
-        }
+        header("Location: candidate-message.php?action=expired");
     }
-
-// Not required here since this is a public page
-//isLoggedin($db);
+    else if($status === "EXPIRED"){
+        header("Location: candidate-message.php?action=expired");
+    }
+    else {
+        header("Location: candidate-message.php?action=unavailable");
+    }
+}
 
 if (isset($_POST['submit'])) {
 
@@ -43,7 +35,7 @@ if (isset($_POST['submit'])) {
     $form_contact =  $_POST['requirement_contact'];
     $form_email =  $_POST['requirement_email'];
     $form_expected_salary =  $_POST['requirement_expected_salary'];
-    if($form_expected_salary >= $preferred_max_salary) {
+    if($form_expected_salary <= $preferred_max_salary) {
         $form_expected_salary_within_range = 'YES';
     }
     else {

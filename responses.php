@@ -18,7 +18,7 @@ if ($result == 0) {
     $pageContent .= '<p>There are currently no responses.</p>';
     $candidates = '';
 } else {
-    $pageContent .= '<p>There are <strong>'.$result.'</strong> applicants.</p>';
+    $pageContent .= '<p>These applicants are <strong>scored</strong> according to the <strong>job requirement</strong>.</p><p>There are <strong>'.$result.'</strong> total applicant(s).</p>';
     $candidates = score_normalized($query, $db, $form_id);
 }
     

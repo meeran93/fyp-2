@@ -26,7 +26,7 @@ $result = mysqli_num_rows($query);
 
 if ($result == 0)
     {
-    $pageContent.= '<p>There are currently no titles.</p>';
+    $pageContent.= '<p>You have not created custom experience requirements.</p>';
     $experiences = '';
     }
   else

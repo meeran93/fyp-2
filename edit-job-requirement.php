@@ -140,7 +140,7 @@ if (isset($_POST['submit'])) {
             ) or die(mysqli_error($db));
         }
 
-        header("location: forms.php?action=success");
+        header("location: forms.php");
     }
     else {
         header("location: forms.php?action=failed");

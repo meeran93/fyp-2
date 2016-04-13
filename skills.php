@@ -21,7 +21,7 @@ $query = mysqli_query($db, "SELECT skill, category from skills,category where sk
 $result = mysqli_num_rows($query);
 
 if ($result == 0) {
-    $pageContent .= '<p>There are currently no skills.</p>';
+    $pageContent .= '<p>You have not created any custom skill requirements.</p>';
     $skills = '';
 } else {
     $pageContent .= '<p>There are <strong>'.$result.'</strong> skills already in our database,</p><p><i>feel free to add more</i></p>';

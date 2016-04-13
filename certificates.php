@@ -21,7 +21,7 @@ $query = mysqli_query($db, "SELECT certificate_name,category from certificate,ca
 $result = mysqli_num_rows($query);
 
 if ($result == 0) {
-    $pageContent .= '<p>There are currently no certificates.</p>';
+    $pageContent .= '<p>You have not created any custom certificate requirements.</p>';
     $certificates = '';
 } else {
     $pageContent .= '<p>There are <strong>'.$result.'</strong> certificates already in our database,</p><p><i>feel free to add more</i></p>';

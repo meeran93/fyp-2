@@ -144,11 +144,14 @@ if ( $.fn.DataTable.TableTools ) {
       })
 
 
-    
   $('#reviews').dataTable({ 
-  "iDisplayLength": 10, 
-  "sPaginationType": "bootstrap" });
+    "iDisplayLength": 10, 
+    "sPaginationType": "bootstrap"
+  });
   
-    }(jQuery);
-    
-    	  
+  $('#form-listing').dataTable({ 
+      "iDisplayLength": 10, 
+      "sPaginationType": "bootstrap"
+  }).fnSort( [ [0,'desc'] ] );
+
+}(jQuery);

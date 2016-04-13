@@ -10,6 +10,7 @@
         <script type='text/javascript' src="assets/plugins/bootstrap-datepicker/bootstrap-datepicker.js"></script>
         <script type='text/javascript' src="assets/plugins/form-validator/jquery.form-validator.min.js"></script>
         <script type='text/javascript' src="assets/plugins/datatables/jquery.dataTables.js"></script>
+        <!-- <script type='text/javascript' src="https://cdn.datatables.net/1.10.11/js/jquery.dataTables.min.js"></script> -->
         <script type='text/javascript' src="assets/js/invoiceShelfAdmin.js"></script>
         <script src="assets/plugins/bootstrap-select2/select2.min.js" type="text/javascript"></script>
         <script src="assets/plugins/bootstrap-dialog/js/bootstrap-dialog.js"></script>
@@ -312,7 +313,7 @@
                                 cssClass: 'btn-primary',
                                 action: function(dialogItself){
                                     var new_expiry_date = $('.new_expiry_date')[0].value;
-                                    var temp = new Date(new_expiry_date);
+                                    var desired_expiry_date = new Date(new_expiry_date);
                                     var month_names_short=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];                               
                                     if(!new_expiry_date) {
                                         BootstrapDialog.alert('Please enter expiry date.');
@@ -329,7 +330,11 @@
                                                     self.removeClass("btn-danger").addClass("btn-success");
                                                     self.data('status', "ENABLED");
                                                     self.parent().siblings('.status').html("ENABLED");
-                                                    self.parent().siblings('.expiry-date').html(temp.getDate() + '-' + (month_names_short[temp.getMonth()]) + '-' +  temp.getFullYear());
+                                                    self.parent().siblings('.expiry-date').html(desired_expiry_date.getDate() + 
+                                                        '-' + 
+                                                        (month_names_short[desired_expiry_date.getMonth()]) + 
+                                                        '-' +  
+                                                        desired_expiry_date.getFullYear());
                                                     self.attr('title', 'Disable this form').tooltip('fixTitle');
                                                     dialogItself.close();
                                                 }
@@ -350,24 +355,94 @@
                         });
                     }
                     else if(form_status==='DISABLED') {
-                        $.post("change-form-status-ajax.php",
-                            {
-                                form_id: form_id,
-                                action: 'ENABLED'
-                            },
-                            function(data, status) {
-                                if(status==='success') {
-                                    console.log(form_id + ' ' + data);
-                                    self.removeClass("btn-default").addClass("btn-success");
-                                    self.data('status', "ENABLED");
-                                    self.parent().siblings('.status').html("ENABLED");
-                                    self.attr('title', 'Disable this form').tooltip('fixTitle');
-                                }
-                                else {
-                                    alert('Sorry, new data could not be saved. Please try again');
-                                }
-                            }    
-                        );
+                        var current_expiry_date = new Date(self.parent().siblings('.expiry-date').html());
+                        var today = new Date();
+                        if(current_expiry_date > today) {
+                            $.post("change-form-status-ajax.php",
+                                {
+                                    form_id: form_id,
+                                    action: 'ENABLED'
+                                },
+                                function(data, status) {
+                                    if(status==='success') {
+                                        self.removeClass("btn-default").addClass("btn-success");
+                                        self.data('status', "ENABLED");
+                                        self.parent().siblings('.status').html("ENABLED");
+                                        self.attr('title', 'Disable this form').tooltip('fixTitle');
+                                    }
+                                    else {
+                                        alert('Sorry, new data could not be saved. Please try again');
+                                    }
+                                }    
+                            );
+                        }
+                        else if(current_expiry_date <= today) {
+                            BootstrapDialog.show({
+                                title: 'The form\'s expiry date has passed. To activate this form again, please set a new expiry date',
+                                message:'<div class="row"><div class="col-md-9"><label class="control-label col-md-4">New Expiry date: </label><div class="col-md-6"><input type="date" class="form-control new_expiry_date"></div></div></div>',
+                                buttons: [ {
+                                    label: 'Update',
+                                    cssClass: 'btn-primary',
+                                    action: function(dialogItself){
+                                        var new_expiry_date = $('.new_expiry_date')[0].value;
+                                        var desired_expiry_date = new Date(new_expiry_date);
+                                        var month_names_short=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];                               
+                                        if(!new_expiry_date) {
+                                            BootstrapDialog.alert('Please enter expiry date.');
+                                        }
+                                        else {
+                                            $.post("change-form-status-ajax.php",
+                                                {
+                                                    form_id: form_id,
+                                                    action: 'ENABLED',
+                                                    expiry_date: new_expiry_date
+                                                },
+                                                function(data, status) {
+                                                    if(status==='success') {
+                                                        self.removeClass("btn-default").addClass("btn-success");
+                                                        self.data('status', "ENABLED");
+                                                        self.parent().siblings('.status').html("ENABLED");
+                                                        self.parent().siblings('.expiry-date').html(desired_expiry_date.getDate() + 
+                                                            '-' + 
+                                                            (month_names_short[desired_expiry_date.getMonth()]) + 
+                                                            '-' +  
+                                                            desired_expiry_date.getFullYear());
+                                                        self.attr('title', 'Disable this form').tooltip('fixTitle');
+                                                        dialogItself.close();
+                                                    }
+                                                    else {
+                                                        alert('Sorry, new data could not be saved. Please try again');
+                                                        dialogItself.close();
+                                                    }
+                                                }    
+                                            );
+                                        }                                        
+                                    }
+                                },  {
+                                    label: 'Cancel',
+                                    action: function(dialogItself){
+                                        $.post("change-form-status-ajax.php",
+                                            {
+                                                form_id: form_id,
+                                                action: 'EXPIRED'
+                                            },
+                                            function(data, status) {
+                                                if(status==='success') {
+                                                    self.removeClass("btn-default").addClass("btn-danger");
+                                                    self.data('status', "EXPIRED");
+                                                    self.parent().siblings('.status').html("EXPIRED");
+                                                    self.attr('title', 'Activate this form').tooltip('fixTitle');
+                                                }
+                                                else {
+                                                    alert('Sorry, new data could not be saved. Please try again');
+                                                }
+                                            }    
+                                        );
+                                        dialogItself.close();
+                                    }
+                                }]
+                            });
+                        }
                     }
                     else {
                         $.post("change-form-status-ajax.php",
@@ -377,7 +452,6 @@
                             },
                             function(data, status) {
                                 if(status==='success') {
-                                    console.log(form_id + ' ' + data);
                                     self.removeClass("btn-success").addClass("btn-default");
                                     self.data('status', "DISABLED");
                                     self.parent().siblings('.status').html("DISABLED");

@@ -22,7 +22,7 @@ $result = mysqli_num_rows($query);
 
 if ($result == 0)
 	{
-	$pageContent.= '<p>There are currently no field of studies to display.</p>';
+	$pageContent.= '<p>You have not created any custom education requirements.</p>';
 	$fields_of_study = '';
 	}
   else
