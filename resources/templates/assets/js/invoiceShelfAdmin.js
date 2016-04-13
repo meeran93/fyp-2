@@ -134,21 +134,19 @@ if ( $.fn.DataTable.TableTools ) {
   } );
 }
 
-    !function ($) {
+!function ($) {
 
-      $(function(){
-
-        // popover
-        $("[data-toggle=popover]").popover()
- $(".autocomplete-field").select2();
-      })
-
+  $(function(){
+    // popover
+    $("[data-toggle=popover]").popover();
+    $(".autocomplete-field").select2();
+  })
 
   $('#reviews').dataTable({ 
     "iDisplayLength": 10, 
     "sPaginationType": "bootstrap"
   });
-  
+
   $('#form-listing').dataTable({ 
       "iDisplayLength": 10, 
       "sPaginationType": "bootstrap"
