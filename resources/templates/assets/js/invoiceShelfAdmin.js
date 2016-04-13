@@ -146,7 +146,7 @@ if ( $.fn.DataTable.TableTools ) {
 
     
   $('#reviews').dataTable({ 
-  "iDisplayLength": 15, 
+  "iDisplayLength": 10, 
   "sPaginationType": "bootstrap" });
   
     }(jQuery);

@@ -28,8 +28,10 @@ $successMsg   = '';
 //     }
 // }
 
-$query = mysqli_query($db, "UPDATE forms SET status='EXPIRED' WHERE status='ENABLED' AND expiry_date<=CURDATE() AND user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."'") or die(mysqli_error($db));
-$query = mysqli_query($db, "UPDATE forms SET status='ENABLED' WHERE status='EXPIRED' AND expiry_date>CURDATE() AND user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."'") or die(mysqli_error($db));
+// $query = mysqli_query($db, "UPDATE forms SET status='EXPIRED' WHERE status='ENABLED' AND expiry_date<=CURDATE() AND user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."'") or die(mysqli_error($db));
+// $query = mysqli_query($db, "UPDATE forms SET status='ENABLED' WHERE status='EXPIRED' AND expiry_date>CURDATE() AND user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."'") or die(mysqli_error($db));
+
+mysqli_query($db, "CALL updateFormStatus('".mysqli_real_escape_string($db, $_SESSION['login_userId'])."');");
 
 $query = mysqli_query($db, "SELECT * FROM forms WHERE user_id='".mysqli_real_escape_string($db, $_SESSION['login_userId'])."' AND deleted=0 ORDER BY date_created DESC") or die(mysqli_error($db));
 $result = mysqli_num_rows($query);

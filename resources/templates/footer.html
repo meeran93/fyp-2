@@ -72,15 +72,14 @@
                 });
                 
                 // Change status to Shortlist
-                $('#demo li a').click(function() {
-                    var candidate_id = $('#menu1').val($(this).data('id')).val();
-                    var form_id = $('#menu1').val($(this).data('form-id')).val();
+                // $('#demo li a').click(function() {
+                //     var candidate_id = $('#menu1').val($(this).data('id')).val();
+                //     var form_id = $('#menu1').val($(this).data('form-id')).val();
  
-                    var data = $('#menu1').val($(this).data('value')).val();
+                //     var data = $('#menu1').val($(this).data('value')).val();
 
-                   window.location.assign("shortlist.php?id="+candidate_id+"&form_id="+form_id+"&status_data="+data);
-                           
-                });
+                //    window.location.assign("shortlist.php?id="+candidate_id+"&form_id="+form_id+"&status_data="+data);           
+                // });
 
                 // START - Custom Requirement addition functionality in Create Form Page
                 var getCategories = function() {
@@ -298,7 +297,7 @@
                     );
                 });
                 // END - Custom Requirement addition functionality in Create Form Page
-
+            
                 // START - Change form status button
                 $('.change-status-btn').click(function() {
                     var self = $(this);
@@ -313,6 +312,8 @@
                                 cssClass: 'btn-primary',
                                 action: function(dialogItself){
                                     var new_expiry_date = $('.new_expiry_date')[0].value;
+                                    var temp = new Date(new_expiry_date);
+                                    var month_names_short=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];                               
                                     if(!new_expiry_date) {
                                         BootstrapDialog.alert('Please enter expiry date.');
                                     }
@@ -328,6 +329,7 @@
                                                     self.removeClass("btn-danger").addClass("btn-success");
                                                     self.data('status', "ENABLED");
                                                     self.parent().siblings('.status').html("ENABLED");
+                                                    self.parent().siblings('.expiry-date').html(temp.getDate() + '-' + (month_names_short[temp.getMonth()]) + '-' +  temp.getFullYear());
                                                     self.attr('title', 'Disable this form').tooltip('fixTitle');
                                                     dialogItself.close();
                                                 }
