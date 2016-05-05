@@ -20,14 +20,24 @@
 					<form method="POST" action="create-job-requirement.php">
 						<div class="panel-body" data-categories='{$categories}'><!-- panel-body -->
 							
-							<!-- Description -->
+							<!-- Job Title -->
 							<div class="form-group description"><!-- form-group -->
-								<h4 class="col-md-12"><u>Short Description</u></h4>
+								<h4 class="col-md-12"><u>Job Title</u></h4>
 								<div class="col-md-8">
 									<input type="text" class="form-control" name="description" required>
 								</div>
 							</div><!-- END form-group -->
-							<!-- END Description -->
+							<!-- END Job Title -->
+
+							<!-- Job Description -->
+							<div class="form-group description"><!-- form-group -->
+								<h4 class="col-md-12"><u>Job Description</u></h4>
+								<p class="col-md-12">Enter Complete Job Description: </p>
+								<div class="col-md-9">
+									<textarea class="form-control" name="job_description" required></textarea>
+								</div>
+							</div><!-- END form-group -->
+							<!-- END Job Description -->
 
 							<!-- Education Details -->
 							<div class="form-group education-requirements"><!-- form-group -->

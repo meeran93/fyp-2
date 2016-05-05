@@ -34,8 +34,7 @@
     <link href="assets/plugins/jQuery-TE_v.1.4.0/jquery-te-1.4.0.css" rel="stylesheet" type="text/css" />
     <!-- Bar rating stylesheet -->
     <link href="assets/plugins/barrating/css/bars-1to10.css" rel="stylesheet" type="text/css" />
-
-    <!-- <link href="https://cdn.datatables.net/1.10.11/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" /> -->
+    <!-- DataTables stylesheet -->
     <link href="assets/plugins/datatables/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
 
     <style type="text/css">
@@ -87,6 +86,14 @@
               <li><a href="certificates.php">Certifications</a></li>
               <li><a href="fields-of-study.php">Education</a></li>
               <li><a href="experience.php">Experiences</a></li>
+            </ul>
+          </li>
+          <li class="dropdown {if="$page == 'skills'"}active{/if} {if="$page == 'certificates'"}active{/if} 
+          {if="$page == 'fields-of-study'"}active{/if}{if="$page == 'experiences'"}active{/if}" >
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-cog"></span> Settings <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="skills.php">Interview email</a></li>
+              <li><a href="#">Change password</a></li>
             </ul>
           </li>
         </ul>
