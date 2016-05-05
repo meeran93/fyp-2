@@ -25,18 +25,18 @@
           <thead>
             <tr>
                 <th width="11%">Date Created</th>
-                <th>Description</th>                
+                <th>Job Title</th>                
                 <th width="9%">Responses</th>
                 <th width="10%" data-hide="phone">Expiry Date</th>
                 <th data-hide="phone">Status</th>
-                <th data-hide="phone">Actions</th>
+                <th width="30%" data-hide="phone">Actions</th>
             </tr>
           </thead>
           <tbody>
           {loop="forms"}
             <tr>
                 <td>{$value.form_date}</td>
-                <td>{$value.form_description}</td>
+                <td>{$value.form_job_title}</td>
                 <td>{$value.form_responses}</td>
                 <td class="expiry-date">{$value.form_expiry_date}</td>
                 <td class="status">{$value.form_status}</td>
@@ -47,7 +47,7 @@
 
                   <a {if="$value.form_status === 'ENABLED'"}class="change-status-btn btn btn-sm btn-success" title="Disable this form"{/if} {if="$value.form_status === 'DISABLED'"}class="change-status-btn btn btn-sm btn-default" title="Enable this form"{/if} {if="$value.form_status === 'EXPIRED'"}class="change-status-btn btn btn-sm btn-danger" title="Activate this form"{/if} data-form-id="{$value.form_ID}" data-status="{$value.form_status}" data-toggle="tooltip" data-placement="top"><span class="glyphicon glyphicon-off"></span></a>
 
-                  <a class="clipboard-btn btn btn-sm btn-default"  id="{$value.form_ID}" data-toggle="tooltip" data-placement="right" title="Copy application form link" data-clipboard-action="copy" data-clipboard-text="127.0.0.1/fyp-2/candidate-form.php?formid={$value.form_ID}"><img src="assets/img/clippy.svg" alt="Copy"></a>
+                  <a class="clipboard-btn btn btn-sm btn-default"  id="{$value.form_ID}" data-toggle="tooltip" data-placement="right" title="Copy application form link" data-clipboard-action="copy" data-clipboard-text="{$value.form_public_link}"><img src="assets/img/clippy.svg" alt="Copy"></a>
 				        </td>
             </tr>
           {/loop}

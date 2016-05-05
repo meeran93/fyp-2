@@ -10,7 +10,8 @@ $pageTitle = 'Enter Job Requirement';
 if (isset($_POST['submit'])) {
 
     // save all data input as variable for later use
-    $form_description =  $_POST['description'];
+    $form_job_title =  $_POST['job_title'];
+    $form_job_description =  $_POST['job_description'];
     
     if (!empty($_POST['requirement_degree'])) {
         $form_education = array("degree"=>$_POST['requirement_degree'], "field"=>$_POST['requirement_field'], "priority"=>$_POST['requirement_education_priority']);
@@ -40,13 +41,15 @@ if (isset($_POST['submit'])) {
     if(mysqli_query($db, "INSERT INTO forms (
         user_id,
         date_created,
-        description,
+        job_title,
+        job_description,
         expiry_date,
         preferred_max_salary
         ) VALUES (
         '".mysqli_real_escape_string($db, $_SESSION['login_userId'])."',
         '".mysqli_real_escape_string($db, date("Y-m-d"))."',
-        '".mysqli_real_escape_string($db, $_POST['description'])."',
+        '".mysqli_real_escape_string($db, $form_job_title)."',
+        '".mysqli_real_escape_string($db, $form_job_description)."',
         '".mysqli_real_escape_string($db, $_POST['requirement_expiry_date'])."',
         '".mysqli_real_escape_string($db, $_POST['requirement_salary'])."'
         )")) {

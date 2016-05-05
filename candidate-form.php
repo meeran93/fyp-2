@@ -322,9 +322,9 @@ if (isset($_POST['submit'])) {
 } else {
     $form_id = $_GET['formid'];
 
-    $query = mysqli_query($db, "SELECT description FROM forms WHERE id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
+    $query = mysqli_query($db, "SELECT job_title FROM forms WHERE id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
     $result = mysqli_fetch_row($query);
-    $description = $result[0];
+    $job_title = $result[0];
 
     $query = mysqli_query($db, "SELECT * FROM degree") or die(mysqli_error($db));
     $result = mysqli_num_rows($query);
@@ -433,7 +433,7 @@ if (isset($_POST['submit'])) {
     $tpl->assign('page', 'forms');
     
     $tpl->assign('formid', $form_id);
-    $tpl->assign('description',$description);
+    $tpl->assign('job_title',$job_title);
 
     $tpl->assign('degrees',$degrees);
     $tpl->assign('fields',$fields);

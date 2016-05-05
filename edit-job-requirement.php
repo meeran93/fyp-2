@@ -11,7 +11,8 @@ if (isset($_POST['submit'])) {
     $formID = $_POST['form_ID'];
 
     // save all data input as variable for later use
-    $form_description =  $_POST['description'];
+    $form_job_title =  $_POST['job_title'];
+    $form_job_description =  $_POST['job_description'];
     $form_preferred_max_salary =  $_POST['requirement_salary'];
     $form_expiry_date =  $_POST['requirement_expiry_date'];
     
@@ -42,7 +43,7 @@ if (isset($_POST['submit'])) {
 	
     if(mysqli_query($db, "CALL deleteFormRequirements('".$formID."');")) {
             
-        $query = mysqli_query($db, "UPDATE forms SET description='".$form_description."', preferred_max_salary='".$form_preferred_max_salary."', expiry_date='".$form_expiry_date."' WHERE id='".mysqli_real_escape_string($db, $formID)."'") or die(mysqli_error($db));
+        $query = mysqli_query($db, "UPDATE forms SET job_title='".$form_job_title."', job_description='".$form_job_description."', preferred_max_salary='".$form_preferred_max_salary."', expiry_date='".$form_expiry_date."' WHERE id='".mysqli_real_escape_string($db, $formID)."'") or die(mysqli_error($db));
 
         if (!is_null($form_education)) {
             
@@ -150,11 +151,12 @@ else {
 
     $form_id = $_GET['id'];
 
-    $query = mysqli_query($db, "SELECT description, expiry_date, preferred_max_salary FROM forms WHERE id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
+    $query = mysqli_query($db, "SELECT job_title, job_description, expiry_date, preferred_max_salary FROM forms WHERE id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
     $result = mysqli_fetch_row($query);
-    $description = $result[0];
-    $expiry_date = $result[1];
-    $preferred_max_salary = $result[2];
+    $job_title = $result[0];
+    $job_description = $result[1];
+    $expiry_date = $result[2];
+    $preferred_max_salary = $result[3];
 
     $query = mysqli_query($db, "SELECT * FROM category") or die(mysqli_error($db));
     $result = mysqli_num_rows($query);
@@ -281,7 +283,8 @@ else {
     $tpl->assign('page', 'forms');
     $tpl->assign('pageTitle', $pageTitle);
     $tpl->assign('form_id',$form_id);
-    $tpl->assign('description',$description);
+    $tpl->assign('job_title',$job_title);
+    $tpl->assign('job_description',$job_description);
     $tpl->assign('expiry_date',$expiry_date);
     $tpl->assign('preferred_max_salary',$preferred_max_salary);
 

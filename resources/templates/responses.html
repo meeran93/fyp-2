@@ -21,7 +21,7 @@
                 <th data-hide="phone,tablet" width="9%">Experience (%)</th>
                 <th data-hide="phone,tablet" width="10%">Certification (%)</th>
                 <th width="10%">Total Score (%)</th>
-                <th data-hide="phone" width="22%">Actions</th>
+                <th data-hide="phone" width="15%">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -49,9 +49,9 @@
                     <a class="btn btn-sm btn-danger reject-btn" {if="$value.candidate_status === 'REJECTED'"}disabled{/if} data-candidate-id="{$value.candidate_ID}" data-action="reject"><span class="glyphicon glyphicon-remove"></span></a>
                   </div>
 
-                  <div style="display: inline-block; cursor:pointer; line-height:0;" data-toggle="tooltip" data-placement="right" {if="$value.candidate_status === 'SHORTLISTED'"} title="Send interview email" {else} title="Need to shortlist first" {/if} class="interview-btn-div">
+                  <!-- <div style="display: inline-block; cursor:pointer; line-height:0;" data-toggle="tooltip" data-placement="right" {if="$value.candidate_status === 'SHORTLISTED'"} title="Send interview email" {else} title="Need to shortlist first" {/if} class="interview-btn-div">
                     <a class="btn btn-sm btn-primary interview-btn" {if="$value.candidate_status !== 'SHORTLISTED'"}disabled{/if} data-candidate-id="{$value.candidate_ID}" data-action="interview"><span class="glyphicon glyphicon-envelope"></span></a>
-                  </div>
+                  </div> -->
 
                 </td>
               </tr>
