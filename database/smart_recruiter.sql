@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 05, 2016 at 07:39 PM
+-- Generation Time: May 24, 2016 at 03:07 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -739,6 +739,14 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `company_name` varchar(100) NOT NULL,
+  `company_website` varchar(255) DEFAULT NULL,
+  `contact` varchar(15) DEFAULT NULL,
+  `company_fb_page` varchar(255) DEFAULT NULL,
+  `company_twitter_handle` varchar(255) DEFAULT NULL,
+  `company_linkedin_page` varchar(255) DEFAULT NULL,
+  `email_default_subject` varchar(255) DEFAULT NULL,
+  `email_default_message` text,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
@@ -746,9 +754,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `name`, `email`, `password`) VALUES
-(1, 'Admin', 'admin@admin.com', 'admin'),
-(2, 'Rayan Taqdees', 'rayan.taqdees@objectsynergy.com', 'objectsynergy');
+INSERT INTO `user` (`id`, `name`, `email`, `password`, `company_name`, `company_website`, `contact`, `company_fb_page`, `company_twitter_handle`, `company_linkedin_page`, `email_default_subject`, `email_default_message`) VALUES
+(1, 'Admin', 'admin@admin.com', 'admin', 'Smart Recruiter', 'http://google.com', '03212863308', NULL, NULL, NULL, 'Thank you for application', 'Hi Muhammad,\n\nThank you for your interest. We wanted to let you know we received your application and we are delighted that you would consider joining our team.\n\nOur team will review your application and will be in touch if your qualifications match our needs for the role. If you are not selected for this position, keep an eye on our jobs page as we''re growing and adding openings.\n\nBest,\nThe SmartRecruit Team'),
+(2, 'Rayan Taqdees', 'rayan.taqdees@objectsynergy.com', 'objectsynergy', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
