@@ -44,6 +44,7 @@ function construct_email($company_name, $candidate_name, $email_default_message,
         $html .= '</p></td></tr></table>';
     }
     $html .= '<span class="clear"></span> </td></tr></table> </td></tr></table> </div></td><td></td></tr></table></body></html>';
+    return $html;
 }
 
 if (isset($_POST['submit'])) {
@@ -148,211 +149,210 @@ if (isset($_POST['submit'])) {
         '".mysqli_real_escape_string($db, date("Y-m-d"))."'
         )")) {
 
-            $candidateID = mysqli_insert_id($db);
+        $candidateID = mysqli_insert_id($db);
 
-            $req_education = null;
-            $req_skill = null;
-            $req_experience = null;
-            $req_certification = null;
+        $req_education = null;
+        $req_skill = null;
+        $req_experience = null;
+        $req_certification = null;
 
-            $score_education = 0;
-            $score_skills = 0;
-            $score_experience = 0;
-            $score_certification = 0;
-            $score_overall = 0;
+        $score_education = 0;
+        $score_skills = 0;
+        $score_experience = 0;
+        $score_certification = 0;
+        $score_overall = 0;
 
-            // load form data
-            $query = mysqli_query($db, "SELECT degree_id, field_of_study_id, priority FROM form_education WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
-            $result = mysqli_num_rows($query);
-            while ($fetch = mysqli_fetch_assoc($query)) {
-                $req_education[] = array(
-                    'degree_id'=>$fetch['degree_id'],
-                    'field_id'=>$fetch['field_of_study_id'],
-                    'priority'=>$fetch['priority']
-                );
+        // load form data
+        $query = mysqli_query($db, "SELECT degree_id, field_of_study_id, priority FROM form_education WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
+        $result = mysqli_num_rows($query);
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            $req_education[] = array(
+                'degree_id'=>$fetch['degree_id'],
+                'field_id'=>$fetch['field_of_study_id'],
+                'priority'=>$fetch['priority']
+            );
+        }
+        $query = mysqli_query($db, "SELECT skill_id, priority FROM form_skills WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
+        $result = mysqli_num_rows($query);
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            $req_skill[] = array(
+                'skill_id'=>$fetch['skill_id'],
+                'priority'=>$fetch['priority']
+            );
+        }
+        $query = mysqli_query($db, "SELECT title_id, years_of_experience, priority FROM form_experience WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
+        $result = mysqli_num_rows($query);
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            $req_experience[] = array(
+                'title_id'=>$fetch['title_id'],
+                'years_of_experience'=>$fetch['years_of_experience'],
+                'priority'=>$fetch['priority']
+            );
+        }
+        $query = mysqli_query($db, "SELECT certificate_id, priority FROM form_certification WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
+        $result = mysqli_num_rows($query);
+        while ($fetch = mysqli_fetch_assoc($query)) {
+            $req_certification[] = array(
+                'certificate_id'=>$fetch['certificate_id'],
+                'priority'=>$fetch['priority']
+            );
+        }
+        
+        if (!is_null($form_education)) {
+
+            $school = $form_education['school'];
+            $degree = $form_education['degree'];
+            $field = $form_education['field'];
+            $start_date = $form_education['start_date'];
+            $end_date = $form_education['end_date'];
+
+            foreach($school as $a => $b) {
+
+                mysqli_query($db, "INSERT INTO candidate_education (
+                    candidate_id,
+                    school,
+                    degree_id,
+                    field_id,
+                    start_date,
+                    end_date
+                    ) VALUES (
+                    '".$candidateID."',
+                    '".mysqli_real_escape_string($db, $school[$a])."',
+                    '".mysqli_real_escape_string($db, $degree[$a])."',
+                    '".mysqli_real_escape_string($db, $field[$a])."',
+                    '".mysqli_real_escape_string($db, $start_date[$a])."',
+                    '".mysqli_real_escape_string($db, $end_date[$a])."'
+                    );"
+                ) or die(mysqli_error($db));
             }
-            $query = mysqli_query($db, "SELECT skill_id, priority FROM form_skills WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
-            $result = mysqli_num_rows($query);
-            while ($fetch = mysqli_fetch_assoc($query)) {
-                $req_skill[] = array(
-                    'skill_id'=>$fetch['skill_id'],
-                    'priority'=>$fetch['priority']
-                );
-            }
-            $query = mysqli_query($db, "SELECT title_id, years_of_experience, priority FROM form_experience WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
-            $result = mysqli_num_rows($query);
-            while ($fetch = mysqli_fetch_assoc($query)) {
-                $req_experience[] = array(
-                    'title_id'=>$fetch['title_id'],
-                    'years_of_experience'=>$fetch['years_of_experience'],
-                    'priority'=>$fetch['priority']
-                );
-            }
-            $query = mysqli_query($db, "SELECT certificate_id, priority FROM form_certification WHERE form_id = '".$_GET['formid']."'") or die(mysqli_error($db));
-            $result = mysqli_num_rows($query);
-            while ($fetch = mysqli_fetch_assoc($query)) {
-                $req_certification[] = array(
-                    'certificate_id'=>$fetch['certificate_id'],
-                    'priority'=>$fetch['priority']
-                );
-            }
+            // score education
+            $score_education = score_education($degree, $field, $req_education, $db);
+        }
+
+        if (!is_null($form_skills)) {
             
-            if (!is_null($form_education)) {
+            $skills = $form_skills['skills'];
+            $level_of_expertise = $form_skills['level_of_expertise'];
 
-                $school = $form_education['school'];
-                $degree = $form_education['degree'];
-                $field = $form_education['field'];
-                $start_date = $form_education['start_date'];
-                $end_date = $form_education['end_date'];
+            foreach($skills as $a => $b) {
 
-                foreach($school as $a => $b) {
-
-                    mysqli_query($db, "INSERT INTO candidate_education (
-                        candidate_id,
-                        school,
-                        degree_id,
-                        field_id,
-                        start_date,
-                        end_date
-                        ) VALUES (
-                        '".$candidateID."',
-                        '".mysqli_real_escape_string($db, $school[$a])."',
-                        '".mysqli_real_escape_string($db, $degree[$a])."',
-                        '".mysqli_real_escape_string($db, $field[$a])."',
-                        '".mysqli_real_escape_string($db, $start_date[$a])."',
-                        '".mysqli_real_escape_string($db, $end_date[$a])."'
-                        );"
-                    ) or die(mysqli_error($db));
-                }
-                // score education
-                $score_education = score_education($degree, $field, $req_education, $db);
+                mysqli_query($db, "INSERT INTO candidate_skills (
+                    candidate_id,
+                    skill_id,
+                    level_of_expertise
+                    ) VALUES (
+                    '".$candidateID."',
+                    '".mysqli_real_escape_string($db, $skills[$a])."',
+                    '".mysqli_real_escape_string($db, $level_of_expertise[$a])."'
+                    );"
+                ) or die(mysqli_error($db));
             }
+            // score skills
+            $score_skills = score_skills($skills, $level_of_expertise, $req_skill);
+        }
 
-            if (!is_null($form_skills)) {
-                
-                $skills = $form_skills['skills'];
-                $level_of_expertise = $form_skills['level_of_expertise'];
+        if (!is_null($form_experience_required)) {
 
-                foreach($skills as $a => $b) {
+            $experience = $form_experience_required['experience'];
+            $experience_years = $form_experience_required['experience_years'];
 
-                    mysqli_query($db, "INSERT INTO candidate_skills (
+            foreach($experience as $a => $b) {
+
+                mysqli_query($db, "INSERT INTO candidate_experience_required (
                         candidate_id,
-                        skill_id,
-                        level_of_expertise
-                        ) VALUES (
-                        '".$candidateID."',
-                        '".mysqli_real_escape_string($db, $skills[$a])."',
-                        '".mysqli_real_escape_string($db, $level_of_expertise[$a])."'
-                        );"
-                    ) or die(mysqli_error($db));
-                }
-                // score skills
-                $score_skills = score_skills($skills, $level_of_expertise, $req_skill);
-            }
-
-            if (!is_null($form_experience_required)) {
-
-                $experience = $form_experience_required['experience'];
-                $experience_years = $form_experience_required['experience_years'];
-
-                foreach($experience as $a => $b) {
-
-                    mysqli_query($db, "INSERT INTO candidate_experience_required (
-                            candidate_id,
-                            title_id,
-                            experience_years
-                            ) VALUES (
-                            '".$candidateID."',
-                            '".mysqli_real_escape_string($db, $experience[$a])."',
-                            '".mysqli_real_escape_string($db, $experience_years[$a])."'
-                            );"
-                    ) or die(mysqli_error($db));
-                }
-                // score experience
-                $score_experience = score_experience($experience, $experience_years, $req_experience);
-            }
-
-            if (!is_null($form_experience)) {
-                
-                $company = $form_experience['company'];
-                $title = $form_experience['title'];
-                $start_date = $form_experience['start_date'];
-                $end_date = $form_experience['end_date'];
-                $description = $form_experience['description'];
-
-                foreach($company as $a => $b) {
-
-                    mysqli_query($db, "INSERT INTO candidate_experience (
-                        candidate_id,
-                        company,
                         title_id,
-                        start_date,
-                        end_date,
-                        description
+                        experience_years
                         ) VALUES (
                         '".$candidateID."',
-                        '".mysqli_real_escape_string($db, $company[$a])."',
-                        '".mysqli_real_escape_string($db, $title[$a])."',
-                        '".mysqli_real_escape_string($db, $start_date[$a])."',
-                        '".mysqli_real_escape_string($db, $end_date[$a])."',
-                        '".mysqli_real_escape_string($db, $description[$a])."'
+                        '".mysqli_real_escape_string($db, $experience[$a])."',
+                        '".mysqli_real_escape_string($db, $experience_years[$a])."'
                         );"
-                    ) or die(mysqli_error($db));
-                }
+                ) or die(mysqli_error($db));
             }
+            // score experience
+            $score_experience = score_experience($experience, $experience_years, $req_experience);
+        }
 
-            if (!is_null($form_certification)) {
-                
-                $certification = $form_certification['certification'];
-                $certification_date = $form_certification['certification_date'];
-
-                foreach($certification as $a => $b) {
-
-                    mysqli_query($db, "INSERT INTO candidate_certification (
-                        candidate_id,
-                        certificate_id,
-                        date_awarded
-                        ) VALUES (
-                        '".$candidateID."',
-                        '".mysqli_real_escape_string($db, $certification[$a])."',
-                        '".mysqli_real_escape_string($db, $certification_date[$a])."'
-                        );"
-                    ) or die(mysqli_error($db));
-                }
-                // score certification
-                $score_certification = score_certification($certification, $req_certification);
-            }
-            // update score fields in table
-            mysqli_query($db, "UPDATE candidate SET 
-                score_education = '".$score_education."',
-                score_skills = '".$score_skills."',
-                score_experience = '".$score_experience."',
-                score_certification = '".$score_certification."'
-                WHERE id = '".$candidateID."';"
-            ) or die(mysqli_error($db));
+        if (!is_null($form_experience)) {
             
-            mysqli_query($db, "CALL updateResponse('".mysqli_real_escape_string($db, $_GET['formid'])."')") or die(mysqli_error($db));
-            
-            $query = mysqli_query($db, "SELECT email, company_name, company_website, contact, company_fb_page, company_twitter_handle, company_linkedin_page, email_default_subject, email_default_message FROM user WHERE id=(select user_id from forms where id='" . mysqli_real_escape_string($db, $_GET['formid']) . ")'") or die(mysqli_error($db));
-            $user_details = mysqli_fetch_array($query, MYSQLI_ASSOC);
-            $mail = new PHPMailer;
-            $mail->setFrom($user_details['email'], $user_details['email']);
-            $mail->addAddress($form_email, $form_name);
-            $mail->Subject = $user_details['email_default_subject'];
-            $mail->msgHTML(construct_email( $user_details['company_name'], $form_name, $user_details['email_default_message'], $user_details['company_website'], $user_details['company_fb_page'], $user_details['company_twitter_handle'], $user_details['company_linkedin_page'], $user_details['contact'], $user_details['email'] ) );
-            $mail->addAttachment('resources/company-profiles/company-profile.pdf');
-            if (!$mail->send()) {
-                header("location: candidate-message.php?action=fail");
-            } else {
-                header("location: candidate-message.php?action=success");
+            $company = $form_experience['company'];
+            $title = $form_experience['title'];
+            $start_date = $form_experience['start_date'];
+            $end_date = $form_experience['end_date'];
+            $description = $form_experience['description'];
+
+            foreach($company as $a => $b) {
+
+                mysqli_query($db, "INSERT INTO candidate_experience (
+                    candidate_id,
+                    company,
+                    title_id,
+                    start_date,
+                    end_date,
+                    description
+                    ) VALUES (
+                    '".$candidateID."',
+                    '".mysqli_real_escape_string($db, $company[$a])."',
+                    '".mysqli_real_escape_string($db, $title[$a])."',
+                    '".mysqli_real_escape_string($db, $start_date[$a])."',
+                    '".mysqli_real_escape_string($db, $end_date[$a])."',
+                    '".mysqli_real_escape_string($db, $description[$a])."'
+                    );"
+                ) or die(mysqli_error($db));
             }
+        }
+
+        if (!is_null($form_certification)) {
+            
+            $certification = $form_certification['certification'];
+            $certification_date = $form_certification['certification_date'];
+
+            foreach($certification as $a => $b) {
+
+                mysqli_query($db, "INSERT INTO candidate_certification (
+                    candidate_id,
+                    certificate_id,
+                    date_awarded
+                    ) VALUES (
+                    '".$candidateID."',
+                    '".mysqli_real_escape_string($db, $certification[$a])."',
+                    '".mysqli_real_escape_string($db, $certification_date[$a])."'
+                    );"
+                ) or die(mysqli_error($db));
+            }
+            // score certification
+            $score_certification = score_certification($certification, $req_certification);
+        }
+        // update score fields in table
+        mysqli_query($db, "UPDATE candidate SET 
+            score_education = '".$score_education."',
+            score_skills = '".$score_skills."',
+            score_experience = '".$score_experience."',
+            score_certification = '".$score_certification."'
+            WHERE id = '".$candidateID."';"
+        ) or die(mysqli_error($db));
+        
+        mysqli_query($db, "CALL updateResponse('".mysqli_real_escape_string($db, $_GET['formid'])."')") or die(mysqli_error($db));
+        
+        $query = mysqli_query($db, "SELECT email, company_name, company_website, contact, company_fb_page, company_twitter_handle, company_linkedin_page, email_default_subject, email_default_message FROM user WHERE id=(select user_id from forms where id='" . mysqli_real_escape_string($db, $_GET['formid']) . ")'") or die(mysqli_error($db));
+        $user_details = mysqli_fetch_array($query, MYSQLI_ASSOC);
+        $mail = new PHPMailer;
+        $mail->setFrom($user_details['email'], $user_details['email']);
+        $mail->addAddress($form_email, $form_name);
+        $mail->Subject = $user_details['email_default_subject'];
+        $mail->msgHTML(construct_email( $user_details['company_name'], $form_name, $user_details['email_default_message'], $user_details['company_website'], $user_details['company_fb_page'], $user_details['company_twitter_handle'], $user_details['company_linkedin_page'], $user_details['contact'], $user_details['email'] ) );
+        $mail->addAttachment('resources/company-profiles/company-profile.pdf');
+        if (!$mail->send()) {
+            header("location: candidate-message.php?action=fail");
+        } else {
             header("location: candidate-message.php?action=success");
         }
-        else {
-            header("location: candidate-message.php?action=fail");
-        }
-
-} else {
+    }
+    else {
+        header("location: candidate-message.php?action=fail");
+    }
+} 
+else {
     $form_id = $_GET['formid'];
 
     $query = mysqli_query($db, "SELECT job_title FROM forms WHERE id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
