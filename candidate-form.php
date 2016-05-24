@@ -342,9 +342,9 @@ if (isset($_POST['submit'])) {
             $mail->msgHTML(construct_email( $user_details['company_name'], $form_name, $user_details['email_default_message'], $user_details['company_website'], $user_details['company_fb_page'], $user_details['company_twitter_handle'], $user_details['company_linkedin_page'], $user_details['contact'], $user_details['email'] ) );
             $mail->addAttachment('resources/company-profiles/company-profile.pdf');
             if (!$mail->send()) {
-                header("location: candidate-message.php?action=success");
-            } else {
                 header("location: candidate-message.php?action=fail");
+            } else {
+                header("location: candidate-message.php?action=success");
             }
             header("location: candidate-message.php?action=success");
         }
