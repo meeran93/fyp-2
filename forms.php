@@ -48,7 +48,8 @@ if ($result == 0) {
             'form_job_title'=>$fetch['job_title'],
             'form_responses'=>$fetch['responses'],
             'form_expiry_date'=>date_format(date_create($fetch['expiry_date']),"d-M-Y"),
-            'form_public_link'=>shortenUrl('http://www.smartrecruiter.invoiceshelf.com/candidate-form.php?formid='.$fetch['id'].''),
+            // 'form_public_link'=>shortenUrl('http://www.smartrecruiter.invoiceshelf.com/candidate-form.php?formid='.$fetch['id'].''),
+            'form_public_link'=>'127.0.0.1/fyp-2/candidate-form.php?formid='.$fetch['id'],
             'form_status'=>$fetch['status']
         );
     } 
