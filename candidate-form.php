@@ -51,7 +51,8 @@ if (isset($_POST['submit'])) {
 
     // save all data input as variable for later use
     $form_name =  $_POST['requirement_name'];
-    $form_nationality =  $_POST['requirement_nationality'];
+    //$form_nationality =  $_POST['requirement_nationality'];
+    $form_nationality =  '-';
     $form_address =  $_POST['requirement_address'];
     $form_contact =  $_POST['requirement_contact'];
     $form_email =  $_POST['requirement_email'];
@@ -124,7 +125,6 @@ if (isset($_POST['submit'])) {
     else {
         $form_certification = NULL;
     }
-    
     if(mysqli_query($db, "INSERT INTO candidate (
         form_id,
         resume,
@@ -248,7 +248,7 @@ if (isset($_POST['submit'])) {
                 ) or die(mysqli_error($db));
             }
             // score skills
-            $score_skills = score_skills($skills, $level_of_expertise, $req_skill);
+            $score_skills = score_skills($skills, $level_of_expertise, $req_skill, $_GET['formid'], $db);
         }
 
         if (!is_null($form_experience_required)) {
@@ -331,22 +331,22 @@ if (isset($_POST['submit'])) {
             score_certification = '".$score_certification."'
             WHERE id = '".$candidateID."';"
         ) or die(mysqli_error($db));
-        
         mysqli_query($db, "CALL updateResponse('".mysqli_real_escape_string($db, $_GET['formid'])."')") or die(mysqli_error($db));
+        header("location: candidate-message.php?action=success");
         
-        $query = mysqli_query($db, "SELECT email, company_name, company_website, contact, company_fb_page, company_twitter_handle, company_linkedin_page, email_default_subject, email_default_message FROM user WHERE id=(select user_id from forms where id='" . mysqli_real_escape_string($db, $_GET['formid']) . ")'") or die(mysqli_error($db));
-        $user_details = mysqli_fetch_array($query, MYSQLI_ASSOC);
-        $mail = new PHPMailer;
-        $mail->setFrom($user_details['email'], $user_details['email']);
-        $mail->addAddress($form_email, $form_name);
-        $mail->Subject = $user_details['email_default_subject'];
-        $mail->msgHTML(construct_email( $user_details['company_name'], $form_name, $user_details['email_default_message'], $user_details['company_website'], $user_details['company_fb_page'], $user_details['company_twitter_handle'], $user_details['company_linkedin_page'], $user_details['contact'], $user_details['email'] ) );
-        $mail->addAttachment('resources/company-profiles/company-profile.pdf');
-        if (!$mail->send()) {
-            header("location: candidate-message.php?action=fail");
-        } else {
-            header("location: candidate-message.php?action=success");
-        }
+        // $query = mysqli_query($db, "SELECT email, company_name, company_website, contact, company_fb_page, company_twitter_handle, company_linkedin_page, email_default_subject, email_default_message FROM user WHERE id=(select user_id from forms where id='" . mysqli_real_escape_string($db, $_GET['formid']) . ")'") or die(mysqli_error($db));
+        // $user_details = mysqli_fetch_array($query, MYSQLI_ASSOC);
+        // $mail = new PHPMailer;
+        // $mail->setFrom($user_details['email'], $user_details['email']);
+        // $mail->addAddress($form_email, $form_name);
+        // $mail->Subject = $user_details['email_default_subject'];
+        // $mail->msgHTML(construct_email( $user_details['company_name'], $form_name, $user_details['email_default_message'], $user_details['company_website'], $user_details['company_fb_page'], $user_details['company_twitter_handle'], $user_details['company_linkedin_page'], $user_details['contact'], $user_details['email'] ) );
+        // $mail->addAttachment('resources/company-profiles/company-profile.pdf');
+        // if (!$mail->send()) {
+        //     header("location: candidate-message.php?action=fail");
+        // } else {
+            
+        // }
     }
     else {
         header("location: candidate-message.php?action=fail");

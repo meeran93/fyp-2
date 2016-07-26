@@ -64,11 +64,11 @@ function score_education($degree, $field, $req_education, $db){
 	return $score_education;
 }
 
-function score_skills($skills, $expertise, $req_skill){
+function score_skills($skills, $expertise, $req_skill, $form_id, $db){
 	
 	$score_skills = 0;
-	$scored = false;
 	foreach($skills as $key => $value) {
+        $scored = false;
 		$skill_id = $skills[$key];
         $level_of_expertise = $expertise[$key];
         foreach ($req_skill as $a => $b) {
@@ -77,29 +77,23 @@ function score_skills($skills, $expertise, $req_skill){
     			$scored = true;
         	}
         }
-        if(!$scored){
-        	/*// RELEVANCE
-        	// 1. Get all unique form_ids from form_skills table where skill_id matches current skill_id [which Past JDs]
+        if(!$scored){   // If NOT Scored in the conventional way...
+            // RELEVANCE
+            $jd_current = null;
+            $jd_past = null;
+            $forms_req = null;
+            // 1. Get all unique form_ids from form_skills table where skill_id matches current skill_id [which Past JDs]
             $query = mysqli_query($db, "SELECT DISTINCT form_id FROM form_skills WHERE skill_id='".mysqli_real_escape_string($db, $skill_id)."'") or die(mysqli_error($db));
             $result = mysqli_num_rows($query);
             while ($fetch = mysqli_fetch_assoc($query)) {
-                $forms_req[] = array(
-                    'form_id' => $fetch['form_id']
-                );
-            }
-        	// 2. Retrieve all required forms [Past JDs]
-            foreach($forms_req as $a => $b){
-                //...Get Education
-                $education = null;
-                $query = mysqli_query($db, "SELECT degree_id, field_of_study_id, priority FROM form_education WHERE form_id='".mysqli_real_escape_string($db, $b['form_id'])."'") or die(mysqli_error($db));
-                $result = mysqli_num_rows($query);
-                while ($fetch = mysqli_fetch_assoc($query)) {
-                    $education[] = array(
-                        'degree_id' => $fetch['degree_id'],
-                        'field_id' => $fetch['field_id'],
-                        'priority' => $fetch['priority']
+                if($fetch['form_id'] != $form_id){  //So only Past JDs data gets stored here, not the current one
+                    $forms_req[] = array(
+                        'form_id' => $fetch['form_id']
                     );
                 }
+            }
+            // 2. Retrieve all required forms [Past JDs]
+            foreach($forms_req as $b){
                 //...Get Skill
                 $skills = null;
                 $query = mysqli_query($db, "SELECT skill_id, priority FROM form_skills WHERE form_id='".mysqli_real_escape_string($db, $b['form_id'])."'") or die(mysqli_error($db));
@@ -107,17 +101,6 @@ function score_skills($skills, $expertise, $req_skill){
                 while ($fetch = mysqli_fetch_assoc($query)) {
                     $skills[] = array(
                         'skill_id' => $fetch['skill_id'],
-                        'priority' => $fetch['priority']
-                    );
-                }
-                //...Get Experience
-                $experience = null;
-                $query = mysqli_query($db, "SELECT title_id, years_of_experience, priority FROM form_experience WHERE form_id='".mysqli_real_escape_string($db, $b['form_id'])."'") or die(mysqli_error($db));
-                $result = mysqli_num_rows($query);
-                while ($fetch = mysqli_fetch_assoc($query)) {
-                    $experience[] = array(
-                        'title_id' => $fetch['title_id'],
-                        'years_of_experience' => $fetch['years_of_experience'],
                         'priority' => $fetch['priority']
                     );
                 }
@@ -130,29 +113,180 @@ function score_skills($skills, $expertise, $req_skill){
                         'certificate_id' => $fetch['certificate_id'],
                         'priority' => $fetch['priority']
                     );
-                }  //(?) Can these four be put in a single array
-                if($form_id != $b['form_id']){
-                    $jd_past[] = array(
-                        'education' => $education,
-                        'skills' => $skills,
-                        'experience' => $experience,
-                        'certification' => $certification
-                    );
                 }
-                else{
-                    $jd_current[] = array(
-                        'education' => $education,
-                        'skills' => $skills,
-                        'experience' => $experience,
-                        'certification' => $certification
-                    );
-                }
+                $jd_past[] = array(
+                    'skills' => $skills,
+                    'certification' => $certification
+                );
             }
-        	// 3. Create and populate SoR Table
-            // 4. Calculate Similarities
-        	// 5. Calculate Target Field's SoR
-        	// 6. Calculate Target Field's Relevance
-            */
+            // 3. Retrieve Current JD
+            //...Get Skill
+            $skills = null;
+            $query = mysqli_query($db, "SELECT skill_id, priority FROM form_skills WHERE form_id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
+            $result = mysqli_num_rows($query);
+            while ($fetch = mysqli_fetch_assoc($query)) {
+                $skills[] = array(
+                    'skill_id' => $fetch['skill_id'],
+                    'priority' => $fetch['priority']
+                );
+            }
+            //...Get Certification
+            $certification = null;
+            $query = mysqli_query($db, "SELECT certificate_id, priority FROM form_certification WHERE form_id='".mysqli_real_escape_string($db, $form_id)."'") or die(mysqli_error($db));
+            $result = mysqli_num_rows($query);
+            while ($fetch = mysqli_fetch_assoc($query)) {
+                $certification[] = array(
+                    'certificate_id' => $fetch['certificate_id'],
+                    'priority' => $fetch['priority']
+                );
+            }
+            $jd_current[] = array(
+                'skills' => $skills,
+                'certification' => $certification
+            );
+            
+            //...[ At this point, we have all the data ready to process ]...//
+
+            // 4. Calculate Similarity, Strength of Relationship
+            $similarity_max = (count($jd_current, 1) - 2) / 2;  //counts the number of rows in the current JD [is also the max possible similarity] [total number of skills and certificates in Current JD]
+            if($similarity_max != 0){   //[in case Current JD is empty] [handling divide by zero exception]
+                $priorities = null; //holds priorities of all fields in current JD [to prevent redundant calculation]
+                $similarities = null; //holds similarities of current JD with each past JDs
+                $sor_all = null;    //holds entire SoR table
+                $count = 0; //reference to use later for finding number of past JDs
+                if($jd_current != null && $jd_past != null){    //[handling null exception]
+                    foreach ($jd_current as $c) {     //runs only once [because only one current JD]
+                        //...SKILLS
+                        $similarity_s = null;   //holds similarities of fields [skills] of current JD with [skills] past JDs
+                        //...[COLUMN]
+                        foreach ($jd_past as $p) {    //runs once for each past JD
+                            $similarity = 0;    //similarity of [skills] current JD with [skills] past JD [for COLUMN]
+                            $sor_col = null;    //holds SoR values for a row [skills]
+                            if($c['skills'] != null){    //[handling null exception]
+                                //...[ROW]
+                                foreach ($c['skills'] as $cs) {    //iterates each skill in the current JDs
+                                    $priorities[] = $cs['priority']; //holds priorities of all fields [skills] in current JD
+                                    $sor = 0;   //strength of relationship of a skill in current JD, as it is according to the past JD [for each skill, sor will be recalculated]
+                                    $col_p = 0; //holds priority of target skill from past JD [will always have a value]
+                                    $row_p = 0; //holds priority of field skill from past JD [might not have a value]
+                                    if($p['skills'] != null){    //[handling null exception]
+                                        //...[IN-COLUMN]
+                                        foreach ($p['skills'] as $ps) {    //iterates each skill in the past JD
+                                            if($ps['skill_id'] == $skill_id){   //if is target skill in past JD [will only happen once in this loop]
+                                                $col_p = $ps['priority'];    //stores priority of target skill from past JD [for later use]
+                                            }
+                                            if($cs['skill_id'] == $ps['skill_id']){   //if the ids of skills match in both JDs [will only happen once in this loop]
+                                                $row_p = $ps['priority'];    //stores priority of field skill from past JD [for later use]
+                                                if($cs['priority'] > $ps['priority']){  //smaller value in numerator
+                                                    if($cs['priority'] != 0){   //[handling divide by zero error]
+                                                        $similarity += $ps['priority'] / $cs['priority']; //for each skill that matches, the similarity will go up
+                                                    }
+                                                }
+                                                else{
+                                                    if($ps['priority'] != 0){   //[handling divide by zero error]
+                                                        $similarity += $cs['priority'] / $ps['priority']; //for each skill that matches, the similarity will go up
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    //...SoR [for CELL] [into COLUMN]
+                                    if($row_p > $col_p){    //smaller value in numerator
+                                        if($row_p != 0){    //[handling divide by zero error]
+                                            $sor = $col_p / $row_p; //SoR calculated for that Past JD
+                                        }
+                                    }
+                                    else{
+                                        if($col_p != 0){    //[handling divide by zero error]
+                                            $sor = $row_p / $col_p; //SoR calculated for that Past JD
+                                        }
+                                    }
+                                    $sor_col[] = $sor;   //cascades SoR values of that cell, into an array for that row
+                                    //...Similarity [for CELL]
+                                    //already updated in [IN-COLUMN] loop
+                                }
+                            }
+                            //...SoR [for COLUMN] [into TABLE]
+                            $sor_all[] = $sor_col;   //cascades the SoR array for that row into the SoR table array
+                            //...Similarity [for COLUMN] [into ARRAY]
+                            $similarity_s[] = $similarity;    //similarity of [skills] current JD with [skills] past JD
+                        }
+                        //...CERTIFICATION
+                        $similarity_c = null;   //holds similarities of [certification] current JD with [certification] past JDs
+                        // foreach ($jd_past as $p) {    //runs once for each past JD
+                        //     $similarity = 0;    //similarity of [certfication] current JD with [certification] past JD
+                        //     $sor_row = null;    //holds SoR values for a row [certification]
+                        //     if($c['certification'] != null){    //[handling null exception]
+                        //         foreach ($c['certification'] as $cc) {    //iterates each certificate in the current JD
+                        //             $priorities[] = array($cc['priority']); //holds priorities of all fields [certificates] in current JD
+                        //             $sor = 0;   //strength of relationship of a certificate in current JD, as it is according to the past JD [for each certificate, sor will be recalculated]
+                        //             $col_p = 0; //holds priority of target certificate from past JD
+                        //             $row_p = 0; //holds priority of field certificate from past JD
+                        //             foreach ($p['skills'] as $ps) {    //iterates each skill in the past JD [extra calculation]
+                        //                 if($ps['skill_id'] == $skill_id){   //if is target skill in past JD
+                        //                     $col_p = $ps['priority'];    //stores priority of target skill from past JD [for later use]
+                        //                     break;  //only looking for one target field in past JD
+                        //                 }
+                        //             }
+                        //             foreach ($p['certification'] as $pc) {    //iterates each certificate in the past JD
+                        //                 if($cc['certificate_id'] == $pc['certificate_id']){   //if the ids of certificates match in both JDs
+                        //                     $row_p = $ps['priority'];    //stores priority of field certificate from past JD [for later use]
+                        //                     if($cc['priority'] > $pc['priority']){
+                        //                         $similarity += $pc['priority'] / $cc['priority']; //for each certificate that matches, the similarity will go up
+                        //                     }
+                        //                     else{
+                        //                         $similarity += $cc['priority'] / $pc['priority']; //for each certificate that matches, the similarity will go up
+                        //                     }
+                        //                 }
+                        //             }
+                        //             if($row_p > $col_p){    //smaller value in numerator
+                        //                 if($row_p != 0){    //[handling divide by zero error]
+                        //                     $sor = $col_p / $row_p;
+                        //                 }
+                        //             }
+                        //             else{
+                        //                 if($col_p != 0){    //[handling divide by zero error]
+                        //                     $sor = $row_p / $col_p;
+                        //                 }
+                        //             }
+                        //             $sor_row[] = $sor;   //cascades SoR values of that cell, into an array for that row
+                        //         }
+                        //     }
+                        //     $sor_all[] = $sor_row;   //cascades the SoR array for that row into the SoR table array
+                        //     $similarity_c[] = $similarity;    //similarity of [certification] current JD with [certification] past JD
+                        // }
+                        $count = count($jd_past);   //number of past JDs
+                        for ($i=0; $i < $count; $i++) {
+                            // $similarities[] = ($similarity_s[$i] + $similarity_c[$i]) / $similarity_max;
+                            $similarities[] = ($similarity_s[$i]) / $similarity_max;
+                        }
+                    }
+                }
+                // 5. Calculate Relevance
+                $relevance = 0;
+                if($count != 0){    //if past JDs exist
+                    $sor_fields = null;  //SoR values of all fields
+                    $isready = 0;   //have all fields been traversed once
+                    foreach ($sor_all as $id_c => $sor_col) {   //iterate COLUMN
+                        // Calculate all Field's SoR
+                        foreach ($sor_col as $id_r => $sor_jd) {    //iterate CELL
+                            if($isready != 0){  //if ready, can refer Field by id
+                                $sor_fields[$id_r] += $sor_jd * $similarities[$id_c] / $count;
+                            }
+                            else{
+                                $sor_fields[] += $sor_jd * $similarities[$id_c] / $count;
+                            }
+                        }
+                        $isready = 1;   //all Fields traversed once
+                    }
+                    // Calculate Target's Relevance
+                    foreach ($sor_fields as $id_r => $sor_field) {
+                        $relevance += $sor_field * $priorities[$id_r] / $similarity_max;
+                    }
+                }
+                // 6. Use Relevance to calculate Score
+                $score_skills += $relevance * $level_of_expertise;
+            }
         }
 	}
 	return $score_skills;
